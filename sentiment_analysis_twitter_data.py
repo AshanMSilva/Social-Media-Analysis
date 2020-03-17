@@ -50,7 +50,75 @@ class TwitterClient():
         for tweet in Cursor(self.twitter_client.home_timeline, id=self.twitter_user).items(num_tweets):
             home_timeline_tweets.append(tweet)
         return home_timeline_tweets
-
+    
+    def get_statuses_lookup_tweets(self, num_tweets):
+        statuses_lookup_tweets = []
+        for tweet in Cursor(self.twitter_client.statuses_lookup, id=self.twitter_user).items(num_tweets):
+            statuses_lookup_tweets.append(tweet)
+        return statuses_lookup_tweets
+    
+    def get_retweets_of_me(self, num_tweets):
+        retweets_of_me = []
+        for tweet in Cursor(self.twitter_client.retweets_of_me, id=self.twitter_user).items(num_tweets):
+            retweets_of_me.append(tweet)
+        return retweets_of_me
+    
+    def get_mentions_timeline(self, num_tweets):
+        mentions_timeline = []
+        for mention in Cursor(self.twitter_client.mentions_timeline, id=self.twitter_user).items(num_tweets):
+            mentions_timeline.append(mention)
+        return mentions_timeline
+    
+    ### single tweet information
+    
+    def get_tweet_status(self, tweet_id):
+        tweet_status = self.twitter_client.get_status(tweet_id)
+        return tweet_status
+    
+    def get_retweeters_of_a_tweet(self, tweet_id):
+        retweeters_ids = self.twitter_client.retweeters(tweet_id)
+        return retweeters_ids
+    
+    def get_retweets_of_a_tweet(self, num_tweets,tweet_id):
+        retweets = self.twitter_client.retweets(tweet_id)
+        return retweets
+    
+    def get_user(self, name):
+        user = self.twitter_client.get_user(name)
+        return user
+    
+    def get_user_followers(self,name):
+        followers = self.twitter_client.followers(name)
+        return followers
+    
+    def get_search_users(self, name):
+        users = self.twitter_client.search_users(name)
+        return users
+    
+    def get_friendship_between_two_friends(self, first_name, second_name):
+        friendship = self.twitter_client.show_friendship(first_name, second_name)
+        return friendship
+        
+    def get_favorites(self,user_id):
+        favorites= self.tweeter_client.favorites(user_id)
+        return favorites
+    
+    def get_saved_search(self,user_id):
+        saved_search = self.tweeter_client.get_saved_search(user_id)
+        return saved_search
+    
+    def get_similar_tweets(self,tweet,result_type):   #mixed, recent, popular
+        similar_tweets = self.twitter_client.search(tweet, result_type=result_type)
+        return similar_tweets
+    
+    def get_trend_topic_locations(self, lat, long):
+        locations = self.twitter_client.trends_closest(lat, long)
+        return locations
+    
+    def get_location_info_by_geo_id(self, geo_id):
+        place = self.twitter_client.geo_id(geo_id)
+        return place
+    
 
 # # # # TWITTER AUTHENTICATER # # # #
 class TwitterAuthenticator():
@@ -132,6 +200,9 @@ class TweetAnalyzer():
         df['retweets'] = np.array([tweet.retweet_count for tweet in tweets])
 
         return df
+    
+    def get_attribute_value_of_a_object(obj, attribute_name):
+        return getattr(obj, attribute_name)
 
  
 if __name__ == '__main__':
@@ -141,9 +212,25 @@ if __name__ == '__main__':
 
     api = twitter_client.get_twitter_client_api()
 
-    tweets = api.user_timeline(screen_name="realDonaldTrump", count=200)
+    #tweets = api.user_timeline(screen_name="realDonaldTrump", count=20)
 
-    df = tweet_analyzer.tweets_to_data_frame(tweets)
-    df['sentiment'] = np.array([tweet_analyzer.analyze_sentiment(tweet) for tweet in df['tweets']])
+    #df = tweet_analyzer.tweets_to_data_frame(tweets)
+    #df['sentiment'] = np.array([tweet_analyzer.analyze_sentiment(tweet) for tweet in df['tweets']])
 
-    print(df.head(10))
+    #print(df['id'])
+    
+    status = twitter_client.get_retweets_of_a_tweet(1,1237924658185469954)
+    
+    #print(dir(status[0]))
+    #tweet = status[0]
+    #print(getattr(tweet, 'text'))
+    
+    user = twitter_client.get_user('realDonaldTrump')
+    
+    #friendship = twitter_client.get_friendship_between_two_friends('AshanMSilva1','cse17mora')
+    #print(friendship)
+    
+    search_results = twitter_client.get_similar_tweets('yesterday', 'recent')
+    #print(search_results)
+    print(getattr(search_results[0], 'text'))
+    
