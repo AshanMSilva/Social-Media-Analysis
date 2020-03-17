@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+  <div class="container" class="user-details-header">
+  	<div class="row">
+  		<div class="col-md-2">
+  			<img src="{{user.profile_image_url}}" alt="" class="img-thumbnail">
+  		</div>
+  		<div class="col-md-10">
+  			<span class="account-name">{{user.name}} @{{user.screen_name}} <hr></span>
+  			<p>{{user.description}}</p>
+  		</div>
+  		
+  	</div> 	
+  </div>
+  <div class="container">
+  	<h2>Overview Profile information and statistics</h2>
+  	<hr>
+  	<div class="row">
+  		<div class="col-md-4">
+  			<h3>Information</h3>
+  			<p>The most important piece here is the join date. The longer they're on Twitter the better. Spam accounts and robots tend to get suspended after a couple of weeks.</p>
+  		</div>
+  		<div class="col-md-8">
+  			<ul class="list-group list-group-flush">
+			  <li class="list-group-item">Name             :  {{user.name}}</li>
+			  <li class="list-group-item">Joined Twitter on:  {{user.created_at}}</li>
+			  <li class="list-group-item">Location         :  {{user.location}}</li>
+			  <li class="list-group-item">Bio              :  {{user.description}}</li>
+			  <li class="list-group-item">URL              :  {{user.url}}</li>
+			</ul>
+  		</div>
+  		
+  	</div>
+  </div>
+
+	<p>{{user}}</p><br><br><br>
+    <p>{{user.id}}</p>
+    <p>{{user.screen_name}}</p>
+	<p>{{user.location}}</p>
+	<p>{{user.description}}</p>
+	<p>{{user.url}}</p>
+	<p>{{user.followers_count}}</p>
+	<p>{{user.friends_count}}</p>
+	<p>{{user.listed_count}}</p>
+	<p>{{user.created_at}}</p>
+	<p>{{user.favourites_count}}</p>
+	<p>{{user.verified}}</p>
+	<p>{{user.statuses_count}}</p>
+	<p>{{user.lang}}</p>
+	<p>{{user.status}}</p>
+	<p>{{user.default_profile}}</p>
+	<p>{{user.default_profile_image}}</p>
+	<p>{{user.has_extended_profile}}</p>
+	<p>{{user.name}}</p>
+	
+
+
+    <!-- <img src="{{user.profile_image_url}}"> -->
+{% endblock content %}

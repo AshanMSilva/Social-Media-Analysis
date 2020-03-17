@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Twitter Page</h1>
+    <a class="mr-2" href="{{ url_for('twitter.user_details', name='realDonaldTrump') }}">Real Donald Trump</a>
+    <a class="mr-2" href="{{ url_for('twitter.hashtag_tweets', hashtag='#DonaldTrump') }}">Hash Tags</a>
+{% endblock content %}
