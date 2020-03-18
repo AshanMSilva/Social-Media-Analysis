@@ -152,10 +152,10 @@ training_data = training_data.sample(frac=1).reset_index(drop =True)
 labels = training_data.iloc[:,-1].values
 features =training_data.iloc[:,1:-1].values
 
-print(features[0,:])
+#print(features[0,:])
 features = np.delete(features, [5],1)
 
-print(features[0,:])
+#print(features[0,:])
 
 encode= LabelEncoder()
 features[:,6] = encode.fit_transform(features[:,6])
@@ -164,14 +164,30 @@ features[:,9] = encode.fit_transform(features[:,9])
 features[:,10] = encode.fit_transform(features[:,10])
 features[:,11] = encode.fit_transform(features[:,11])
 
-print(features[0,:])
+#print(features[0,:])
 
 X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
+
 
 logReg =LogisticRegression()
 
 logReg.fit(X_train, Y_train)
 
 prediction= logReg.predict(X_test)
-print(accuracy_score(Y_test, prediction))
+#print(accuracy_score(Y_test, prediction))
+prediction = prediction.tolist()
+Y_test = Y_test.tolist()
+ids = []
+for i in range(0,len(prediction)):
+    ids.append(i)
 
+#plt.plot(ids,Y_test, label = 'test')
+#plt.plot(ids,prediction, label = 'pred')
+#plt.legend()
+#plt.show()
+plt.figure(figsize=(20,4))
+plt.scatter(ids, Y_test)
+plt.scatter(ids, logReg.predict_proba(X_test)[:,1])
+plt.show()
+
+print(logReg.predict_proba(X_test))
