@@ -1,0 +1,177 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar 17 20:50:01 2020
+
+@author: user
+"""
+
+
+import pandas as pd
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.callbacks import TensorBoard
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.impute import SimpleImputer
+from textblob import TextBlob
+import re
+import time
+import numpy as np
+import matplotlib.pyplot as plt
+
+def clean_tweet(text):
+    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
+
+def analyze_sentiment(text):
+    analysis = TextBlob(clean_tweet(text))
+        
+    if analysis.sentiment.polarity > 0:
+        return 1
+    elif analysis.sentiment.polarity == 0:
+        return 0
+    else:
+        return -1
+
+training_data = (pd.read_csv('training_data_2_csv.csv')) #load train csv file
+training_data.head()
+
+for i in range(0,len(training_data.description)):
+    if(type(training_data.description[i])==float):
+        training_data.description[i] = -1
+    else:    
+        training_data.description[i] = analyze_sentiment(training_data.description[i])
+
+for i in range(0,len(training_data.screen_name)):
+    if(type(training_data.screen_name[i])==float):
+        training_data.screen_name[i] = -1
+    else:    
+        training_data.screen_name[i] = analyze_sentiment(training_data.screen_name[i])
+
+for i in range(0,len(training_data.name)):
+    if(type(training_data.name[i])==float):
+        training_data.name[i] = -1
+    else:    
+        training_data.name[i] = analyze_sentiment(training_data.name[i])
+
+
+#print(training_data['created_at'][0])
+#print(len(training_data['created_at'][0]))
+#print(training_data['created_at'][1])
+#print(len(training_data['created_at'][1]))
+
+#print(training_data['created_at'][2])
+#print(len(training_data['created_at'][2]))
+#print(training_data.created_at[1][6:8])
+  
+#print(training_data['created_at'][3])
+#print(len(training_data['created_at'][3])) 
+
+for i in range(0,len(training_data.created_at)):
+    if(len(training_data.created_at[i])== 32):
+        training_data.year[i] = int(training_data.created_at[i][27:31])
+        training_data.day[i] = int(training_data.created_at[i][9:11])
+        if(training_data.created_at[i][5:8]=="Jan"):
+            training_data.month[i] = 1
+        elif(training_data.created_at[i][5:8]=="Feb"):
+            training_data.month[i] = 2
+        elif(training_data.created_at[i][5:8]=="Mar"):
+            training_data.month[i] = 3
+        elif(training_data.created_at[i][5:8]=="Apr"):
+            training_data.month[i] = 4
+        elif(training_data.created_at[i][5:8]=="May"):
+            training_data.month[i] = 5
+        elif(training_data.created_at[i][5:8]=="Jun"):
+            training_data.month[i] = 6
+        elif(training_data.created_at[i][5:8]=="Jul"):
+            training_data.month[i] = 7
+        elif(training_data.created_at[i][5:8]=="Aug"):
+            training_data.month[i] = 8
+        elif(training_data.created_at[i][5:8]=="Sep"):
+            training_data.month[i] = 9
+        elif(training_data.created_at[i][5:8]=="Oct"):
+            training_data.month[i] = 10
+        elif(training_data.created_at[i][5:8]=="Nov"):
+            training_data.month[i] = 11
+        elif(training_data.created_at[i][5:8]=="Dec"):
+            training_data.month[i] = 12
+        else:
+            training_data.month[i] = 0
+    elif(len(training_data.created_at[i])== 30 or len(training_data.created_at[i])== 31):
+        training_data.year[i] = int(training_data.created_at[i][26:30])
+        training_data.day[i] = int(training_data.created_at[i][8:10])
+        if(training_data.created_at[i][4:7]=="Jan"):
+            training_data.month[i] = 1
+        elif(training_data.created_at[i][4:7]=="Feb"):
+            training_data.month[i] = 2
+        elif(training_data.created_at[i][4:7]=="Mar"):
+            training_data.month[i] = 3
+        elif(training_data.created_at[i][4:7]=="Apr"):
+            training_data.month[i] = 4
+        elif(training_data.created_at[i][4:7]=="May"):
+            training_data.month[i] = 5
+        elif(training_data.created_at[i][4:7]=="Jun"):
+            training_data.month[i] = 6
+        elif(training_data.created_at[i][4:7]=="Jul"):
+            training_data.month[i] = 7
+        elif(training_data.created_at[i][4:7]=="Aug"):
+            training_data.month[i] = 8
+        elif(training_data.created_at[i][4:7]=="Sep"):
+            training_data.month[i] = 9
+        elif(training_data.created_at[i][4:7]=="Oct"):
+            training_data.month[i] = 10
+        elif(training_data.created_at[i][4:7]=="Nov"):
+            training_data.month[i] = 11
+        elif(training_data.created_at[i][4:7]=="Dec"):
+            training_data.month[i] = 12
+        else:
+            training_data.month[i] = 0
+    elif(len(training_data.created_at[i])==13 or (len(training_data.created_at[i])==14 and training_data.created_at[i][2:3]=='-')):
+        training_data.year[i] = int('20'+training_data.created_at[i][6:8])
+        training_data.day[i] = int(training_data.created_at[i][0:2])
+        training_data.month[i] = int(training_data.created_at[i][3:5])
+    elif((len(training_data.created_at[i])==15 and training_data.created_at[i][1:2]=='/') or len(training_data.created_at[i])==14):
+        training_data.year[i] = int(training_data.created_at[i][5:9])
+        training_data.day[i] = int(training_data.created_at[i][2:4])
+        training_data.month[i] = int(training_data.created_at[i][0:1])
+    elif((len(training_data.created_at[i])==15 and training_data.created_at[i][2:3]=='/') or len(training_data.created_at[i])==16):
+        training_data.year[i] = int(training_data.created_at[i][6:10])
+        training_data.day[i] = int(training_data.created_at[i][3:5])
+        training_data.month[i] = int(training_data.created_at[i][0:2])
+    else:
+        print(training_data.created_at[i])
+    
+        
+#print(training_data.year)
+#print(training_data.month)
+#print(training_data.day)
+
+#print(training_data.screen_name)
+
+training_data = training_data.sample(frac=1).reset_index(drop =True)
+
+labels = training_data.iloc[:,-1].values
+features =training_data.iloc[:,1:-1].values
+
+print(features[0,:])
+features = np.delete(features, [5],1)
+
+print(features[0,:])
+
+encode= LabelEncoder()
+features[:,6] = encode.fit_transform(features[:,6])
+features[:,8] = encode.fit_transform(features[:,8])
+features[:,9] = encode.fit_transform(features[:,9])
+features[:,10] = encode.fit_transform(features[:,10])
+features[:,11] = encode.fit_transform(features[:,11])
+
+print(features[0,:])
+
+X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
+
+logReg =LogisticRegression()
+
+logReg.fit(X_train, Y_train)
+
+prediction= logReg.predict(X_test)
+print(accuracy_score(Y_test, prediction))
+
