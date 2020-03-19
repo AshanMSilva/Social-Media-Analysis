@@ -41,17 +41,17 @@ for i in range(0,len(training_data.description)):
     else:    
         training_data.description[i] = analyze_sentiment(training_data.description[i])
 
-for i in range(0,len(training_data.screen_name)):
-    if(type(training_data.screen_name[i])==float):
-        training_data.screen_name[i] = -1
-    else:    
-        training_data.screen_name[i] = analyze_sentiment(training_data.screen_name[i])
+#for i in range(0,len(training_data.screen_name)):
+#    if(type(training_data.screen_name[i])==float):
+#        training_data.screen_name[i] = -1
+#    else:    
+#        training_data.screen_name[i] = analyze_sentiment(training_data.screen_name[i])
 
-for i in range(0,len(training_data.name)):
-    if(type(training_data.name[i])==float):
-        training_data.name[i] = -1
-    else:    
-        training_data.name[i] = analyze_sentiment(training_data.name[i])
+#for i in range(0,len(training_data.name)):
+#    if(type(training_data.name[i])==float):
+#        training_data.name[i] = -1
+#    else:    
+#        training_data.name[i] = analyze_sentiment(training_data.name[i])
 
 
 #print(training_data['created_at'][0])
@@ -147,22 +147,22 @@ for i in range(0,len(training_data.created_at)):
 
 #print(training_data.screen_name)
 
-training_data = training_data.sample(frac=1).reset_index(drop =True)
+#training_data = training_data.sample(frac=1).reset_index(drop =True)
 
 labels = training_data.iloc[:,-1].values
 features =training_data.iloc[:,1:-1].values
 
 #print(features[0,:])
-features = np.delete(features, [5],1)
+features = np.delete(features, [4],1)
 
 #print(features[0,:])
 
 encode= LabelEncoder()
-features[:,6] = encode.fit_transform(features[:,6])
+features[:,5] = encode.fit_transform(features[:,5])
+features[:,7] = encode.fit_transform(features[:,7])
 features[:,8] = encode.fit_transform(features[:,8])
 features[:,9] = encode.fit_transform(features[:,9])
-features[:,10] = encode.fit_transform(features[:,10])
-features[:,11] = encode.fit_transform(features[:,11])
+#features[:,11] = encode.fit_transform(features[:,11])
 
 #print(features[0,:])
 
@@ -174,20 +174,23 @@ logReg =LogisticRegression()
 logReg.fit(X_train, Y_train)
 
 prediction= logReg.predict(X_test)
-#print(accuracy_score(Y_test, prediction))
-prediction = prediction.tolist()
-Y_test = Y_test.tolist()
-ids = []
-for i in range(0,len(prediction)):
-    ids.append(i)
+print(accuracy_score(Y_test, prediction))
+#prediction = prediction.tolist()
+#Y_test = Y_test.tolist()
+#ids = []
+#for i in range(0,len(prediction)):
+#    ids.append(i)
 
 #plt.plot(ids,Y_test, label = 'test')
 #plt.plot(ids,prediction, label = 'pred')
 #plt.legend()
 #plt.show()
-plt.figure(figsize=(20,4))
-plt.scatter(ids, Y_test)
-plt.scatter(ids, logReg.predict_proba(X_test)[:,1])
-plt.show()
+#plt.figure(figsize=(20,4))
+#plt.scatter(ids, Y_test)
+#plt.scatter(ids, logReg.predict_proba(X_test)[:,1])
+#plt.show()
 
-print(logReg.predict_proba(X_test))
+#print(logReg.predict_proba(X_test))
+#print(training_data['description'].value_counts())
+print(training_data.verified[0], training_data.default_profile[0], training_data.default_profile_image[0])
+print(features[0])
