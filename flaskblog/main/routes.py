@@ -19,3 +19,15 @@ def about():
 @main.route("/twitter")
 def twitter():
 	return render_template('twitter.html', title='Twitter')
+
+@main.route("/facebook")
+def facebook():
+	return render_template('facebook.html', title='Facebook')
+
+@main.route("/youtube")
+def youtube():
+	return render_template('youtube.html', title='Youtube')
+
+@main.route("/stack_overflow")
+def stack_overflow():
+	return render_template('stack_overflow.html', title='Stack Overflow')

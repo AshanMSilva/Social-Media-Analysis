@@ -28,10 +28,16 @@ def create_app(config_class=Config):
     from flaskblog.main.routes import main
     from flaskblog.errors.handlers import errors
     from flaskblog.twitter.routes import twitter
+    from flaskblog.facebook.routes import facebook
+    from flaskblog.youtube.routes import youtube
+    from flaskblog.stack_overflow.routes import stack_overflow
     app.register_blueprint(users)
     app.register_blueprint(posts)
     app.register_blueprint(main)
     app.register_blueprint(errors)
     app.register_blueprint(twitter)
+    app.register_blueprint(facebook)
+    app.register_blueprint(stack_overflow)
+    app.register_blueprint(youtube)
 
     return app

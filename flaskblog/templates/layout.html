@@ -11,16 +11,16 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 
     {% if title %}
-        <title>Flask Blog - {{ title }}</title>
+        <title>Social Medial Analysis - {{ title }}</title>
     {% else %}
-        <title>Flask Blog</title>
+        <title>Social Media Analysis</title>
     {% endif %}
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="/">Flask Blog</a>
+          <a class="navbar-brand mr-4" href="/">SM Analysis</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -29,6 +29,10 @@
               <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
               <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
               <a class="nav-item nav-link" href="{{ url_for('main.twitter')}}">Twitter</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.facebook')}}">Facebook</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.youtube')}}">Youtube</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.stack_overflow')}}">Stack Overflow</a>
+
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">

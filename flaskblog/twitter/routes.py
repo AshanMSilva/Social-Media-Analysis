@@ -29,7 +29,7 @@ def hashtag_tweets():
 	return render_template('hashtag.html', tweets=tweets)
 
 @twitter.route("/twitter/<string:name>")
-def user_details(name):
+def bot_account_detection(name):
     twitter_client = TwitterClient()
     user = twitter_client.get_user(name)
     prediction = Prediction()
