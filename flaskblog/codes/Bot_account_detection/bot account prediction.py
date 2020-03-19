@@ -147,7 +147,7 @@ for i in range(0,len(training_data.created_at)):
 
 #print(training_data.screen_name)
 
-#training_data = training_data.sample(frac=1).reset_index(drop =True)
+training_data = training_data.sample(frac=1).reset_index(drop =True)
 
 labels = training_data.iloc[:,-1].values
 features =training_data.iloc[:,1:-1].values
@@ -192,5 +192,8 @@ print(accuracy_score(Y_test, prediction))
 
 #print(logReg.predict_proba(X_test))
 #print(training_data['description'].value_counts())
-print(training_data.verified[0], training_data.default_profile[0], training_data.default_profile_image[0])
-print(features[0])
+#print(training_data.verified[0], training_data.default_profile[0], training_data.default_profile_image[0])
+#l = [1, 1291, 0, 10, 0, 0, 78554, 1, 0, 0, 2017.0, 1.0, 2.0]
+#l = np.array(l)
+#print(features[0])
+#print(logReg.predict([l]))

@@ -5,7 +5,8 @@ from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from flaskblog.codes.sentiment_analysis_twitter_data import TwitterClient, TweetAnalyzer
-
+from flaskblog.codes.Bot_account_detection.bot_account_prediction_methods import Prediction
+import numpy as np
 
 twitter = Blueprint('twitter', __name__)
 
@@ -31,22 +32,23 @@ def hashtag_tweets():
 def user_details(name):
     twitter_client = TwitterClient()
     user = twitter_client.get_user(name)
+    prediction = Prediction()
     created_at = user.created_at
+    year, month, day = prediction.get_date(created_at)
     id = user.id
-    screen_name = user.screen_name
-    description = user.description
+    description = prediction.sentiment_description(user.description)
     followers_count = user.followers_count
     friends_count = user.friends_count
     listed_count = user.listed_count
     favourites_count = user.favourites_count
-    verified = user.verified
+    verified = prediction.encode_verified(user.verified)
     statuses_count = user.statuses_count
-    lang = user.lang
-    default_profile = user.default_profile
-    default_profile_image = user.default_profile_image
-    name = user.name
-    has_extended_profile = user.has_extended_profile
-
-
+    default_profile = prediction.encode_default_profile(user.default_profile)
+    default_profile_image = prediction.encode_default_profile_image(user.default_profile_image)
+    has_extended_profile = prediction.encode_has_extended_profile(user.has_extended_profile)
+    pred_list = [description, followers_count, friends_count, listed_count, favourites_count, verified, statuses_count, default_profile, default_profile_image, has_extended_profile, year, month, day]
+    pred_list = np.array(pred_list)
+    #import model and predict
+    pred_result = 0
     
-    return render_template('user_details.html', user=user)
+    return render_template('bot_detection.html', user=user, pred_result = pred_result)

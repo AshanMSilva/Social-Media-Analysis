@@ -119,40 +119,41 @@ class Prediction():
         return year,month,day
     
     def encode_verified(self, verified):
-        if(verified == 'FALSE' or verified == 'false'):
+        if(verified == 'FALSE' or verified == 'false' or verified == False):
             verified = 0
-        elif(verified == 'TRUE' or verified == 'true'):
+        elif(verified == 'TRUE' or verified == 'true' or verified == True):
             verified = 1
         else:
             verified = -1
         return verified
     
     def encode_default_profile(self, default_profile):
-        if(default_profile == 'FALSE' or default_profile == 'false'):
+        if(default_profile == 'FALSE' or default_profile == 'false' or default_profile == False):
             default_profile = 0
-        elif(default_profile == 'TRUE' or default_profile == 'true'):
+        elif(default_profile == 'TRUE' or default_profile == 'true' or default_profile == False):
             default_profile = 1
         else:
             default_profile = -1
         return default_profile
     
     def encode_default_profile_image(self, default_profile_image):
-        if(default_profile_image == 'FALSE' or default_profile_image == 'false'):
+        if(default_profile_image == 'FALSE' or default_profile_image == 'false' or default_profile_image == False):
             default_profile_image = 0
-        elif(default_profile_image == 'TRUE' or default_profile_image == 'true'):
+        elif(default_profile_image == 'TRUE' or default_profile_image == 'true' or default_profile_image == True):
             default_profile_image = 1
         else:
             default_profile_image = -1
         return default_profile_image
     
     def encode_has_extended_profile(self, has_extended_profile):
-        if(has_extended_profile == 'FALSE' or has_extended_profile == 'false'):
+        if(has_extended_profile == 'FALSE' or has_extended_profile == 'false' or has_extended_profile == False):
             has_extended_profile = 0
-        elif(has_extended_profile == 'TRUE' or has_extended_profile == 'true'):
+        elif(has_extended_profile == 'TRUE' or has_extended_profile == 'true' or has_extended_profile == True):
             has_extended_profile = 1
         else:
             has_extended_profile = -1
         return has_extended_profile
+
     
     
         
