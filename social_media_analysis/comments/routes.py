@@ -2,7 +2,7 @@ from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
 from social_media_analysis import db
-from social_media_analysis.models import Comment
+from social_media_analysis.models import Comment, Post
 from social_media_analysis.comments.forms import CommentForm
 
 comments = Blueprint('comments', __name__)
@@ -22,7 +22,7 @@ def new_comment(post_id):
     return render_template('create_comment.html', title='New Comment', form=form, Legend='New Comment')
 
 
-@comments.route("/post/<int:post_id>/comment/<int:comment_id>")
+@comments.route("/comment/<int:comment_id>")
 def comment(comment_id):
     comment = Comment.query.get_or_404(comment_id)
     return render_template('comment.html', comment_author=comment.comment_author, comment=comment)
@@ -48,11 +48,11 @@ def update_comment(comment_id, post_id):
 
 @comments.route("/post/<int:post_id>/comment/<int:comment_id>/delete", methods=['POST'])
 @login_required
-def delete_post(comment_id, post_id):
-    comment = Comment.query.get_or_404(post_id)
+def delete_comment(comment_id, post_id):
+    comment = Comment.query.get_or_404(comment_id)
     if comment.comment_author != current_user:
         abort(403)
     db.session.delete(comment)
     db.session.commit()
     flash('Your comment has been deleted!', 'success')
-    return redirect(url_for('posts.post', post_id=post.id))
+    return redirect(url_for('posts.post', post_id=post_id))
