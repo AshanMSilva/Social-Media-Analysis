@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Hashtag Page</h1>
+    {% for tweet in tweets %}
+    	<p>{{tweet}}</p>
+    {% endfor %}
+{% endblock content %}
