@@ -2,7 +2,7 @@ from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
 from social_media_analysis import db
-from social_media_analysis.models import Post
+from social_media_analysis.models import Post, Comment
 from social_media_analysis.posts.forms import PostForm
 
 posts = Blueprint('posts', __name__)
@@ -25,6 +25,7 @@ def new_post():
 @posts.route("/post/<int:post_id>")
 def post(post_id):
     post = Post.query.get_or_404(post_id)
+    comments = Comment.query.filter_by(post_id = post_id)
     return render_template('post.html', title=post.title, post=post)
 
 
