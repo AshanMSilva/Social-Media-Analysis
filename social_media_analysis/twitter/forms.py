@@ -4,5 +4,5 @@ from wtforms.validators import DataRequired
 
 
 class screenNameForm(FlaskForm):
-    name = TextAreaField('Screen_Name', validators=[DataRequired()])
+    name = TextAreaField('Screen Name', validators=[DataRequired()])
     submit = SubmitField('Search')

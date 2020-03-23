@@ -1,6 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>Twitter Page</h1>
-    <a class="mr-2" href="{{ url_for('twitter.user_details', name='realDonaldTrump') }}">Real Donald Trump</a>
+    <a class="mr-2" class="btn" data-toggle="modal" data-target="#searchforaccount">Search for Account</a>
     <a class="mr-2" href="{{ url_for('twitter.hashtag_tweets', hashtag='#DonaldTrump') }}">Hash Tags</a>
+    <a class="mr-2" href="{{ url_for('twitter.bot_account_detection', name='realdondtrump') }}">bot</a>
+
+  <div class="modal fade" id="searchforaccount" tabindex="-1" role="dialog" aria-labelledby="searchforaccount" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="searchforaccount">Search for Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body">
+		    <form method="POST" action="">
+		        {{ form.hidden_tag() }}
+		            <div class="form-group">
+		                {{ form.name.label(class="form-control-label") }}
+		                {% if form.name.errors %}
+		                    {{ form.name(class="form-control is-invalid") }}
+		                    <div class="invalid-feedback">
+		                        {% for error in form.name.errors %}
+		                            <span>{{ error }}</span>
+		                        {% endfor %}
+		                    </div>
+		                {% else %}
+		                    {{ form.name(class="form-control", placeholder="screen name") }}
+		                {% endif %}
+		            </div>
+		        <div class="form-group">
+		            {{ form.submit(class="btn btn-outline-info submit", type="submit") }}
+		        </div>
+		    </form>        	
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}
