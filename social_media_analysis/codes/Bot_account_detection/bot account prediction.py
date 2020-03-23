@@ -19,6 +19,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
+import pickle 
 
 
 def get_time_period(year,month,day):
@@ -207,6 +208,16 @@ logReg =LogisticRegression()
 logReg.fit(X_train, Y_train)
 prediction= logReg.predict(X_test)
 print(accuracy_score(Y_test, prediction))
+
+filename = 'finalized_model.sav'
+pickle.dump(logReg, open(filename, 'wb'))
+ 
+# some time later...
+ 
+# load the model from disk
+
+
+
 #prediction = prediction.tolist()
 #Y_test = Y_test.tolist()
 #ids = []

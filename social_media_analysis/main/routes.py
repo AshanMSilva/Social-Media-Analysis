@@ -1,5 +1,6 @@
-from flask import render_template, request, Blueprint
+from flask import render_template, request, Blueprint, redirect, url_for
 from social_media_analysis.models import Post
+from social_media_analysis.twitter.forms import screenNameForm
 
 main = Blueprint('main', __name__)
 
@@ -16,9 +17,13 @@ def home():
 def about():
     return render_template('about.html', title='About')
 
-@main.route("/twitter")
+@main.route("/twitter", methods=['GET', 'POST'])
 def twitter():
-	return render_template('twitter.html', title='Twitter')
+	nameform = screenNameForm()
+	if nameform.validate_on_submit():
+		name = nameform.name.data
+		return redirect(url_for('twitter.user_details', name=name))
+	return render_template('twitter.html', title='Twitter', form=nameform)
 
 @main.route("/facebook")
 def facebook():
