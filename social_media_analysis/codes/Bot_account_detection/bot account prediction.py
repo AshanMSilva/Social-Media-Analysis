@@ -18,6 +18,32 @@ import re
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import datetime
+
+
+def get_time_period(year,month,day):
+    current_date = datetime.datetime.today()
+    current_year = current_date.year
+    current_month = current_date.month
+    current_day = current_date.day
+    days=0
+    if(month > current_month):
+        days += (current_year-1-year)*365
+        if(day>current_day):
+            days += ((12-month)+current_month-1)*30
+            days += (31-day+current_day)
+        else:
+            days += (12-month+current_month)*30
+            days +=(current_day-day)
+    else:
+        days += (current_year-year)*365
+        if(day>current_day):
+            days += (current_month-1-month)*30
+            days += (31-day+current_day)
+        else:
+            days += (current_month-month)*30
+            days +=(current_day-day)
+    return days
 
 def clean_tweet(text):
     return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
@@ -140,7 +166,9 @@ for i in range(0,len(training_data.created_at)):
     else:
         print(training_data.created_at[i])
     
-        
+    training_data.duration[i]=get_time_period(training_data.year[i], training_data.month[i], training_data.day[i])
+    
+       
 #print(training_data.year)
 #print(training_data.month)
 #print(training_data.day)
@@ -164,15 +192,19 @@ features[:,8] = encode.fit_transform(features[:,8])
 features[:,9] = encode.fit_transform(features[:,9])
 #features[:,11] = encode.fit_transform(features[:,11])
 
+
+
+
+
+
 #print(features[0,:])
 
 X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
 
-
+#print(training_data.duration)
 logReg =LogisticRegression()
 
 logReg.fit(X_train, Y_train)
-
 prediction= logReg.predict(X_test)
 print(accuracy_score(Y_test, prediction))
 #prediction = prediction.tolist()

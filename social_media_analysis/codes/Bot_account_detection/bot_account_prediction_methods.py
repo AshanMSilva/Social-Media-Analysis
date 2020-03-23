@@ -18,6 +18,7 @@ import re
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import datetime
 
 
 class Prediction():
@@ -154,6 +155,36 @@ class Prediction():
             has_extended_profile = -1
         return has_extended_profile
 
-    
-    
+    def get_time_period(self, year,month,day):
+        current_date = datetime.datetime.today()
+        current_year = current_date.year
+        current_month = current_date.month
+        current_day = current_date.day
+        days=0
+        if(month > current_month):
+            days += (current_year-1-year)*365
+            if(day>current_day):
+                days += ((12-month)+current_month-1)*30
+                days += (31-day+current_day)
+            else:
+                days += (12-month+current_month)*30
+                days +=(current_day-day)
+        else:
+            days += (current_year-year)*365
+            if(day>current_day):
+                days += (current_month-1-month)*30
+                days += (31-day+current_day)
+            else:
+                days += (current_month-month)*30
+                days +=(current_day-day)
+        return days
+
+
+p =Prediction()
+year=1997
+month =int(7)
+day =6
+
+days = p.get_time_period(year, month, day)
+print(days)
         
