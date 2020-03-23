@@ -3,7 +3,7 @@
     <h1>Twitter Page</h1>
     <a class="mr-2" class="btn" data-toggle="modal" data-target="#searchforaccount">Search for Account</a>
     <a class="mr-2" href="{{ url_for('twitter.hashtag_tweets', hashtag='#DonaldTrump') }}">Hash Tags</a>
-    <a class="mr-2" href="{{ url_for('twitter.bot_account_detection', name='realdonaldtrump') }}">bot</a>
+    <a class="mr-2" class="btn" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
 
   <div class="modal fade" id="searchforaccount" tabindex="-1" role="dialog" aria-labelledby="searchforaccount" aria-hidden="true">
     <div class="modal-dialog">
@@ -16,22 +16,55 @@
         </div>
         <div class="model-body">
 		    <form method="POST" action="">
-		        {{ form.hidden_tag() }}
+		        {{ screennameform.hidden_tag() }}
 		            <div class="form-group">
-		                {{ form.name.label(class="form-control-label") }}
-		                {% if form.name.errors %}
-		                    {{ form.name(class="form-control is-invalid") }}
+		                {{ screennameform.name.label(class="form-control-label") }}
+		                {% if screennameform.name.errors %}
+		                    {{ screennameform.name(class="form-control is-invalid") }}
 		                    <div class="invalid-feedback">
-		                        {% for error in form.name.errors %}
+		                        {% for error in screennameform.name.errors %}
 		                            <span>{{ error }}</span>
 		                        {% endfor %}
 		                    </div>
 		                {% else %}
-		                    {{ form.name(class="form-control", placeholder="screen name") }}
+		                    {{ screennameform.name(class="form-control", placeholder="screen name") }}
 		                {% endif %}
 		            </div>
 		        <div class="form-group">
-		            {{ form.submit(class="btn btn-outline-info submit", type="submit") }}
+		            {{ screennameform.search(class="btn btn-outline-info submit", type="submit") }}
+		        </div>
+		    </form>        	
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="botdetectionmodel" tabindex="-1" role="dialog" aria-labelledby="botdetectionmodel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="botdetectionmodel">Bot Account Prediction</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body">
+		    <form method="POST" action="">
+		        {{ botform.hidden_tag() }}
+		            <div class="form-group">
+		                {{ botform.name.label(class="form-control-label") }}
+		                {% if botform.name.errors %}
+		                    {{ botform.name(class="form-control is-invalid") }}
+		                    <div class="invalid-feedback">
+		                        {% for error in botform.name.errors %}
+		                            <span>{{ error }}</span>
+		                        {% endfor %}
+		                    </div>
+		                {% else %}
+		                    {{ botform.name(class="form-control", placeholder="screen name") }}
+		                {% endif %}
+		            </div>
+		        <div class="form-group">
+		            {{ botform.submit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
         </div>
