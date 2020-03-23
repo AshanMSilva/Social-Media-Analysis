@@ -53,6 +53,6 @@ def bot_account_detection(name):
     pred_list = [description, followers_count, friends_count, listed_count, favourites_count, verified, statuses_count, default_profile, default_profile_image, has_extended_profile, year, month, day, duration]
     pred_list = np.array(pred_list)
     #import model and predict
-    #pred_result = prediiction.predict(pred_list)
+    pred_result = prediction.predict([pred_list])
     
-    return render_template('bot_detection.html', user=user, pred_result = pred_list)
+    return render_template('bot_detection.html', user=user, pred_result = pred_result)
