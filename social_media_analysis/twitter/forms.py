@@ -10,3 +10,7 @@ class NameForm(FlaskForm):
 class BotForm(FlaskForm):
     name = StringField('Screen Name', validators=[DataRequired()])
     submit = SubmitField('Search')
+
+class HashtagForm(FlaskForm):
+    hashtag = StringField('Hash tag', validators=[DataRequired()])
+    hashtagsubmit = SubmitField('Search')

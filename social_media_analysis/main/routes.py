@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from social_media_analysis.models import Post
-from social_media_analysis.twitter.forms import NameForm, BotForm
+from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm
 
 main = Blueprint('main', __name__)
 
@@ -23,6 +23,12 @@ def twitter():
 	if botform.validate_on_submit() and botform.submit.data:
 		bot_account_name = botform.name.data
 		return redirect(url_for('twitter.bot_account_detection', name=bot_account_name))
+
+	hashtagform = HashtagForm()
+	if hashtagform.validate_on_submit() and hashtagform.hashtagsubmit.data:
+		hashtag = hashtagform.hashtag.data
+		return redirect(url_for('twitter.hashtag_tweets()', hashtag=hashtag))
+
 	screennameform = NameForm()
 	if screennameform.validate_on_submit() and screennameform.search.data:
 		screen_name = screennameform.name.data

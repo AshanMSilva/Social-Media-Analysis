@@ -2,7 +2,7 @@
 {% block content %}
     <h1>Twitter Page</h1>
     <a class="mr-2" class="btn" data-toggle="modal" data-target="#searchforaccount">Search for Account</a>
-    <a class="mr-2" href="{{ url_for('twitter.hashtag_tweets', hashtag='#DonaldTrump') }}">Hash Tags</a>
+    <a class="mr-2" class="btn" data-toggle="modal" data-target="#hashtagmodel">Hashtag Analysis</a>
     <a class="mr-2" class="btn" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
 
   <div class="modal fade" id="searchforaccount" tabindex="-1" role="dialog" aria-labelledby="searchforaccount" aria-hidden="true">
@@ -65,6 +65,40 @@
 		            </div>
 		        <div class="form-group">
 		            {{ botform.submit(class="btn btn-outline-info submit", type="submit") }}
+		        </div>
+		    </form>        	
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="modal fade" id="hashtagmodel" tabindex="-1" role="dialog" aria-labelledby="hashtagmodel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="hashtagmodel">Hash tag analysis</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body">
+		    <form method="POST" action="">
+		        {{ hashtagform.hidden_tag() }}
+		            <div class="form-group">
+		                {{ hashtagform.hashtag.label(class="form-control-label") }}
+		                {% if hashtagform.hashtag.errors %}
+		                    {{ hashtagform.hashtag(class="form-control is-invalid") }}
+		                    <div class="invalid-feedback">
+		                        {% for error in hashtagform.hashtag.errors %}
+		                            <span>{{ error }}</span>
+		                        {% endfor %}
+		                    </div>
+		                {% else %}
+		                    {{ hashtagform.hashtag(class="form-control", placeholder="Hash tag") }}
+		                {% endif %}
+		            </div>
+		        <div class="form-group">
+		            {{ hashtagform.hashtagsubmit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
         </div>
