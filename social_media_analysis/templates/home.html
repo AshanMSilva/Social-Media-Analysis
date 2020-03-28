@@ -1,6 +1,79 @@
 {% extends "layout.html" %}
 {% block content %}
-    
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+	  <ol class="carousel-indicators">
+	    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+	    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+	  </ol>
+	  <div class="carousel-inner">
+	    <div class="carousel-item active">
+	      <img class="d-block w-100" src="{{ url_for('static', filename='images/carousal1.png') }}" alt="First slide">
+	    </div>
+	    <div class="carousel-item">
+	      <img class="d-block w-100" src="{{ url_for('static', filename='images/carousal2.png') }}" alt="Second slide">
+	    </div>
+	    <div class="carousel-item">
+	      <img class="d-block w-100" src="{{ url_for('static', filename='images/carousal3.png') }}" alt="Third slide">
+	    </div>
+	  </div>
+	  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Previous</span>
+	  </a>
+	  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+	    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	    <span class="sr-only">Next</span>
+	  </a>
+	</div>
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
+			    	<img class="twitter-img" src="{{ url_for('static', filename='images/download.png') }}">
+			    </div>
+				<div class="col-12 col-md-8 col-lg-9">
+			    	<p class="lead">Twitter is an American microblogging and social networking service on which users post and interact with messages known as "tweets". Registered users can post, like, and retweet tweets, but unregistered users can only read them. Users access Twitter through its website interface, through Short Message Service (SMS) or its mobile-device application software ("app").</p>
+
+			    </div>
+			</div>
+			<hr>
+			<div class="row">
+			    <div class="col-12 col-md-8 col-lg-9">
+	    		<p class="lead">
+	    			Facebook is an American online social media and social networking service based in Menlo Park, California and a flagship service of the namesake company Facebook, Inc. It was founded by Mark Zuckerberg, along with fellow Harvard College students and roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz and Chris Hughes.
+				</p>
+		  		</div>
+		  		<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
+			    	<img class="twitter-img" src="{{ url_for('static', filename='images/facebook_logo.png') }}">
+			    </div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
+			    	<img class="twitter-img" src="{{ url_for('static', filename='images/youtube-logo.jpg') }}">
+			    </div>
+			    <div class="col-12 col-md-8 col-lg-9">
+	    		<p class="lead">
+	    			YouTube allows users to upload, view, rate, share, add to playlists, report, comment on videos, and subscribe to other users. It offers a wide variety of user-generated and corporate media videos. Available content includes video clips, TV show clips, music videos, short and documentary films, audio recordings, movie trailers, live streams, and other content such as video blogging, short original videos, and educational videos.
+				</p>
+		  		</div>
+		  		
+			</div>
+			<hr>
+			<div class="row">
+			    <div class="col-12 col-md-8 col-lg-9">
+	    		<p class="lead">
+	    			Stack Overflow is a question and answer site for professional and enthusiast programmers. It is a privately held website, the flagship site of the Stack Exchange Network, created in 2008 by Jeff Atwood and Joel Spolsky. It features questions and answers on a wide range of topics in computer programming. It was created to be a more open alternative to earlier question and answer sites such as Experts-Exchange.
+				</p>
+		  		</div>
+		  		<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
+			    	<img class="twitter-img" src="{{ url_for('static', filename='images/stackoverflow.png') }}">
+			    </div>
+		  		
+			</div>	
+		</div>
+	</div>
 {% endblock content %}
 
 

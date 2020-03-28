@@ -2,9 +2,26 @@
 {% block content %}
 	<div class="jumbotron jumbotron-fluid">
 	  <div class="container">
-	    <h1 class="display-4">Facebook Analytics</h1>
-	    <p class="lead">This is an Facebook analytics application that gives you rich insights about any public Facebook profile. We gather near real-time data about topics, mentions, hashtags, followers, location and more!</p>
+	  	<div class="row">
+	  		<div class="col-12 col-md-8 col-lg-9">
+	  			<h1 class="display-4">Facebook Analytics</h1>
+	    		<p class="lead">
+	    			This is an Facebook analytics application that gives you rich insights about any public Facebook profile. We gather near real-time data about topics, mentions, hashtags, followers, location and more!
+				</p>
+	  		</div>
+	  		<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
+		    	<img class="twitter-img" src="{{ url_for('static', filename='images/facebook_logo.png') }}">
+		    </div>
+	  	</div>
+	    <!-- <nav aria-label="breadcrumb"> -->
+		  <ol class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="{{url_for('main.home')}}">Home</a></li>
+		    <li class="breadcrumb-item active" aria-current="page">Facebook</li>
+		  </ol>
+		<!-- </nav> -->
+		<hr>
 	  </div>
+	  
 	</div>
     <h1>Facebook Page</h1>
 {% endblock content %}
