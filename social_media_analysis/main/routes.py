@@ -27,13 +27,13 @@ def twitter():
 	hashtagform = HashtagForm()
 	if hashtagform.validate_on_submit() and hashtagform.hashtagsubmit.data:
 		hashtag = hashtagform.hashtag.data
-		return redirect(url_for('twitter.hashtag_tweets()', hashtag=hashtag))
+		return redirect(url_for('twitter.hashtag_tweets', hashtag=hashtag))
 
 	screennameform = NameForm()
 	if screennameform.validate_on_submit() and screennameform.search.data:
 		screen_name = screennameform.name.data
 		return redirect(url_for('twitter.user_details', name=screen_name))
-	return render_template('twitter.html', title='Twitter', screennameform=screennameform, botform=botform)
+	return render_template('twitter.html', title='Twitter', screennameform=screennameform, botform=botform, hashtagform=hashtagform)
 
 @main.route("/facebook")
 def facebook():

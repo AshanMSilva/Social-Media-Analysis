@@ -84,3 +84,6 @@ a.article-title:hover {
 .account-name {
   font-size: 1.2rem;
 }
+.jumbotron {
+  margin-top: 0px;
+}

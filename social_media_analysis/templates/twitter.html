@@ -1,9 +1,99 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Twitter Page</h1>
-    <a class="mr-2" class="btn" data-toggle="modal" data-target="#searchforaccount">Search for Account</a>
-    <a class="mr-2" class="btn" data-toggle="modal" data-target="#hashtagmodel">Hashtag Analysis</a>
-    <a class="mr-2" class="btn" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
+	<div class="jumbotron jumbotron-fluid">
+	  <div class="container">
+	    <h1 class="display-4">Twitter Analytics</h1>
+	    <p class="lead">This is an Twitter analytics application that gives you rich insights about any public Twitter profile. We gather near real-time data about topics, mentions, hashtags, followers, location and more!</p>
+	    <!-- <nav aria-label="breadcrumb"> -->
+		  <ol class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="{{url_for('main.home')}}">Home</a></li>
+		    <li class="breadcrumb-item active" aria-current="page">Twitter</li>
+		  </ol>
+		<!-- </nav> -->
+	    <hr>
+	    
+		<!-- <hr> -->
+		<div class="row">
+				<div class="col-12 col-md-6">
+					<h4>Here's how it works</h4>
+					<p>
+						We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.
+					</p>
+					<p>
+						We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!
+					</p>
+				</div>
+				<div class="col-12 col-md-6">
+					<h4>Give it a spin!</h4>
+					<p>Just click following link below to explore the twitter..!</p>
+					<div class="list-group">
+					  <a href="#" class="list-group-item list-group-item-action"data-toggle="modal" data-target="#searchforaccount">Search for Account</a>
+					  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#hashtagmodel">Hashtag Analysis</a>
+					  <a href="{{url_for('twitter.user_tweets', name='AshanMSilva1')}}" class="list-group-item list-group-item-action">user tweets</a>
+					  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
+					</div>
+				</div>
+			</div>
+	  </div>
+	</div>
+	<div class="container">
+		<h2>The Metrics</h2>
+		<hr>
+		<div class="row">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+				<h6>Information</h6> 
+				<hr>
+				<p> 
+					The info section shows the publicly available information about a requested Twitter profile. We'll also show you the user's join date and timezone among other things.
+				</p>
+								
+			</div>
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+				<h6>Statistics</h6>
+				<hr> 
+				<p> 
+					These are the numbers. Followers, friends, lists and most importantly the followers to following ratio - something you should definitely watch out for before following anybody.
+				</p>
+				
+			</div>
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+				<h6>Topics</h6>
+				<hr> 
+				<p> 
+					This section is divided into three sub-sections - topics, hashtags and mentions. Each one is based on the user's latest tweets. Hover your mouse over the items to see their usage.
+				</p>
+				
+			</div>
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+				<h6>Information</h6> 
+				<hr>
+				<p> 
+					The info section shows the publicly available information about a requested Twitter profile. We'll also show you the user's join date and timezone among other things.
+				</p>
+				
+			</div>
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+				<h6>Attitude</h6> 
+				<hr>
+				<p> 
+					<span class="badge badge-success">NEW!</span> We scan for smiley faces through the latest user's tweets and count the happy ones versus the sad ones. Not at all times valuable, but can easily spot emotions.
+				</p>
+				
+			</div>
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+				<h6>Time</h6> 
+				<hr>
+				<p> 
+					<span class="badge badge-success">NEW!</span> This section will show you what time the user's most active at. Not only valuable info about the best time to reach the user but can also spot spammers and automated accounts.
+				</p>
+				
+			</div>
+		</div>
+		
+	</div>
+	
+
+    
 
   <div class="modal fade" id="searchforaccount" tabindex="-1" role="dialog" aria-labelledby="searchforaccount" aria-hidden="true">
     <div class="modal-dialog">

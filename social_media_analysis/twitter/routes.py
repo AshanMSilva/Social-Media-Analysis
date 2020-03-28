@@ -8,6 +8,7 @@ from social_media_analysis.codes.sentiment_analysis_twitter_data import TwitterC
 from social_media_analysis.codes.Bot_account_detection.bot_account_prediction_methods import Prediction
 import numpy as np
 import pickle
+from social_media_analysis.codes.Tweet_Likes_Prediction.tweet_likes_prediction import TweetLikesPrediction
 
 twitter = Blueprint('twitter', __name__)
 
@@ -22,12 +23,12 @@ def user_details(name):
 
 
 
-@twitter.route("/twitter/")
-def hashtag_tweets():
-	hashtag = request.args.get('hashtag')
-	twitter_client = TwitterClient()
-	tweets = twitter_client.get_similar_tweets(hashtag, 'recent', 1)
-	return render_template('hashtag.html', tweets=tweets)
+@twitter.route("/twitter/hashtag/<string:hashtag>")
+def hashtag_tweets(hashtag):
+    hasht = '#'+hashtag
+    twitter_client = TwitterClient()
+    tweets = twitter_client.get_similar_tweets(hasht, 'recent', 1)
+    return render_template('hashtag.html', tweets=tweets)
 
 @twitter.route("/twitter/botaccount/<string:name>")
 def bot_account_detection(name):
@@ -56,3 +57,17 @@ def bot_account_detection(name):
     pred_result = prediction.predict([pred_list])
     
     return render_template('bot_detection.html', user=user, pred_result = pred_result)
+
+@twitter.route("/twitter/tweets/<string:name>")
+def user_tweets(name):
+    twitter_client = TwitterClient()
+    tweet_analyzer = TweetAnalyzer()
+    tweets = twitter_client.get_tweets_of_a_user(name, 3)
+    length=dir(tweets[0])
+    df = tweet_analyzer.tweets_to_data_frame(tweets)
+    tweets_likes_prediction =TweetLikesPrediction()
+    sentences= df['text']
+    likes = df['likes']
+    
+    return render_template('user_tweets.html', tweets=tweets,count=0)
+
