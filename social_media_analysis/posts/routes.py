@@ -8,18 +8,16 @@ from social_media_analysis.posts.forms import PostForm
 posts = Blueprint('posts', __name__)
 
 
-@posts.route("/post/new", methods=['GET', 'POST'])
+@posts.route("/post/new")
 @login_required
 def new_post():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your post has been created!', 'success')
-        return redirect(url_for('main.forum'))
-    return render_template('create_post.html', title='New Post',
-                           form=form, legend='New Post')
+    title = request.args.get('title')
+    content = request.args.get('content')
+    post = Post(title=title, content=content, author=current_user)
+    db.session.add(post)
+    db.session.commit()
+    flash('Your post has been created!', 'success')
+    return redirect(url_for('main.forum'))
 
 
 @posts.route("/post/<int:post_id>")
@@ -59,4 +57,4 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
-    return redirect(url_for('main.home'))
+    return redirect(url_for('main.forum'))

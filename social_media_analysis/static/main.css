@@ -99,5 +99,19 @@ a.article-title:hover {
   height: 400px;
 }
 .myfooter{
-  color: #262626;
+  background-color: #5f788a;
+  margin-top: 0px;
+}
+.new-forum-modal-dialog{
+  max-width: 700px;
+}
+.new-forum-modal-body{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.footer-fonts{
+  color: white;
+}
+.footer-container{
+  margin-top: 10px;
 }

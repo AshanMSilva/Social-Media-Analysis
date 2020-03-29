@@ -1,6 +1,7 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from social_media_analysis.models import Post
 from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm
+from social_media_analysis.posts.forms import PostForm
 
 main = Blueprint('main', __name__)
 
@@ -45,8 +46,11 @@ def youtube():
 def stack_overflow():
 	return render_template('stack_overflow.html', title='Stack Overflow')
 
-@main.route("/forum")
+@main.route("/forum", methods=['GET', 'POST'])
 def forum():
-    page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('forum.html', posts=posts)
+	form = PostForm()
+	if form.validate_on_submit():
+		return redirect(url_for('posts.new_post', title=form.title.data, content=form.content.data))
+	page = request.args.get('page', 1, type=int)
+	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+	return render_template('forum.html', posts=posts, form=form)
