@@ -1,6 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Our Forum</h1>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('posts.new_post') }}" role="button">New Post</a>
+      </p>
+    </div>
+  </div>
   <div class="container">
+
     {% for post in posts.items %}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">

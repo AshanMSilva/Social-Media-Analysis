@@ -95,7 +95,9 @@ a.article-title:hover {
 .jumbotron {
   margin-top: 0px;
 }
-.carousal-image{
-  width: 300px;
-  height: 1200px;
+.mycarousal{
+  height: 400px;
+}
+.myfooter{
+  color: #262626;
 }
