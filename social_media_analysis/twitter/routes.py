@@ -16,10 +16,19 @@ twitter = Blueprint('twitter', __name__)
 @twitter.route("/twitter/<string:name>")
 @login_required
 def user_details(name):
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
     modalshow='close'
     registerform = RegistrationForm()
     if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='show'
+        modalshow='registerformmodal'
     if registerform.validate_on_submit() and registerform.signup.data:
         username=registerform.username.data
         email=registerform.email.data
@@ -29,17 +38,26 @@ def user_details(name):
     tweet_analyzer = TweetAnalyzer()
     user = twitter_client.get_user(name)
     
-    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow)
+    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 
 
 @twitter.route("/twitter/hashtag/<string:hashtag>")
 @login_required
 def hashtag_tweets(hashtag):
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
     modalshow='close'
     registerform = RegistrationForm()
     if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='show'
+        modalshow='registerformmodal'
     if registerform.validate_on_submit() and registerform.signup.data:
         username=registerform.username.data
         email=registerform.email.data
@@ -48,15 +66,24 @@ def hashtag_tweets(hashtag):
     hasht = '#'+hashtag
     twitter_client = TwitterClient()
     tweets = twitter_client.get_similar_tweets(hasht, 'recent', 1)
-    return render_template('hashtag.html', tweets=tweets, registerform=registerform, modalshow=modalshow)
+    return render_template('hashtag.html', tweets=tweets, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 @twitter.route("/twitter/botaccount/<string:name>")
 @login_required
 def bot_account_detection(name):
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
     modalshow='close'
     registerform = RegistrationForm()
     if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='show'
+        modalshow='registerformmodal'
     if registerform.validate_on_submit() and registerform.signup.data:
         username=registerform.username.data
         email=registerform.email.data
@@ -86,15 +113,24 @@ def bot_account_detection(name):
     #import model and predict
     pred_result = prediction.predict([pred_list])
     
-    return render_template('bot_detection.html', user=user, pred_result = pred_result, registerform=registerform, modalshow=modalshow)
+    return render_template('bot_detection.html', user=user, pred_result = pred_result, registerform=registerform, modalshow=modalshow,loginform=loginform, loginmodalshow=loginmodalshow)
 
 @twitter.route("/twitter/tweets/<string:name>")
 @login_required
 def user_tweets(name):
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
     modalshow='close'
     registerform = RegistrationForm()
     if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='show'
+        modalshow='registerformmodal'
     if registerform.validate_on_submit() and registerform.signup.data:
         username=registerform.username.data
         email=registerform.email.data
@@ -109,5 +145,5 @@ def user_tweets(name):
     sentences= df['text']
     likes = df['likes']
     
-    return render_template('user_tweets.html', tweets=tweets,count=0, registerform=registerform, modalshow=modalshow)
+    return render_template('user_tweets.html', tweets=tweets,count=0, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 

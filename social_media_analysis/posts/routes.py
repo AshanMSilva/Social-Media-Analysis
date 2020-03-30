@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from social_media_analysis import db
 from social_media_analysis.models import Post, Comment
 from social_media_analysis.posts.forms import PostForm
-from social_media_analysis.users.forms import RegistrationForm
+from social_media_analysis.users.forms import RegistrationForm, LoginForm
 
 posts = Blueprint('posts', __name__)
 
@@ -28,10 +28,19 @@ def new_post():
 
 @posts.route("/post/<int:post_id>")
 def post(post_id):
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
     modalshow='close'
     registerform = RegistrationForm()
     if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='show'
+        modalshow='registerformmodal'
     if registerform.validate_on_submit() and registerform.signup.data:
         username=registerform.username.data
         email=registerform.email.data
@@ -40,16 +49,25 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     comments = post.comments
     print(comments)
-    return render_template('post.html', title=post.title, post=post, comments=comments, registerform=registerform, modalshow=modalshow)
+    return render_template('post.html', title=post.title, post=post, comments=comments, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
     modalshow='close'
     registerform = RegistrationForm()
     if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='show'
+        modalshow='registerformmodal'
     if registerform.validate_on_submit() and registerform.signup.data:
         username=registerform.username.data
         email=registerform.email.data
@@ -69,7 +87,7 @@ def update_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
     return render_template('create_post.html', title='Update Post',
-                           form=form, legend='Update Post', registerform=registerform, modalshow=modalshow)
+                           form=form, legend='Update Post', registerform=registerform, modalshow=modalshow,loginform=loginform, loginmodalshow=loginmodalshow)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])
