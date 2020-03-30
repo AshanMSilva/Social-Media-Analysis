@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from social_media_analysis import db
 from social_media_analysis.models import Post, Comment
 from social_media_analysis.posts.forms import PostForm
+from social_media_analysis.users.forms import RegistrationForm
 
 posts = Blueprint('posts', __name__)
 
@@ -27,15 +28,33 @@ def new_post():
 
 @posts.route("/post/<int:post_id>")
 def post(post_id):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     post = Post.query.get_or_404(post_id)
     comments = post.comments
     print(comments)
-    return render_template('post.html', title=post.title, post=post, comments=comments)
+    return render_template('post.html', title=post.title, post=post, comments=comments, registerform=registerform, modalshow=modalshow)
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     post = Post.query.get_or_404(post_id)
     if post.author != current_user:
         abort(403)
@@ -50,7 +69,7 @@ def update_post(post_id):
         form.title.data = post.title
         form.content.data = post.content
     return render_template('create_post.html', title='Update Post',
-                           form=form, legend='Update Post')
+                           form=form, legend='Update Post', registerform=registerform, modalshow=modalshow)
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])

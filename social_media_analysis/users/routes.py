@@ -5,23 +5,27 @@ from social_media_analysis.models import User, Post, Comment
 from social_media_analysis.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from social_media_analysis.users.utils import save_picture, send_reset_email
+from social_media_analysis.users.forms import RegistrationForm
 
 users = Blueprint('users', __name__)
 
 
-@users.route("/register", methods=['GET', 'POST'])
+@users.route("/register")
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('users.login'))
-    return render_template('register.html', title='Register', form=form)
+    username = request.args.get('username')
+    email = request.args.get('email')
+    password = request.args.get('password')
+    if(username==None or email==None or password==None):
+        flash('username and email cannot be null','warning')
+        return redirect(url_for('main.home'))
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    user = User(username=username, email=email, password=hashed_password)
+    db.session.add(user)
+    db.session.commit()
+    flash('Your account has been created! You are now able to log in', 'success')
+    return redirect(url_for('main.home'))
 
 
 @users.route("/login", methods=['GET', 'POST'])
@@ -69,24 +73,51 @@ def account():
 
 @users.route("/user/<string:username>/posts")
 def user_posts(username):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     posts = Post.query.filter_by(author=user)\
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
-    return render_template('user_posts.html', posts=posts, user=user)
+    return render_template('user_posts.html', posts=posts, user=user, registerform=registerform, modalshow=modalshow)
 
 @users.route("/user/<string:username>/comments")
 def user_comments(username):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     comments = Comment.query.filter_by(comment_author=user)\
         .order_by(Comment.date_posted.desc())\
         .paginate(page=page, per_page=5)
-    return render_template('user_comments.html', comments=comments, user=user)
+    return render_template('user_comments.html', comments=comments, user=user, registerform=registerform, modalshow=modalshow)
 
 @users.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     form = RequestResetForm()
@@ -95,11 +126,20 @@ def reset_request():
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', 'info')
         return redirect(url_for('users.login'))
-    return render_template('reset_request.html', title='Reset Password', form=form)
+    return render_template('reset_request.html', title='Reset Password', form=form, registerform=registerform, modalshow=modalshow)
 
 
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     user = User.verify_reset_token(token)
@@ -113,4 +153,4 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
-    return render_template('reset_token.html', title='Reset Password', form=form)
+    return render_template('reset_token.html', title='Reset Password', form=form, registerform=registerform, modalshow=modalshow)

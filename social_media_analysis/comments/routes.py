@@ -4,6 +4,7 @@ from flask_login import current_user, login_required
 from social_media_analysis import db
 from social_media_analysis.models import Comment, Post
 from social_media_analysis.comments.forms import CommentForm
+from social_media_analysis.users.forms import RegistrationForm
 
 comments = Blueprint('comments', __name__)
 
@@ -11,6 +12,15 @@ comments = Blueprint('comments', __name__)
 @comments.route("/post/<int:post_id>/comment/new", methods=['GET', 'POST'])
 @login_required
 def new_comment(post_id):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     form = CommentForm()
     if form.validate_on_submit():
     	post = Post.query.get_or_404(post_id)
@@ -19,18 +29,36 @@ def new_comment(post_id):
     	db.session.commit()
     	flash('Your comment has been added!', 'success')
     	return redirect(url_for('main.home'))
-    return render_template('create_comment.html', title='New Comment', form=form, Legend='New Comment')
+    return render_template('create_comment.html', title='New Comment', form=form, Legend='New Comment', registerform=registerform, modalshow=modalshow)
 
 
 @comments.route("/comment/<int:comment_id>")
 def comment(comment_id):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     comment = Comment.query.get_or_404(comment_id)
-    return render_template('comment.html', comment_author=comment.comment_author, comment=comment)
+    return render_template('comment.html', comment_author=comment.comment_author, comment=comment, registerform=registerform, modalshow=modalshow)
 
 
 @comments.route("/post/<int:post_id>/comment/<int:comment_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_comment(comment_id, post_id):
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='show'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
     comment = Comment.query.get_or_404(comment_id)
     if comment.comment_author != current_user:
         abort(403)
@@ -43,7 +71,7 @@ def update_comment(comment_id, post_id):
     elif request.method == 'GET':
         form.content.data = comment.content
     return render_template('create_comment.html', title='Update Comment',
-                           form=form, legend='Update Comment')
+                           form=form, legend='Update Comment', registerform=registerform, modalshow=modalshow)
 
 
 @comments.route("/post/<int:post_id>/comment/<int:comment_id>/delete", methods=['POST'])
