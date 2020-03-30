@@ -37,8 +37,43 @@ def user_details(name):
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()
     user = twitter_client.get_user(name)
+    tweets = twitter_client.get_tweets_of_a_user(name, 100)
+    replies = 0
+    mentions =0
+    hashtags =0
+    retweets=0
+    links =0
+    medias=0
+    for tweet in tweets:
+        if(len(tweet.entities['hashtags'])>0):
+            hashtags+=1
+        if(len(tweet.entities['user_mentions'])>0):
+            mentions+=1
+        if(len(tweet.entities['urls'])>0):
+            links+=1
+        if('media' in tweet.entities):
+            if(len(tweet.entities['media'])>0):
+                medias+=1
+        if(hasattr(tweet, 'retweeted_status')):
+            retweets+=1
+        if(tweet.in_reply_to_status_id !=None):
+            replies+=1
+
+    tweetsdata ={
+        "hashtags": hashtags,
+        "mentions": mentions,
+        "links": links,
+        "medias":medias,
+        "retweets":retweets,
+        "replies":replies
+    }
+    verified='NOTVERIFIED'
+    badge='badge-danger'
+    if(user.verified):
+        verified='VERIFIED'
+        badge='badge-success'
     
-    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, tweetsdata=tweetsdata, verified=verified, badge=badge)
 
 
 
