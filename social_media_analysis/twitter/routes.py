@@ -14,6 +14,7 @@ twitter = Blueprint('twitter', __name__)
 
 
 @twitter.route("/twitter/<string:name>")
+@login_required
 def user_details(name):
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()
@@ -24,6 +25,7 @@ def user_details(name):
 
 
 @twitter.route("/twitter/hashtag/<string:hashtag>")
+@login_required
 def hashtag_tweets(hashtag):
     hasht = '#'+hashtag
     twitter_client = TwitterClient()
@@ -31,6 +33,7 @@ def hashtag_tweets(hashtag):
     return render_template('hashtag.html', tweets=tweets)
 
 @twitter.route("/twitter/botaccount/<string:name>")
+@login_required
 def bot_account_detection(name):
     twitter_client = TwitterClient()
     user = twitter_client.get_user(name)
@@ -59,6 +62,7 @@ def bot_account_detection(name):
     return render_template('bot_detection.html', user=user, pred_result = pred_result)
 
 @twitter.route("/twitter/tweets/<string:name>")
+@login_required
 def user_tweets(name):
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()

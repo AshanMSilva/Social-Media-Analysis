@@ -13,11 +13,16 @@ posts = Blueprint('posts', __name__)
 def new_post():
     title = request.args.get('title')
     content = request.args.get('content')
-    post = Post(title=title, content=content, author=current_user)
-    db.session.add(post)
-    db.session.commit()
-    flash('Your post has been created!', 'success')
-    return redirect(url_for('main.forum'))
+    if(title==None or content==None):
+        flash('title and content cannot be null','warning')
+        return redirect(url_for('main.forum'))
+    else:
+        post = Post(title=title, content=content, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('main.forum'))        
+
 
 
 @posts.route("/post/<int:post_id>")
