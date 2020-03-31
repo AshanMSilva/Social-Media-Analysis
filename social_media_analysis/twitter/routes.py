@@ -44,6 +44,32 @@ def user_details(name):
     retweets=0
     links =0
     medias=0
+    zero=0
+    one =0
+    two=0
+    three=0
+    four=0
+    five=0
+    six=0
+    seven=0
+    eight=0
+    nine=0
+    ten=0
+    eleven=0
+    twelve=0
+    thirteen=0
+    fourteen=0
+    fifteen=0
+    sixteen=0
+    seventeen=0
+    eighteen=0
+    nineteen=0
+    twenty=0
+    twentyone=0
+    twentytwo=0
+    twentythree=0
+    ids=[]
+    favourites=[]
     for tweet in tweets:
         if(len(tweet.entities['hashtags'])>0):
             hashtags+=1
@@ -58,7 +84,56 @@ def user_details(name):
             retweets+=1
         if(tweet.in_reply_to_status_id !=None):
             replies+=1
-
+        if(tweet.created_at.hour == 0):
+            zero+=1
+        if(tweet.created_at.hour == 1):
+            one+=1
+        if(tweet.created_at.hour == 2):
+            two+=1
+        if(tweet.created_at.hour == 3):
+            three+=1
+        if(tweet.created_at.hour == 4):
+            four+=1
+        if(tweet.created_at.hour == 5):
+            five+=1
+        if(tweet.created_at.hour == 6):
+            six+=1
+        if(tweet.created_at.hour == 7):
+            seven+=1
+        if(tweet.created_at.hour == 8):
+            eight+=1
+        if(tweet.created_at.hour == 9):
+            nine+=1
+        if(tweet.created_at.hour == 10):
+            ten+=1
+        if(tweet.created_at.hour == 11):
+            eleven+=1
+        if(tweet.created_at.hour == 12):
+            twelve+=1
+        if(tweet.created_at.hour == 13):
+            thirteen+=1
+        if(tweet.created_at.hour == 14):
+            fourteen+=1
+        if(tweet.created_at.hour == 15):
+            fifteen+=1
+        if(tweet.created_at.hour == 16):
+            sixteen+=1
+        if(tweet.created_at.hour == 17):
+            seventeen+=1
+        if(tweet.created_at.hour == 18):
+            eighteen+=1
+        if(tweet.created_at.hour == 19):
+            nineteen+=1
+        if(tweet.created_at.hour == 20):
+            twenty+=1
+        if(tweet.created_at.hour == 21):
+            twentyone+=1
+        if(tweet.created_at.hour == 22):
+            twentytwo+=1
+        if(tweet.created_at.hour == 23):
+            twentythree+=1
+        ids.append(tweet.id)
+        favourites.append(tweet.favorite_count)
     tweetsdata ={
         "hashtags": hashtags,
         "mentions": mentions,
@@ -67,13 +142,39 @@ def user_details(name):
         "retweets":retweets,
         "replies":replies
     }
+    graphdata ={
+        "0":zero,
+        "1":one,
+        "2":two,
+        "3":three,
+        "4":four,
+        "5":five,
+        "6":six,
+        "7":seven,
+        "8":eight,
+        "9":nine,
+        "10":ten,
+        "11":eleven,
+        "12":twelve,
+        "13":thirteen,
+        "14":fourteen,
+        "15":fifteen,
+        "16":sixteen,
+        "17":seventeen,
+        "18":eighteen,
+        "19":nineteen,
+        "20":twenty,
+        "21":twentyone,
+        "22":twentytwo,
+        "23":twentythree   
+    }
     verified='NOTVERIFIED'
     badge='badge-danger'
     if(user.verified):
         verified='VERIFIED'
         badge='badge-success'
     
-    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, tweetsdata=tweetsdata, verified=verified, badge=badge)
+    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, tweetsdata=tweetsdata, verified=verified, badge=badge, graphdata=graphdata, ids=ids, favourites=favourites)
 
 
 
