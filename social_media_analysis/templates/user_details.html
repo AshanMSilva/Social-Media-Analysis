@@ -83,20 +83,34 @@
     <div class="row">
       <div class="col-md-4">
         <h3>Likes</h3>
-        <p><span class="badge badge-success">NEW!</span> This line chart shows the likes per tweet based on the latest tweets.</p>
+        <p><span class="badge badge-success">NEW!</span> This line chart shows the number of likes per tweet based on the latest tweets.</p>
       </div>
       <div class="col-md-8">
         <div id="chartContainerlikes" style="height: 200px; width: 100%;"></div>
       </div>
     </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Retweets</h3>
+        <p><span class="badge badge-success">NEW!</span> This line chart shows the number of retweets per tweet based on the latest tweets.</p>
+      </div>
+      <div class="col-md-8">
+        <div id="chartContainerretweets" style="height: 200px; width: 100%;"></div>
+      </div>
+    </div>
   </div>
 	<script>
-ids={{ids}}
-favorites = {{favourites}}
-dataarr=[]
+ids={{ids}};
+favorites = {{favourites}};
+retweetscount ={{retweetscount}};
+dataarr=[];
+retweetsarr=[];
 for (var i = 0; i <ids.length; i++) {
   a ={ label: ids[i] ,  y: favorites[i]  };
+  b = { label: ids[i] ,  y: retweetscount[i]  };
   dataarr.push(a);
+  retweetsarr.push(b);
 }
 
 window.onload = function () {
@@ -154,8 +168,23 @@ var optionstwo = {
   ]
 };
 
+var optionsthree = {
+  title: {             
+  },
+  data: [              
+   {
+    // Change type to "doughnut", "line", "splineArea", etc.
+    color:'blue',
+    type: "line",
+    dataPoints: retweetsarr
+      
+  }
+  ]
+};
+
 $("#chartContainertime").CanvasJSChart(options);
 $("#chartContainerlikes").CanvasJSChart(optionstwo);
+$("#chartContainerretweets").CanvasJSChart(optionsthree);
 }
 </script>
 

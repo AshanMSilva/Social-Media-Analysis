@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>Hashtag Page</h1>
+    {{texts}}
     {% for tweet in tweets %}
-    	<p>{{tweet}}</p>
+    	<p>{{tweet.full_text}}</p>
+    	<p>{{tweet.entities.hashtags}}</p>
+    	{{tweet}}
+    	<hr>
     {% endfor %}
 {% endblock content %}

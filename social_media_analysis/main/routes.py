@@ -1,6 +1,6 @@
 from flask import render_template, request, Blueprint, redirect, url_for
 from social_media_analysis.models import Post
-from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm
+from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm, TweetForm
 from social_media_analysis.posts.forms import PostForm
 from social_media_analysis.users.forms import RegistrationForm, LoginForm
 
@@ -69,7 +69,14 @@ def twitter():
 	if screennameform.validate_on_submit() and screennameform.search.data:
 		screen_name = screennameform.name.data
 		return redirect(url_for('twitter.user_details', name=screen_name))
-	return render_template('twitter.html', title='Twitter', screennameform=screennameform, botform=botform, hashtagform=hashtagform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+
+	tweetform = TweetForm()
+	if tweetform.validate_on_submit() and tweetform.likespredict.data:
+		screen_name = tweetform.name.data
+		tweet = tweetform.tweet.data
+		return redirect(url_for('twitter.user_tweets', name=screen_name, tweet=tweet))
+
+	return render_template('twitter.html', title='Twitter', tweetform=tweetform, screennameform=screennameform, botform=botform, hashtagform=hashtagform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 @main.route("/facebook", methods=['GET', 'POST'])
 def facebook():

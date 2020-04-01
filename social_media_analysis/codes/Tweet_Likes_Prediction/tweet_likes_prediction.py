@@ -26,6 +26,10 @@ class TweetLikesPrediction():
     def get_padded_sequeces(self, sequences):
         padded_sequences = pad_sequences(sequences)
         return padded_sequences
+
+    def get_padded_sequeces_with_maxlength(self, sequences, maxlength):
+        padded_sequences = pad_sequences(sequences, maxlen=maxlength)
+        return padded_sequences
     
     def train_model(self, features, labels):
         X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
@@ -33,16 +37,16 @@ class TweetLikesPrediction():
         #print(training_data.duration)
         logReg =LogisticRegression()
         
-        logReg.fit(X_train, Y_train)
-        prediction= logReg.predict(X_test)
-        return accuracy_score(Y_test, prediction)
+        logReg.fit(features, labels)
+        #prediction= logReg.predict(X_test)
+        return logReg
 
-sentences =['I love my dog', 'I love my cat', 'You love my dog!', 'Do you think my dog is amazing?']
+# sentences =['I love my dog', 'I love my cat', 'You love my dog!', 'Do you think my dog is amazing?']
 
-tokenizer = Tokenizer(num_words = 100, oov_token="<OOV>")
-tokenizer.fit_on_texts(sentences)
-word_index = tokenizer.word_index
+# tokenizer = Tokenizer(num_words = 100, oov_token="<OOV>")
+# tokenizer.fit_on_texts(sentences)
+# word_index = tokenizer.word_index
 
-sequences = tokenizer.texts_to_sequences(sentences)
+# sequences = tokenizer.texts_to_sequences(sentences)
 
-padded = pad_sequences(sequences) #use maxlen=5 to give len size to array element and use padding='post' to pass zeros from begining to end 
+# padded = pad_sequences(sequences) #use maxlen=5 to give len size to array element and use padding='post' to pass zeros from begining to end 

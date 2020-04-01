@@ -70,6 +70,7 @@ def user_details(name):
     twentythree=0
     ids=[]
     favourites=[]
+    retweetscount=[]
     for tweet in tweets:
         if(len(tweet.entities['hashtags'])>0):
             hashtags+=1
@@ -134,6 +135,7 @@ def user_details(name):
             twentythree+=1
         ids.append(tweet.id)
         favourites.append(tweet.favorite_count)
+        retweetscount.append(tweet.retweet_count)
     tweetsdata ={
         "hashtags": hashtags,
         "mentions": mentions,
@@ -174,7 +176,7 @@ def user_details(name):
         verified='VERIFIED'
         badge='badge-success'
     
-    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, tweetsdata=tweetsdata, verified=verified, badge=badge, graphdata=graphdata, ids=ids, favourites=favourites)
+    return render_template('user_details.html', user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, tweetsdata=tweetsdata, verified=verified, badge=badge, graphdata=graphdata, ids=ids, favourites=favourites, retweetscount=retweetscount)
 
 
 
@@ -201,8 +203,14 @@ def hashtag_tweets(hashtag):
         return redirect(url_for('users.register', username=username, email=email, password=password))
     hasht = '#'+hashtag
     twitter_client = TwitterClient()
-    tweets = twitter_client.get_similar_tweets(hasht, 'recent', 1)
-    return render_template('hashtag.html', tweets=tweets, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    tweets = twitter_client.get_hashtag_tweets(hasht, 'recent', 10)
+    texts=[]
+    for tweet in tweets:
+        if(hasattr(tweet, 'retweeted_status')):
+            texts.append(tweet.retweeted_status.full_text)
+        else:
+            texts.append(tweet.full_text)
+    return render_template('hashtag.html', tweets=tweets,texts=texts, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 @twitter.route("/twitter/botaccount/<string:name>")
 @login_required
@@ -254,6 +262,10 @@ def bot_account_detection(name):
 @twitter.route("/twitter/tweets/<string:name>")
 @login_required
 def user_tweets(name):
+    pred_text = request.args.get('tweet')
+    if(pred_text==None):
+        flash('prdiction tweet text cannot be null','warning')
+        return redirect(url_for('main.twitter'))
     loginmodalshow='close'
     loginform = LoginForm()
     if(loginform.validate_on_submit()==False and loginform.login.data):
@@ -274,12 +286,41 @@ def user_tweets(name):
         return redirect(url_for('users.register', username=username, email=email, password=password))
     twitter_client = TwitterClient()
     tweet_analyzer = TweetAnalyzer()
-    tweets = twitter_client.get_tweets_of_a_user(name, 3)
-    length=dir(tweets[0])
-    df = tweet_analyzer.tweets_to_data_frame(tweets)
+    tweets = twitter_client.get_tweets_of_a_user(name, 1000)
     tweets_likes_prediction =TweetLikesPrediction()
-    sentences= df['text']
-    likes = df['likes']
+    texts=[]
+    likes=[]
+    retweetscount=[]
+    for tweet in tweets:
+        if(hasattr(tweet, 'retweeted_status')):
+            texts.append(tweet.retweeted_status.full_text)
+        else:
+            texts.append(tweet.full_text)
+        likes.append(tweet.favorite_count)
+        retweetscount.append(tweet.retweet_count)
+    #texts = np.array(texts)
+    tokenizer = tweets_likes_prediction.set_tokenizer(texts)
+    sequences = tweets_likes_prediction.texts_to_sequences(texts, tokenizer)
+    padded_sequences = tweets_likes_prediction.get_padded_sequeces(sequences)
+    # features=[]
+    # for i in range(0,len(likes)):
+    #     feature = np.append(padded_sequences[i],likes[i])
+    #     features.append(feature)
+    # features = np.array(features)
+    nplikes = np.array(likes)
+    npretweetscount = np.array(retweetscount)
+    retweetmodel = tweets_likes_prediction.train_model(padded_sequences, npretweetscount)
+    model = tweets_likes_prediction.train_model(padded_sequences, nplikes)
+    tweetcount=[]
+    for i in range(0, len(likes)):
+        tweetcount.append(i)
+    pred_text =[pred_text]
+    pred_sequence = tweets_likes_prediction.texts_to_sequences(pred_text, tokenizer)
+    maxlength = padded_sequences[0].size
+    pred_padded_sequence = tweets_likes_prediction.get_padded_sequeces_with_maxlength(pred_sequence, maxlength)
+    #result = pred_padded_sequence
+    result = model.predict(pred_padded_sequence)
+    retweet_result= retweetmodel.predict(pred_padded_sequence)
     
-    return render_template('user_tweets.html', tweets=tweets,count=0, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    return render_template('user_tweets.html',result=result, retweet_result=retweet_result, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 

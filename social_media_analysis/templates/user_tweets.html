@@ -1,6 +1,59 @@
 {% extends "layout.html" %}
 {% block content %}
-	{{count[1]}}
-	{{tweets[0].entities.hashtags[0].text}}
+{{result}}
+{{retweet_result}}
+<script>
+	tweetcount={{tweetcount}};
+	likes = {{likes}};
+	retweetscount = {{retweetscount}};
+	dataarr=[];
+	retweetarr=[];
+	for (var i = 0; i <tweetcount.length; i++) {
+	  a ={ label: tweetcount[i] ,  y: likes[i]  };
+	  b = { label: tweetcount[i] ,  y: retweetscount[i]  };
+	  dataarr.push(a);
+	  retweetarr.push(b);
+	}
+
+	window.onload = function () {
+
+	//Better to construct options first and then pass it as a parameter
+
+	var optionstwo = {
+	  title: {             
+	  },
+	  data: [              
+	  {
+	    // Change type to "doughnut", "line", "splineArea", etc.
+	    color:'blue',
+	    type: "line",
+	    dataPoints: dataarr
+	      
+	  }
+	  ]
+	};
+		var options = {
+	  title: {             
+	  },
+	  data: [              
+	  {
+	    // Change type to "doughnut", "line", "splineArea", etc.
+	    color:'blue',
+	    type: "line",
+	    dataPoints: retweetarr
+	      
+	  }
+	  ]
+	};
+
+
+	$("#chartContainerlikes").CanvasJSChart(optionstwo);
+	$("#chartContainerretweet").CanvasJSChart(options);
+
+
+	}
+</script>
+<div id="chartContainerlikes" style="height: 150px; width: 100%;"></div>
+<div id="chartContainerretweet" style="height: 150px; width: 100%;"></div>
 
 {% endblock content %}

@@ -37,7 +37,7 @@
 					<div class="list-group">
 					  <a href="#" class="list-group-item list-group-item-action"data-toggle="modal" data-target="#searchforaccount">Search for Account</a>
 					  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#hashtagmodel">Hashtag Analysis</a>
-					  <a href="{{url_for('twitter.user_tweets', name='AshanMSilva1')}}" class="list-group-item list-group-item-action">user tweets</a>
+					  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#likespredmodal">Likes & Retweets Count Prediction</a>
 					  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
 					</div>
 				</div>
@@ -199,6 +199,56 @@
 		            {{ hashtagform.hashtagsubmit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="likespredmodal" tabindex="-1" role="dialog" aria-labelledby="likespredmodal" aria-hidden="true">
+    <div class="modal-dialog new-forum-modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="likespredmodal">Likes & ReTweets Prediction</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body new-forum-modal-body">
+          <form method="POST" action="">
+              {{ tweetform.hidden_tag() }}
+              <fieldset class="form-group">
+                  <legend class="border-bottom mb-4">{{ legend }}</legend>
+                  <div class="form-group">
+                      {{ tweetform.name.label(class="form-control-label") }}
+                      {% if tweetform.name.errors %}
+                          {{ tweetform.name(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in tweetform.name.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ tweetform.name(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+                  <div class="form-group">
+                      {{ tweetform.tweet.label(class="form-control-label") }}
+                      {% if tweetform.tweet.errors %}
+                          {{ tweetform.tweet(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in tweetform.tweet.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ tweetform.tweet(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+              </fieldset>
+              <div class="form-group">
+                  {{ tweetform.likespredict(class="btn btn-outline-info") }}
+              </div>
+          </form>       
         </div>
       </div>
     </div>
