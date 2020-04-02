@@ -1,7 +1,62 @@
 {% extends "layout.html" %}
 {% block content %}
-{{result}}
-{{retweet_result}}
+
+<div class="container">
+	<div class="row">
+  		<div class="col-md-2">
+  			<img src="{{user.profile_image_url}}" alt="" class="img-thumbnail">
+  		</div>
+  		<div class="col-md-10">
+  			<span class="account-name">{{user.name}} @{{user.screen_name}} <hr></span>
+  			<p>{{user.description}}</p>
+  		</div>
+  		
+  	</div>
+</div>
+<br>
+<br>
+<div class="container">
+	<div>
+		<h3>No. of Likes Prediction</h3>
+		<hr style="height:2px;border:none;color:#333;background-color:#333;">
+		<h5 class="text-center">Your Text</h5>
+		<p class="text-center">{{pred_text[0]}}</p>
+		<h6 class="text-center">Likes Prediction: {{result[0]}}</h6>
+		<hr>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Likes</h4>
+        		<p>This line chart shows the number of likes per tweet based on the latest tweets.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainerlikes" style="height: 200px; width: 100%;"></div>
+      		</div>
+    	</div>		
+
+		
+	</div>
+	<br>
+	<br>
+	<div>
+		<h3>No. of Retweets Prediction</h3>
+		<hr style="height:2px;border:none;color:#333;background-color:#333;">
+		<h5 class="text-center">Your Text</h5>
+		<p class="text-center">{{pred_text[0]}}</p>
+		<h6 class="text-center">Retweets Prediction: {{retweet_result[0]}}</h6>
+		<hr>
+	    <div class="row">
+	      <div class="col-md-4">
+	        <h4>Retweets</h4>
+	        <p>This line chart shows the number of retweets per tweet based on the latest tweets.</p>
+	      </div>
+	      <div class="col-md-8">
+	        <div id="chartContainerretweet" style="height: 200px; width: 100%;"></div>
+	      </div>
+	    </div>
+		
+	</div>
+	
+</div>
 <script>
 	tweetcount={{tweetcount}};
 	likes = {{likes}};
@@ -53,7 +108,6 @@
 
 	}
 </script>
-<div id="chartContainerlikes" style="height: 150px; width: 100%;"></div>
-<div id="chartContainerretweet" style="height: 150px; width: 100%;"></div>
+
 
 {% endblock content %}

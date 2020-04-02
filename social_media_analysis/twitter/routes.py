@@ -259,7 +259,7 @@ def bot_account_detection(name):
     
     return render_template('bot_detection.html', user=user, pred_result = pred_result, registerform=registerform, modalshow=modalshow,loginform=loginform, loginmodalshow=loginmodalshow)
 
-@twitter.route("/twitter/tweets/<string:name>")
+@twitter.route("/twitter/likesprediction/<string:name>")
 @login_required
 def user_tweets(name):
     pred_text = request.args.get('tweet')
@@ -285,6 +285,7 @@ def user_tweets(name):
         password=registerform.password.data
         return redirect(url_for('users.register', username=username, email=email, password=password))
     twitter_client = TwitterClient()
+    user = twitter_client.get_user(name)
     tweet_analyzer = TweetAnalyzer()
     tweets = twitter_client.get_tweets_of_a_user(name, 1000)
     tweets_likes_prediction =TweetLikesPrediction()
@@ -322,5 +323,5 @@ def user_tweets(name):
     result = model.predict(pred_padded_sequence)
     retweet_result= retweetmodel.predict(pred_padded_sequence)
     
-    return render_template('user_tweets.html',result=result, retweet_result=retweet_result, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    return render_template('user_tweets.html',result=result, retweet_result=retweet_result, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, user=user, pred_text=pred_text)
 

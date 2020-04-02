@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-    <link rel="stylesheet" type="text/css" href="../static/node_modules/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/node_modules/bootstrap-social/bootstrap-social.css">
-    <link rel="stylesheet" type="text/css" href="../static/node_modules/chart.js/dist/Chart.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/bootstrap-social/bootstrap-social.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.css') }}">
 
     {% if title %}
         <title>Social Medial Analysis - {{ title }}</title>
@@ -326,6 +326,6 @@
 </script> 
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-<script src="../static/node_modules/chart.js/dist/Chart.min.js"></script>  
+<script src="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.js') }}"></script>  
 </body>
 </html>
