@@ -1,0 +1,13 @@
+<html>
+<head>
+</head>
+<body>
+<form action="{{ url_for('sentiment')}}" method="POST">
+    <input type="text" id ='txt' name="txt" placeholder="Enter Text..">
+    <button type="submit">Predict </button>
+</form>
+
+
+{{prediction_text}}
+{{msg}}
+</html>
