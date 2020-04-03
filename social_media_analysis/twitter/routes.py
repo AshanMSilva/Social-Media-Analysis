@@ -9,6 +9,8 @@ from social_media_analysis.twitter.codes.Bot_account_detection.bot_account_predi
 import numpy as np
 import pickle
 from social_media_analysis.twitter.codes.Tweet_Likes_Prediction.tweet_likes_prediction import TweetLikesPrediction
+from social_media_analysis.twitter.codes.Hashtags_Analyze.hashtag_analyze import HashtagAnalyzer
+from collections import Counter
 
 twitter = Blueprint('twitter', __name__)
 
@@ -186,38 +188,36 @@ def user_details(name):
 @twitter.route("/twitter/hashtag/<string:hashtag>")
 @login_required
 def hashtag_tweets(hashtag):
-    try:
-        loginmodalshow='close'
-        loginform = LoginForm()
-        if(loginform.validate_on_submit()==False and loginform.login.data):
-            loginmodalshow='loginformmodal'
-        if loginform.validate_on_submit() and loginform.login.data:
-            remember=loginform.remember.data
-            email=loginform.email.data
-            password=loginform.password.data
-            return redirect(url_for('users.login', remember=remember, email=email, password=password))
-        modalshow='close'
-        registerform = RegistrationForm()
-        if(registerform.validate_on_submit()==False and registerform.signup.data):
-            modalshow='registerformmodal'
-        if registerform.validate_on_submit() and registerform.signup.data:
-            username=registerform.username.data
-            email=registerform.email.data
-            password=registerform.password.data
-            return redirect(url_for('users.register', username=username, email=email, password=password))
-        hasht = '#'+hashtag
-        twitter_client = TwitterClient()
-        tweets = twitter_client.get_hashtag_tweets(hasht, 'recent', 10)
-        texts=[]
-        for tweet in tweets:
-            if(hasattr(tweet, 'retweeted_status')):
-                texts.append(tweet.retweeted_status.full_text)
-            else:
-                texts.append(tweet.full_text)
-        return render_template('hashtag.html', tweets=tweets,texts=texts, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
-    except:
-        flash('Something went Wrong. Please check whether enterd details are correct','warning')
-        return redirect(url_for('main.twitter'))
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='registerformmodal'
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
+    hasht = '#'+hashtag
+    twitter_client = TwitterClient()
+    tweets = twitter_client.get_hashtag_tweets(hasht, 'mixed', 10)
+    hashtag_analyzer = HashtagAnalyzer()
+    hourdata = hashtag_analyzer.divide_tweets_according_to_hours(tweets)
+    monthdata = hashtag_analyzer.divide_tweets_according_to_months(tweets)
+    sentimentdata = hashtag_analyzer.divide_tweets_according_to_sentiment(tweets)
+    user_mentions = hashtag_analyzer.get_user_mentions(tweets)
+    hashtagslist = hashtag_analyzer.get_user_hashtags(tweets)
+    userslist = hashtag_analyzer.get_users(tweets)
+    return render_template('hashtag.html',hourdata=hourdata, monthdata=monthdata, sentimentdata=sentimentdata, user_mentions=user_mentions, hashtagslist=hashtagslist, userslist=userslist, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+
 @twitter.route("/twitter/botaccount/<string:name>")
 @login_required
 def bot_account_detection(name):
