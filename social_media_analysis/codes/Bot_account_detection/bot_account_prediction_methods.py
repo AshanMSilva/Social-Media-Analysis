@@ -183,6 +183,6 @@ class Prediction():
     def predict(self, pred_list):
         filename = 'social_media_analysis/codes/Bot_account_detection/finalized_model.sav'
         loaded_model = pickle.load(open(filename, 'rb'))
-        result = loaded_model.predict(pred_list)
-        return result
+        result = loaded_model.predict_proba(pred_list)*100
+        return result[0]
 l =[0, 29, 5, 0, 5, 0, 36, -1, 0, 1, 2017, 2, 25, 1124]

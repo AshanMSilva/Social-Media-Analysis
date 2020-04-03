@@ -215,50 +215,58 @@ def hashtag_tweets(hashtag):
 @twitter.route("/twitter/botaccount/<string:name>")
 @login_required
 def bot_account_detection(name):
-    loginmodalshow='close'
-    loginform = LoginForm()
-    if(loginform.validate_on_submit()==False and loginform.login.data):
-        loginmodalshow='loginformmodal'
-    if loginform.validate_on_submit() and loginform.login.data:
-        remember=loginform.remember.data
-        email=loginform.email.data
-        password=loginform.password.data
-        return redirect(url_for('users.login', remember=remember, email=email, password=password))
-    modalshow='close'
-    registerform = RegistrationForm()
-    if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='registerformmodal'
-    if registerform.validate_on_submit() and registerform.signup.data:
-        username=registerform.username.data
-        email=registerform.email.data
-        password=registerform.password.data
-        return redirect(url_for('users.register', username=username, email=email, password=password))
-    twitter_client = TwitterClient()
-    user = twitter_client.get_user(name)
-    prediction = Prediction()
-    created_at = user.created_at
-    year = created_at.year
-    month = created_at.month
-    day = created_at.day
-    duration = prediction.get_time_period(year,month,day)
-    id = user.id
-    description = prediction.sentiment_description(user.description)
-    followers_count = user.followers_count
-    friends_count = user.friends_count
-    listed_count = user.listed_count
-    favourites_count = user.favourites_count
-    verified = prediction.encode_verified(user.verified)
-    statuses_count = user.statuses_count
-    default_profile = prediction.encode_default_profile(user.default_profile)
-    default_profile_image = prediction.encode_default_profile_image(user.default_profile_image)
-    has_extended_profile = prediction.encode_has_extended_profile(user.has_extended_profile)
-    pred_list = [description, followers_count, friends_count, listed_count, favourites_count, verified, statuses_count, default_profile, default_profile_image, has_extended_profile, year, month, day, duration]
-    pred_list = np.array(pred_list)
-    #import model and predict
-    pred_result = prediction.predict([pred_list])
-    
-    return render_template('bot_detection.html', user=user, pred_result = pred_result, registerform=registerform, modalshow=modalshow,loginform=loginform, loginmodalshow=loginmodalshow)
-
+    try:
+        loginmodalshow='close'
+        loginform = LoginForm()
+        if(loginform.validate_on_submit()==False and loginform.login.data):
+            loginmodalshow='loginformmodal'
+        if loginform.validate_on_submit() and loginform.login.data:
+            remember=loginform.remember.data
+            email=loginform.email.data
+            password=loginform.password.data
+            return redirect(url_for('users.login', remember=remember, email=email, password=password))
+        modalshow='close'
+        registerform = RegistrationForm()
+        if(registerform.validate_on_submit()==False and registerform.signup.data):
+            modalshow='registerformmodal'
+        if registerform.validate_on_submit() and registerform.signup.data:
+            username=registerform.username.data
+            email=registerform.email.data
+            password=registerform.password.data
+            return redirect(url_for('users.register', username=username, email=email, password=password))
+        twitter_client = TwitterClient()
+        user = twitter_client.get_user(name)
+        prediction = Prediction()
+        created_at = user.created_at
+        year = created_at.year
+        month = created_at.month
+        day = created_at.day
+        duration = prediction.get_time_period(year,month,day)
+        id = user.id
+        description = prediction.sentiment_description(user.description)
+        followers_count = user.followers_count
+        friends_count = user.friends_count
+        listed_count = user.listed_count
+        favourites_count = user.favourites_count
+        verified = prediction.encode_verified(user.verified)
+        statuses_count = user.statuses_count
+        default_profile = prediction.encode_default_profile(user.default_profile)
+        default_profile_image = prediction.encode_default_profile_image(user.default_profile_image)
+        has_extended_profile = prediction.encode_has_extended_profile(user.has_extended_profile)
+        pred_list = [description, followers_count, friends_count, listed_count, favourites_count, verified, statuses_count, default_profile, default_profile_image, has_extended_profile, year, month, day, duration]
+        pred_list = np.array(pred_list)
+        #import model and predict
+        pred_result = prediction.predict([pred_list])
+        verified='NOTVERIFIED'
+        badge='badge-danger'
+        if(user.verified):
+            verified='VERIFIED'
+            badge='badge-success'
+        
+        return render_template('bot_detection.html', user=user, pred_result = pred_result, registerform=registerform, modalshow=modalshow,loginform=loginform, verified=verified, badge=badge, loginmodalshow=loginmodalshow)
+    except:
+        flash('Something went Wrong. Please check whether enterd details are correct','warning')
+        return redirect(url_for('main.twitter'))
 @twitter.route("/twitter/likesprediction/<string:name>")
 @login_required
 def user_tweets(name):
