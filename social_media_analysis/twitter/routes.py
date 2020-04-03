@@ -208,7 +208,8 @@ def hashtag_tweets(hashtag):
         return redirect(url_for('users.register', username=username, email=email, password=password))
     hasht = '#'+hashtag
     twitter_client = TwitterClient()
-    tweets = twitter_client.get_hashtag_tweets(hasht, 'mixed', 10)
+    tweets = twitter_client.get_hashtag_tweets(hasht, 'mixed', 2000)
+    count = len(tweets)
     hashtag_analyzer = HashtagAnalyzer()
     hourdata = hashtag_analyzer.divide_tweets_according_to_hours(tweets)
     monthdata = hashtag_analyzer.divide_tweets_according_to_months(tweets)
@@ -216,7 +217,10 @@ def hashtag_tweets(hashtag):
     user_mentions = hashtag_analyzer.get_user_mentions(tweets)
     hashtagslist = hashtag_analyzer.get_user_hashtags(tweets)
     userslist = hashtag_analyzer.get_users(tweets)
-    return render_template('hashtag.html',hourdata=hourdata, monthdata=monthdata, sentimentdata=sentimentdata, user_mentions=user_mentions, hashtagslist=hashtagslist, userslist=userslist, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    mentionslength = len(user_mentions)
+    hashtagslength = len(hashtagslist)
+    userslength = len(userslist)
+    return render_template('hashtag.html',count=count, mentionslength=mentionslength, userslength=userslength, hashtagslength=hashtagslength, hourdata=hourdata, monthdata=monthdata, sentimentdata=sentimentdata, user_mentions=user_mentions, hashtagslist=hashtagslist, userslist=userslist, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 @twitter.route("/twitter/botaccount/<string:name>")
 @login_required
