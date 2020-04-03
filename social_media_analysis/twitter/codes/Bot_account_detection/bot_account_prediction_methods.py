@@ -181,7 +181,7 @@ class Prediction():
         return days
 
     def predict(self, pred_list):
-        filename = 'social_media_analysis/codes/Bot_account_detection/finalized_model.sav'
+        filename = 'social_media_analysis/twitter/codes/Bot_account_detection/finalized_model.sav'
         loaded_model = pickle.load(open(filename, 'rb'))
         result = loaded_model.predict_proba(pred_list)*100
         return result[0]

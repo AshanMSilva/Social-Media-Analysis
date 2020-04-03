@@ -12,7 +12,7 @@ from tweepy import OAuthHandler
 from tweepy import Stream
 import time
  
-from social_media_analysis.codes import twitter_credentials
+from social_media_analysis.twitter.codes import twitter_credentials
  
 class TwitterStreamer():
     """
