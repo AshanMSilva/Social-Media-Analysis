@@ -6,6 +6,202 @@
 
 		window.onload = function () {
 
+	function usersFunction() {
+	  var usersarr;
+	  if ({{userslength}}>=1 && {{userslength}} < 3) {
+	    usersarr=[
+	    		{ label: "{{userslist[0][0]}}",  y: {{userslist[0][1]}}  }
+		    	
+		    	]
+	  }
+	  else if ({{userslength}}>=3 && {{userslength}} < 5) {
+	    usersarr=[
+	    		{ label: "{{userslist[0][0]}}",  y: {{userslist[0][1]}}  },
+		    	{ label: "{{userslist[1][0]}}",  y: {{userslist[1][1]}}  },
+		    	{ label: "{{userslist[2][0]}}",  y: {{userslist[2][1]}}  }
+		    	
+		    	]
+	  }
+	  else if ({{userslength}}>=5 && {{userslength}} < 10) {
+	    usersarr=[
+	    		{ label: "{{userslist[0][0]}}",  y: {{userslist[0][1]}}  },
+		    	{ label: "{{userslist[1][0]}}",  y: {{userslist[1][1]}}  },
+		    	{ label: "{{userslist[2][0]}}",  y: {{userslist[2][1]}}  },
+		    	{ label: "{{userslist[3][0]}}",  y: {{userslist[3][1]}}  },
+		    	{ label: "{{userslist[4][0]}}",  y: {{userslist[4][1]}}  }
+		    	]
+	  } 
+	  else if({{userslength}} >=10 && {{userslength}} <15){
+	  	usersarr =[
+	  			{ label: "{{userslist[0][0]}}",  y: {{userslist[0][1]}}  },
+		    	{ label: "{{userslist[1][0]}}",  y: {{userslist[1][1]}}  },
+		    	{ label: "{{userslist[2][0]}}",  y: {{userslist[2][1]}}  },
+		    	{ label: "{{userslist[3][0]}}",  y: {{userslist[3][1]}}  },
+		    	{ label: "{{userslist[4][0]}}",  y: {{userslist[4][1]}}  },
+		    	{ label: "{{userslist[5][0]}}",  y: {{userslist[5][1]}}  },
+		    	{ label: "{{userslist[6][0]}}",  y: {{userslist[6][1]}}  },
+		    	{ label: "{{userslist[7][0]}}",  y: {{userslist[7][1]}}  },
+		    	{ label: "{{userslist[8][0]}}",  y: {{userslist[8][1]}}  },
+		    	{ label: "{{userslist[9][0]}}",  y: {{userslist[9][1]}}  }
+	  	]
+	  }
+	  else if({{userslength}} >= 15) {
+	   	usersarr= [
+		    	{ label: "{{userslist[0][0]}}",  y: {{userslist[0][1]}}  },
+		    	{ label: "{{userslist[1][0]}}",  y: {{userslist[1][1]}}  },
+		    	{ label: "{{userslist[2][0]}}",  y: {{userslist[2][1]}}  },
+		    	{ label: "{{userslist[3][0]}}",  y: {{userslist[3][1]}}  },
+		    	{ label: "{{userslist[4][0]}}",  y: {{userslist[4][1]}}  },
+		    	{ label: "{{userslist[5][0]}}",  y: {{userslist[5][1]}}  },
+		    	{ label: "{{userslist[6][0]}}",  y: {{userslist[6][1]}}  },
+		    	{ label: "{{userslist[7][0]}}",  y: {{userslist[7][1]}}  },
+		    	{ label: "{{userslist[8][0]}}",  y: {{userslist[8][1]}}  },
+		    	{ label: "{{userslist[9][0]}}",  y: {{userslist[9][1]}}  },
+		    	{ label: "{{userslist[10][0]}}",  y: {{userslist[10][1]}}  },
+		    	{ label: "{{userslist[11][0]}}",  y: {{userslist[11][1]}}  },
+		    	{ label: "{{userslist[12][0]}}",  y: {{userslist[12][1]}}  },
+		    	{ label: "{{userslist[13][0]}}",  y: {{userslist[13][1]}}  },
+		    	{ label: "{{userslist[14][0]}}",  y: {{userslist[14][1]}}  }
+		    ]
+	  }
+	  else{
+	  	usersarr=[]
+	  }
+	  return usersarr;
+	  
+	}
+
+	function mentionsFunction() {
+	  var mentionsarr;
+	  if ({{mentionslength}}>=1 && {{mentionslength}} < 3) {
+	    mentionsarr=[
+	    		{ label: "{{user_mentions[0][0]}}",  y: {{user_mentions[0][1]}}  }
+		    	
+		    	
+		    	]
+	  } 
+	  else if ({{mentionslength}}>=3 && {{mentionslength}} < 5) {
+	    mentionsarr=[
+	    		{ label: "{{user_mentions[0][0]}}",  y: {{user_mentions[0][1]}}  },
+		    	{ label: "{{user_mentions[1][0]}}",  y: {{user_mentions[1][1]}}  },
+		    	{ label: "{{user_mentions[2][0]}}",  y: {{user_mentions[2][1]}}  }
+		    	
+		    	]
+	  } 
+	  else if ({{mentionslength}}>=5 && {{mentionslength}} < 10) {
+	    mentionsarr=[
+	    		{ label: "{{user_mentions[0][0]}}",  y: {{user_mentions[0][1]}}  },
+		    	{ label: "{{user_mentions[1][0]}}",  y: {{user_mentions[1][1]}}  },
+		    	{ label: "{{user_mentions[2][0]}}",  y: {{user_mentions[2][1]}}  },
+		    	{ label: "{{user_mentions[3][0]}}",  y: {{user_mentions[3][1]}}  },
+		    	{ label: "{{user_mentions[4][0]}}",  y: {{user_mentions[4][1]}}  }
+		    	]
+	  } 
+	  else if({{mentionslength}} >=10 && {{mentionslength}} <15){
+	  	mentionsarr =[
+	  			{ label: "{{user_mentions[0][0]}}",  y: {{user_mentions[0][1]}}  },
+		    	{ label: "{{user_mentions[1][0]}}",  y: {{user_mentions[1][1]}}  },
+		    	{ label: "{{user_mentions[2][0]}}",  y: {{user_mentions[2][1]}}  },
+		    	{ label: "{{user_mentions[3][0]}}",  y: {{user_mentions[3][1]}}  },
+		    	{ label: "{{user_mentions[4][0]}}",  y: {{user_mentions[4][1]}}  },
+		    	{ label: "{{user_mentions[5][0]}}",  y: {{user_mentions[5][1]}}  },
+		    	{ label: "{{user_mentions[6][0]}}",  y: {{user_mentions[6][1]}}  },
+		    	{ label: "{{user_mentions[7][0]}}",  y: {{user_mentions[7][1]}}  },
+		    	{ label: "{{user_mentions[8][0]}}",  y: {{user_mentions[8][1]}}  },
+		    	{ label: "{{user_mentions[9][0]}}",  y: {{user_mentions[9][1]}}  }
+	  	]
+	  }
+	  else if({{mentionslength}} >= 15) {
+	   	mentionsarr= [
+		    	{ label: "{{user_mentions[0][0]}}",  y: {{user_mentions[0][1]}}  },
+		    	{ label: "{{user_mentions[1][0]}}",  y: {{user_mentions[1][1]}}  },
+		    	{ label: "{{user_mentions[2][0]}}",  y: {{user_mentions[2][1]}}  },
+		    	{ label: "{{user_mentions[3][0]}}",  y: {{user_mentions[3][1]}}  },
+		    	{ label: "{{user_mentions[4][0]}}",  y: {{user_mentions[4][1]}}  },
+		    	{ label: "{{user_mentions[5][0]}}",  y: {{user_mentions[5][1]}}  },
+		    	{ label: "{{user_mentions[6][0]}}",  y: {{user_mentions[6][1]}}  },
+		    	{ label: "{{user_mentions[7][0]}}",  y: {{user_mentions[7][1]}}  },
+		    	{ label: "{{user_mentions[8][0]}}",  y: {{user_mentions[8][1]}}  },
+		    	{ label: "{{user_mentions[9][0]}}",  y: {{user_mentions[9][1]}}  },
+		    	{ label: "{{user_mentions[10][0]}}",  y: {{user_mentions[10][1]}}  },
+		    	{ label: "{{user_mentions[11][0]}}",  y: {{user_mentions[11][1]}}  },
+		    	{ label: "{{user_mentions[12][0]}}",  y: {{user_mentions[12][1]}}  },
+		    	{ label: "{{user_mentions[13][0]}}",  y: {{user_mentions[13][1]}}  },
+		    	{ label: "{{user_mentions[14][0]}}",  y: {{user_mentions[14][1]}}  }
+		    	]
+	  }
+	  else{
+	  	mentionsarr=[]
+	  }
+	 return mentionsarr;
+	}
+
+		function hashtagsFunction() {
+	  var hashtagsarr;
+	  if ({{hashtagslength}}>=1 && {{hashtagslength}} < 3) {
+	    hashtagsarr=[
+	    		{ label: "{{hashtagslist[0][0]}}",  y: {{hashtagslist[0][1]}}  }
+		    	
+		    	]
+	  } 
+	  else if ({{hashtagslength}}>=3 && {{hashtagslength}} < 5) {
+	    hashtagsarr=[
+	    		{ label: "{{hashtagslist[0][0]}}",  y: {{hashtagslist[0][1]}}  },
+		    	{ label: "{{hashtagslist[1][0]}}",  y: {{hashtagslist[1][1]}}  },
+		    	{ label: "{{hashtagslist[2][0]}}",  y: {{hashtagslist[2][1]}}  }
+		    	
+		    	]
+	  } 
+	  else if ({{hashtagslength}}>=5 && {{hashtagslength}} < 10) {
+	    hashtagsarr=[
+	    		{ label: "{{hashtagslist[0][0]}}",  y: {{hashtagslist[0][1]}}  },
+		    	{ label: "{{hashtagslist[1][0]}}",  y: {{hashtagslist[1][1]}}  },
+		    	{ label: "{{hashtagslist[2][0]}}",  y: {{hashtagslist[2][1]}}  },
+		    	{ label: "{{hashtagslist[3][0]}}",  y: {{hashtagslist[3][1]}}  },
+		    	{ label: "{{hashtagslist[4][0]}}",  y: {{hashtagslist[4][1]}}  }
+		    	]
+	  } 
+	  else if({{hashtagslength}} >=10 && {{hashtagslength}} <15){
+	  	hashtagsarr =[
+	  			{ label: "{{hashtagslist[0][0]}}",  y: {{hashtagslist[0][1]}}  },
+		    	{ label: "{{hashtagslist[1][0]}}",  y: {{hashtagslist[1][1]}}  },
+		    	{ label: "{{hashtagslist[2][0]}}",  y: {{hashtagslist[2][1]}}  },
+		    	{ label: "{{hashtagslist[3][0]}}",  y: {{hashtagslist[3][1]}}  },
+		    	{ label: "{{hashtagslist[4][0]}}",  y: {{hashtagslist[4][1]}}  },
+		    	{ label: "{{hashtagslist[5][0]}}",  y: {{hashtagslist[5][1]}}  },
+		    	{ label: "{{hashtagslist[6][0]}}",  y: {{hashtagslist[6][1]}}  },
+		    	{ label: "{{hashtagslist[7][0]}}",  y: {{hashtagslist[7][1]}}  },
+		    	{ label: "{{hashtagslist[8][0]}}",  y: {{hashtagslist[8][1]}}  },
+		    	{ label: "{{hashtagslist[9][0]}}",  y: {{hashtagslist[9][1]}}  }
+	  	]
+	  }
+	  else if({{hashtagslength}} >= 15) {
+	   	hashtagsarr= [
+		    	{ label: "{{hashtagslist[0][0]}}",  y: {{hashtagslist[0][1]}}  },
+		    	{ label: "{{hashtagslist[1][0]}}",  y: {{hashtagslist[1][1]}}  },
+		    	{ label: "{{hashtagslist[2][0]}}",  y: {{hashtagslist[2][1]}}  },
+		    	{ label: "{{hashtagslist[3][0]}}",  y: {{hashtagslist[3][1]}}  },
+		    	{ label: "{{hashtagslist[4][0]}}",  y: {{hashtagslist[4][1]}}  },
+		    	{ label: "{{hashtagslist[5][0]}}",  y: {{hashtagslist[5][1]}}  },
+		    	{ label: "{{hashtagslist[6][0]}}",  y: {{hashtagslist[6][1]}}  },
+		    	{ label: "{{hashtagslist[7][0]}}",  y: {{hashtagslist[7][1]}}  },
+		    	{ label: "{{hashtagslist[8][0]}}",  y: {{hashtagslist[8][1]}}  },
+		    	{ label: "{{hashtagslist[9][0]}}",  y: {{hashtagslist[9][1]}}  },
+		    	{ label: "{{hashtagslist[10][0]}}",  y: {{hashtagslist[10][1]}}  },
+		    	{ label: "{{hashtagslist[11][0]}}",  y: {{hashtagslist[11][1]}}  },
+		    	{ label: "{{hashtagslist[12][0]}}",  y: {{hashtagslist[12][1]}}  },
+		    	{ label: "{{hashtagslist[13][0]}}",  y: {{hashtagslist[13][1]}}  },
+		    	{ label: "{{hashtagslist[14][0]}}",  y: {{hashtagslist[14][1]}}  }
+		    ]
+	  }
+	  else{
+	  	hashtagsarr=[]
+	  }
+	  return hashtagsarr;
+	 
+	}
+usersarr = usersFunction()
+	
 		//Better to construct options first and then pass it as a parameter
 		var houroptions = {
 		  animationEnabled: true,
@@ -98,7 +294,6 @@
 			}]
 		};
 
-	if({{mentionslength}} >= 15){
 		var mentionsoptions = {
 		  animationEnabled: true,
 		  title: {             
@@ -108,31 +303,14 @@
 		    // Change type to "doughnut", "line", "splineArea", etc.
 		    color:'blue',
 		    type: "column",
-		    dataPoints: [
-		    	{ label: "{{user_mentions[0][0]}}",  y: {{user_mentions[0][1]}}  },
-		    	{ label: "{{user_mentions[1][0]}}",  y: {{user_mentions[1][1]}}  },
-		    	{ label: "{{user_mentions[2][0]}}",  y: {{user_mentions[2][1]}}  },
-		    	{ label: "{{user_mentions[3][0]}}",  y: {{user_mentions[3][1]}}  },
-		    	{ label: "{{user_mentions[4][0]}}",  y: {{user_mentions[4][1]}}  },
-		    	{ label: "{{user_mentions[5][0]}}",  y: {{user_mentions[5][1]}}  },
-		    	{ label: "{{user_mentions[6][0]}}",  y: {{user_mentions[6][1]}}  },
-		    	{ label: "{{user_mentions[7][0]}}",  y: {{user_mentions[7][1]}}  },
-		    	{ label: "{{user_mentions[8][0]}}",  y: {{user_mentions[8][1]}}  },
-		    	{ label: "{{user_mentions[9][0]}}",  y: {{user_mentions[9][1]}}  },
-		    	{ label: "{{user_mentions[10][0]}}",  y: {{user_mentions[10][1]}}  },
-		    	{ label: "{{user_mentions[11][0]}}",  y: {{user_mentions[11][1]}}  },
-		    	{ label: "{{user_mentions[12][0]}}",  y: {{user_mentions[12][1]}}  },
-		    	{ label: "{{user_mentions[13][0]}}",  y: {{user_mentions[13][1]}}  },
-		    	{ label: "{{user_mentions[14][0]}}",  y: {{user_mentions[14][1]}}  }
-		    ]
+		    dataPoints: mentionsFunction()
 		      
 		  }
 		  ]
 		};
 		$("#chartContainermentions").CanvasJSChart(mentionsoptions);
-	}
 
-	if({{hashtagslength}} >= 15){
+
 		var hashtagsoptions = {
 		  animationEnabled: true,
 		  title: {             
@@ -142,30 +320,13 @@
 		    // Change type to "doughnut", "line", "splineArea", etc.
 		    color:'blue',
 		    type: "column",
-		    dataPoints: [
-		    	{ label: "{{hashtagslist[0][0]}}",  y: {{hashtagslist[0][1]}}  },
-		    	{ label: "{{hashtagslist[1][0]}}",  y: {{hashtagslist[1][1]}}  },
-		    	{ label: "{{hashtagslist[2][0]}}",  y: {{hashtagslist[2][1]}}  },
-		    	{ label: "{{hashtagslist[3][0]}}",  y: {{hashtagslist[3][1]}}  },
-		    	{ label: "{{hashtagslist[4][0]}}",  y: {{hashtagslist[4][1]}}  },
-		    	{ label: "{{hashtagslist[5][0]}}",  y: {{hashtagslist[5][1]}}  },
-		    	{ label: "{{hashtagslist[6][0]}}",  y: {{hashtagslist[6][1]}}  },
-		    	{ label: "{{hashtagslist[7][0]}}",  y: {{hashtagslist[7][1]}}  },
-		    	{ label: "{{hashtagslist[8][0]}}",  y: {{hashtagslist[8][1]}}  },
-		    	{ label: "{{hashtagslist[9][0]}}",  y: {{hashtagslist[9][1]}}  },
-		    	{ label: "{{hashtagslist[10][0]}}",  y: {{hashtagslist[10][1]}}  },
-		    	{ label: "{{hashtagslist[11][0]}}",  y: {{hashtagslist[11][1]}}  },
-		    	{ label: "{{hashtagslist[12][0]}}",  y: {{hashtagslist[12][1]}}  },
-		    	{ label: "{{hashtagslist[13][0]}}",  y: {{hashtagslist[13][1]}}  },
-		    	{ label: "{{hashtagslist[14][0]}}",  y: {{hashtagslist[14][1]}}  }
-		    ]
+		    dataPoints: hashtagsFunction()
 		      
 		  }
 		  ]
 		};
 		$("#chartContainerhashtags").CanvasJSChart(hashtagsoptions);
-	}
-	if({{userslength}} >= 15){
+
 		var usersoptions = {
 		  animationEnabled: true,
 		  title: {             
@@ -175,32 +336,13 @@
 		    // Change type to "doughnut", "line", "splineArea", etc.
 		    color:'blue',
 		    type: "column",
-		    dataPoints: [
-		    	{ label: "{{userslist[0][0]}}",  y: {{userslist[0][1]}}  },
-		    	{ label: "{{userslist[1][0]}}",  y: {{userslist[1][1]}}  },
-		    	{ label: "{{userslist[2][0]}}",  y: {{userslist[2][1]}}  },
-		    	{ label: "{{userslist[3][0]}}",  y: {{userslist[3][1]}}  },
-		    	{ label: "{{userslist[4][0]}}",  y: {{userslist[4][1]}}  },
-		    	{ label: "{{userslist[5][0]}}",  y: {{userslist[5][1]}}  },
-		    	{ label: "{{userslist[6][0]}}",  y: {{userslist[6][1]}}  },
-		    	{ label: "{{userslist[7][0]}}",  y: {{userslist[7][1]}}  },
-		    	{ label: "{{userslist[8][0]}}",  y: {{userslist[8][1]}}  },
-		    	{ label: "{{userslist[9][0]}}",  y: {{userslist[9][1]}}  },
-		    	{ label: "{{userslist[10][0]}}",  y: {{userslist[10][1]}}  },
-		    	{ label: "{{userslist[11][0]}}",  y: {{userslist[11][1]}}  },
-		    	{ label: "{{userslist[12][0]}}",  y: {{userslist[12][1]}}  },
-		    	{ label: "{{userslist[13][0]}}",  y: {{userslist[13][1]}}  },
-		    	{ label: "{{userslist[14][0]}}",  y: {{userslist[14][1]}}  }
-		    ]
+		    dataPoints: usersFunction()
 		      
 		  }
 		  ]
 		};
 		$("#chartContainerusers").CanvasJSChart(usersoptions);
-	}
-	else{
-		{{userslength}}
-	}
+
 
 		$("#chartContainerhour").CanvasJSChart(houroptions);
 		$("#chartContainermonth").CanvasJSChart(monthoptions);
@@ -208,6 +350,7 @@
 		
 		
 		}
+		console.log(usersarr)
 	</script>
 	<div id="chartContainerhour" style="height: 300px; width: 100%;"></div>
 	<div id="chartContainermonth" style="height: 300px; width: 100%;"></div>
