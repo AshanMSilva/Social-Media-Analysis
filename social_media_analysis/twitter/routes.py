@@ -235,7 +235,7 @@ def hashtag_tweets(hashtag):
             user_mentions.append(['',0])
         if(len(user_mentions)>=15):
             break
-    return render_template('hashtag.html',count=count, mentionslength=mentionslength, userslength=userslength, hashtagslength=hashtagslength, hourdata=hourdata, monthdata=monthdata, sentimentdata=sentimentdata, user_mentions=user_mentions, hashtagslist=hashtagslist, userslist=userslist, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    return render_template('hashtag.html',hashtag=hashtag, count=count, mentionslength=mentionslength, userslength=userslength, hashtagslength=hashtagslength, hourdata=hourdata, monthdata=monthdata, sentimentdata=sentimentdata, user_mentions=user_mentions, hashtagslist=hashtagslist, userslist=userslist, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 @twitter.route("/twitter/botaccount/<string:name>")
 @login_required

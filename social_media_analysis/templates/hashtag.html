@@ -1,6 +1,94 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Hashtag Page</h1>
+    <div class="container">
+    	<h3 class="text-center">Hashtag: {{hashtag}}</h3>
+    	<br>
+		<hr style="height:2px;border:none;color:#333;background-color:#333;">
+		<br>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Time</h4>
+        		<p>This column chart shows the number of tweets with #{{hashtag}} with respect to the hour tweet posted.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainerhour" style="height: 200px; width: 100%;"></div>
+      		</div>
+    	</div>
+
+
+		<hr>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Month</h4>
+        		<p>This column chart shows the number of tweets with #{{hashtag}} with respect to the month tweet posted.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainermonth" style="height: 200px; width: 100%;"></div>
+	
+      		</div>
+    	</div>
+
+
+		<hr>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Sentiment</h4>
+        		<p>This pie chart shows the percentage of the sentiment of tweets using polarity.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainersentiment" style="height: 200px; width: 100%;"></div>
+	
+      		</div>
+    	</div>
+
+
+		<hr>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Mentions</h4>
+        		<p>This column chart shows the most common users that are mentioned in these tweets with this #{{hashtag}}.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainermentions" style="height: 200px; width: 100%;"></div>
+	
+      		</div>
+    	</div>
+
+
+		<hr>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Hashtags</h4>
+        		<p>This column chart shows the most common hashtags that are used in these tweets with this #{{hashtag}}.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainerhashtags" style="height: 200px; width: 100%;"></div>
+	
+      		</div>
+    	</div>
+
+
+		<hr>
+		<div class="row">
+      		<div class="col-md-4">
+        		<h4>Users</h4>
+        		<p>This column chart shows the most common users that are posted tweets with this #{{hashtag}}.</p>
+      		</div>
+      		<div class="col-md-8">
+ 				<div id="chartContainerusers" style="height: 200px; width: 100%;"></div>
+      		</div>
+    	</div>		
+    </div>
+
+	
+
+
+
+
+
+
+
+
 
 	<script>
 
@@ -352,10 +440,6 @@ usersarr = usersFunction()
 		}
 		console.log(usersarr)
 	</script>
-	<div id="chartContainerhour" style="height: 300px; width: 100%;"></div>
-	<div id="chartContainermonth" style="height: 300px; width: 100%;"></div>
-	<div id="chartContainersentiment" style="height: 300px; width: 100%;"></div>
-	<div id="chartContainermentions" style="height: 300px; width: 100%;"></div>
-	<div id="chartContainerhashtags" style="height: 300px; width: 100%;"></div>
-	<div id="chartContainerusers" style="height: 300px; width: 100%;"></div>
+	
+	
 {% endblock content %}
