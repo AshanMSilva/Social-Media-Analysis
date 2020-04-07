@@ -4,8 +4,8 @@ from social_media_analysis import db, bcrypt
 from social_media_analysis.models import User, Post
 from social_media_analysis.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
-from social_media_analysis.codes.sentiment_analysis_twitter_data import TwitterClient, TweetAnalyzer
-from social_media_analysis.codes.Bot_account_detection.bot_account_prediction_methods import Prediction
+# from social_media_analysis.codes.sentiment_analysis_twitter_data import TwitterClient, TweetAnalyzer
+# from social_media_analysis.codes.Bot_account_detection.bot_account_prediction_methods import Prediction
 import pickle
 from datetime import datetime
 
@@ -29,13 +29,19 @@ from nltk.tokenize import PunktSentenceTokenizer
 from nltk.corpus import webtext 
 from nltk.stem.porter import PorterStemmer 
 from nltk.stem.wordnet import WordNetLemmatizer 
+from social_media_analysis.codes.FacebookCodes.post_like_prediction import Prediction 
 
 facebook = Blueprint('facebook', __name__)
 
 
+# instaModel = pickle.load(open('instamodel.pkl', 'rb')) 
+# fbLikeModel = pickle.load(open('url_for{{fbLikeModel.pkl}}', 'rb'))
+# fbAdsModel =pickle.load(open('fbAdsModel.pkl', 'rb')) 
+
+
 @facebook.route('/sentimentAnalyser')
 def sentimentAnalyser():
-    return render_template('sentiment.html')
+    return render_template('facebook_sentiment.html')
 @facebook.route('/sentiment', methods=['POST'])
 def sentiment():
         text=request.form['txt']
@@ -61,7 +67,7 @@ def sentiment():
 
 
                 #res= max(scores.iteritems(), key=operator.itemgetter(1))[0]
-        return render_template('sentiment.html', prediction_text='The comment is {}'.format(res), msg=c)
+        return render_template('facebook_sentiment.html', prediction_text='The comment is {}'.format(res), msg=c)
 
 @facebook.route('/fbLikePredict',methods=['POST'])
 def fbLikePredict():
@@ -83,13 +89,15 @@ def fbLikePredict():
     friendcount=int(friendcount)
     final={'dob_day':[day] ,'dob_year':[year] ,'dob_month':[month] ,'gender':[gender] ,'friend_count':[friendcount] }
     final_features=pd.DataFrame.from_dict(final)
-    prediction = fbLikeModel.predict(final_features)
-    output=int(prediction[0])
+    prediction=Prediction()
+    outputt=prediction.predict(final_features)
+    # prediction = fbLikeModel.predict(final_features)
+    output=int(outputt[0])
     
     # output = round(prediction[0], 2)
 
-    return render_template('facebookLike.html', prediction_text='Likes should be {}'.format(output))
+    return render_template('facebook_like_predict.html', prediction_text='Likes should be {}'.format(output))
 
 @facebook.route('/fblikes')
 def fblikes():
-    return render_template('facebookLike.html')
+    return render_template('facebook_like_predict.html')
