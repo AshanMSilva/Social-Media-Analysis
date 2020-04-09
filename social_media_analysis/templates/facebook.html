@@ -1,10 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>Facebook Page</h1>
-
+    <a href="{{url_for('facebook.facebookAd')}}">Facebook Advertisements</a><br> 
     <a href="{{url_for('facebook.sentimentAnalyser') }}">Sentiments</a><br>
     <a href="{{url_for('facebook.fblikes') }}">Facebook Like Predictor</a><br>
 {% endblock content %}
 
-
-<!-- <a href="url_for{{facebookAd.html}}">Facebook Advertisements</a><br> -->

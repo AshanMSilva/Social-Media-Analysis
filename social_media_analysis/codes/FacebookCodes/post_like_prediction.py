@@ -1,6 +1,6 @@
 import pickle
 
-class Prediction():
+class LikePrediction():
     def predict(self,input_data):
         # filename = 'social_media_analysis\codes\FacebookCodes\\facebooklik\.csv'
         # f = 
