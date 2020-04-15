@@ -1,14 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<h1>Impressions should be {{ results['impressions'] }}</h1>
+<h1>Clicks should be {{ results['clicks'] }}</h1>
+<div id="demo"></div>
+<script>
+    var all= {{ best_results | tojson }} ;
+    var spend_results=all[1];
+    clicks_ch_data=[]
+    impre_ch_data=[]
+    spend_results.forEach(add_data);
+    function add_data(item, index) {
+        clicks_ch_data.push({x:item[0],y:item[1]});
+        impre_ch_data.push({x:item[0],y:item[2]});
+    }
+</script>
 <script>
     window.onload = function () {
 
     //Better to construct options first and then pass it as a parameter
-    var options = {
+    var gender_options = {
         animationEnabled: true,
         title: {
-            text: "Mobile Phones Used For",                
+            text: "Select The Best Gender for Your Advertisement",                
             fontColor: "Peru"
         },	
         axisY: {
@@ -33,24 +47,108 @@
             color: "#62C9C3",
             type: "bar",
             dataPoints: [
-                { y: 21, label: "21%", indexLabel: "Video" },
-                { y: 25, label: "25%", indexLabel: "Dining" },
-                { y: 33, label: "33%", indexLabel: "Entertainment" },
-                { y: 36, label: "36%", indexLabel: "News" },
-                { y: 42, label: "42%", indexLabel: "Music" },
-                { y: 49, label: "49%", indexLabel: "Social Networking" },
-                { y: 50, label: "50%", indexLabel: "Maps/ Search" },
-                { y: 55, label: "55%", indexLabel: "Weather" },
-                { y: 61, label: "61%", indexLabel: "Games" }
+            { y: parseInt('{{best_results[0][2]}}'), label: '{{best_results[0][2]}}', indexLabel: "All" },
+            { y: parseInt('{{best_results[0][1]}}'), label: '{{best_results[0][1]}}', indexLabel: "Female" },
+            { y: parseInt('{{best_results[0][0]}}'), label: '{{best_results[0][0]}}', indexLabel: "Male" },
             ]
         }]
     };
 
-    $("#chartContainer").CanvasJSChart(options);
+    var day_options = {
+        animationEnabled: true,
+        title: {
+            text: "Select The Best Weekday for Your Advertisement",                
+            fontColor: "Peru"
+        },	
+        axisY: {
+            tickThickness: 0,
+            lineThickness: 0,
+            valueFormatString: " ",
+            gridThickness: 0                    
+        },
+        axisX: {
+            tickThickness: 0,
+            lineThickness: 0,
+            labelFontSize: 18,
+            labelFontColor: "Peru"				
+        },
+        data: [{
+            indexLabelFontSize: 26,
+            toolTipContent: "<span style=\"color:#D3FF33\">{indexLabel}:</span> <span style=\"color:#CD853F\"><strong>{y}</strong></span>",
+            indexLabelPlacement: "inside",
+            indexLabelFontColor: "white",
+            indexLabelFontWeight: 600,
+            indexLabelFontFamily: "Verdana",
+            color: "#D3FF33",
+            type: "bar",
+            dataPoints: [
+            { y: parseInt('{{best_results[2]["sat"]}}'), label: '{{best_results[2]["sat"]}}', indexLabel: "Saturday" },
+            { y: parseInt('{{best_results[2]["fri"]}}'), label: '{{best_results[2]["fri"]}}', indexLabel: "Friday" },
+            { y: parseInt('{{best_results[2]["thu"]}}'), label: '{{best_results[2]["thu"]}}', indexLabel: "Thursday" },
+            { y: parseInt('{{best_results[2]["wed"]}}'), label: '{{best_results[2]["wed"]}}', indexLabel: "Wednesday" },
+            { y: parseInt('{{best_results[2]["tue"]}}'), label: '{{best_results[2]["tue"]}}', indexLabel: "Tuesdayday" },
+            { y: parseInt('{{best_results[2]["mon"]}}'), label: '{{best_results[2]["mon"]}}', indexLabel: "Monday" },
+            { y: parseInt('{{best_results[2]["sun"]}}'), label: '{{best_results[2]["sun"]}}', indexLabel: "Sunday" },
+            ]
+        }]
+    };
+
+
+    
+var spend_chart = new CanvasJS.Chart("spend_chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Clicks And Impressions with Ad spends"
+	},
+	toolTip: {
+		shared: true
+	},
+	axisX: {
+		title: "Ad spend",
+		// suffix : " RUB"
+	},
+	axisY: {
+		title: "Clicks",
+		titleFontColor: "#4F81BC",
+		// suffix : " m/s",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	axisY2: {
+		title: "Impressions",
+		titleFontColor: "#C0504E",
+		// suffix : " m",
+		lineColor: "#C0504E",
+		tickColor: "#C0504E"
+	},
+	data: [{
+		type: "spline",
+		name: "clicks",
+		xValueFormatString: "#### RUB",
+		// yValueFormatString: "#,##0  ",
+        
+		dataPoints: clicks_ch_data
+	},
+	{
+		type: "spline",  
+		axisYType: "secondary",
+		name: "impressions",
+		// yValueFormatString: "#,##0.# ",
+		dataPoints: impre_ch_data
+	}]
+});
+    spend_chart.render();
+
+    $("#gender_chartContainer").CanvasJSChart(gender_options);
+    $("#day_chartContainer").CanvasJSChart(day_options);
     }
     </script>
 
-    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <div id="gender_chartContainer" style="height: 250px; width: 100%;"></div>
+    <br>
+    <div id="spend_chartContainer" style="height: 300px; width: 100%;"></div>
+    <br>
+    <div id="day_chartContainer" style="height: 300px; width: 100%;"></div>
+    <br>
+
 {% endblock content %}
