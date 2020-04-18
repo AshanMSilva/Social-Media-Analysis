@@ -9,6 +9,7 @@ from social_media_analysis.users.forms import (RegistrationForm, LoginForm, Upda
 import pickle
 from datetime import datetime
 from social_media_analysis.facebook.forms import AdForm
+from bs4 import BeautifulSoup
 
 #sentiment
 import time 
@@ -32,7 +33,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from social_media_analysis.codes.FacebookCodes.post_like_prediction import LikePrediction 
 from social_media_analysis.codes.FacebookCodes.ad_clicks_prediction import AdPrediction,AdImpressionPrediction,BestSolutions
 
-
+import operator 
 facebook = Blueprint('facebook', __name__)
 # import os
 # SECRET_KEY = os.urandom(32)
@@ -45,33 +46,80 @@ facebook = Blueprint('facebook', __name__)
 
 @facebook.route('/sentimentAnalyser')
 def sentimentAnalyser():
-    return render_template('facebook_sentiment.html')
+    return render_template('facebook_comments.html')
 @facebook.route('/sentiment', methods=['POST'])
 def sentiment():
-        text=request.form['txt']
-        tt=text
-        sent_tokenizer = PunktSentenceTokenizer(text) 
-        sents = sent_tokenizer.tokenize(text) 
-        porter_stemmer = PorterStemmer()
-        
-        nltk_tokens = nltk.word_tokenize(text) 
-        wordnet_lemmatizer = WordNetLemmatizer() 
-        nltk_tokens = nltk.word_tokenize(text) 
+        f=request.files['upload']
 
-        text = nltk.word_tokenize(text)
-        sid = SentimentIntensityAnalyzer() 
-        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle') 
+        data = f.read()
+        soup = BeautifulSoup(data, 'html.parser')
+        comments=[]
+        main_content = soup.find('ul', {'class': '_7a9a'})
+        try:
+            list_of_comments = main_content.findAll('li')
+        except:
+            main_content= soup.find('ul', {'class': '_7791'})
+            list_of_comments = main_content.findAll('li')
+        for container_large in list_of_comments:
+            try:
+                img_link= container_large.img.get('src')
+                comment_container=container_large.find('div', {'class': '_72vr'})
+                
+                profile_link=comment_container.a.get('href')
+                container_small = container_large.find('span', {'class': '_3l3x'})
 
-        for word in tt.split("\n"): 
-                print(word)
-                scores = sid.polarity_scores(word)
-                c= scores['compound']
-                del scores['compound']
-                res=max(scores, key=scores.get)
+                profile_name_container=comment_container.find('a', {'class': '_6qw4'})
+                profile_name=profile_name_container.text
+                lnk="C:/Users/Dane/Desktop"+img_link[1:]
+                comments.append([container_small.text,profile_name,profile_link,lnk])
+            except:
+                x='s'
+        check=[]
+        pos=0
+        neu=0
+        neg=0
+        pos_list=[]
+        neu_list=[]
+        neg_list=[]
+        # scores_list=[]
+        for i in range(len(comments)):
+            comment=comments[i]
+            text=comment[0]
+            word=text
+            sent_tokenizer = PunktSentenceTokenizer(text) 
+            sents = sent_tokenizer.tokenize(text) 
+            porter_stemmer = PorterStemmer()
+            
+            nltk_tokens = nltk.word_tokenize(text) 
+            wordnet_lemmatizer = WordNetLemmatizer() 
+            nltk_tokens = nltk.word_tokenize(text) 
 
+            text = nltk.word_tokenize(text)
+            sid = SentimentIntensityAnalyzer() 
+            tokenizer = nltk.data.load('tokenizers/punkt/english.pickle') 
 
-                #res= max(scores.iteritems(), key=operator.itemgetter(1))[0]
-        return render_template('facebook_sentiment.html', prediction_text='The comment is {}'.format(res), msg=c)
+            scores = sid.polarity_scores(word)
+            c= scores['compound']
+            del scores['compound']
+            res=max(scores.items(), key=operator.itemgetter(1))[0]
+            # comments[i].append(c)
+            # comments[i].append(scores)
+            if(res=='neu'):
+                neu_list.append(comments[i])
+            elif(res=='pos'):
+                pos_list.append(comments[i])
+            elif(res=='neg'):
+                neg_list.append(comments[i])
+            neu+=scores['neu']
+            pos+=scores['pos']
+            neg+=scores['neg']
+        pos_p=pos*100/(neg+pos+neu)
+        neu_p=neu*100/(neg+pos+neu)
+        neg_p=neg*100/(neg+pos+neu)
+        post_result={"Negative":neg_p,"Positive":pos_p,"Neutral":neu_p}
+        post_result["final"]=max(post_result.items(), key=operator.itemgetter(1))[0]
+        all_comments=[pos_list,neu_list,neg_list]   
+        return render_template('facebook_sentiment.html',check=check, all_comments=all_comments, post_result=post_result)
 
 @facebook.route('/fbLikePredict',methods=['POST'])
 def fbLikePredict():
@@ -162,9 +210,9 @@ def fbAdClicksPredict():
     prediction=AdPrediction()
     outputt=prediction.predict(final_features)
     output=int(outputt[0])
-
+    impre_prediction=AdImpressionPrediction()
     bestSolutions=BestSolutions()
-    best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(final,prediction),bestSolutions.getBestWeekDay(final,prediction)    ]
+    best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(impre_final,prediction,impre_prediction),bestSolutions.getBestWeekDay(final,prediction)    ]
     # best_results=[bestSolutions.getBestGender(final,prediction)]
 
 

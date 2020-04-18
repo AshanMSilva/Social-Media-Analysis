@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Comment Analysis</h1>
+    
+<form action="{{ url_for('facebook.sentiment')}}" method="post" enctype="multipart/form-data">
+    <input type="file" name="upload" />
+    <input type="submit" /></form>
+{% endblock content %}

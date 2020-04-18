@@ -1,13 +1,131 @@
-<html>
-<head>
-</head>
-<body>
-<form action="{{ url_for('facebook.sentiment')}}" method="POST">
-    <input type="text" id ='txt' name="txt" placeholder="Enter Text..">
-    <button type="submit">Predict </button>
-</form>
+{% extends "layout.html" %}
+{% block content %}
+<script>
+    function displayPositive(){
+        document.getElementById("pos").style.display = "block";
+        document.getElementById("neu").style.display = "none";
+        document.getElementById("neg").style.display = "none";
+    }
+    function displayNeutral(){
+        document.getElementById("neu").style.display = "block";
+        document.getElementById("pos").style.display = "none";
+        document.getElementById("neg").style.display = "none";
+    }
+    function displayNegative(){
+        document.getElementById("neg").style.display = "block";
+        document.getElementById("neu").style.display = "none";
+        document.getElementById("pos").style.display = "none";
+    }
+</script>
+<script>
+    window.onload = function() {
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        title: {
+            text: "Comments Analysis"
+        },
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{label} {y}",
+            dataPoints: [
+                {y: parseFloat('{{post_result["Positive"]}}'), label: "Positive"},
+                {y: parseFloat('{{post_result["Negative"]}}'), label: "Negative"},
+                {y: parseFloat('{{post_result["Neutral"]}}'), label: "Neutral"},
+
+            ]
+        }]
+    });
+    chart.render();
+    
+    }
+    </script>
+    
+<div>
+    <h1>About this Post</h1>
+    <!-- <h5>{{ check}}</h5> -->
+    <!-- <h5>{{ post_result}}</h5> -->
+    <h3>Post Final Analysis - {{post_result['final']}}</h3>
+    <div id="chartContainer" style="height: 300px; width: 100%;" ></div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+      <div class="content-section">
+        <h3>View Commments</h3>
+        <ul class="list-group">
+            <button class="list-group-item list-group-item-light" onclick="displayPositive()"> Positive Comments</button>
+            <button class="list-group-item list-group-item-light" onclick="displayNeutral()"> Neutral Comments</button>
+            <button class="list-group-item list-group-item-light" onclick="displayNegative()">Negative Comments</button>
+        </ul>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-5">
+        <div id='pos'>
+            <h1>Positive Comments</h1>
+            {% for comment in all_comments[0] %}
+            <div class="container">
+                <div class='card' style="width: 100%;" >
+                  <div class="card-body">
+                    <label for="from">Comment from</label>
+                    <a id="from" href="{{comment[2]}}">{{comment[1]}}</a>
+                    <p>{{comment[0]}}</p>
+                    <!-- <img src="{{comment[3]}}" alt="Jeffery Jar">
+                    <h5>{{comment[3]}}</h5> -->
+                    <!-- <h5>{{comment[4]}}</h5> -->
+                    <!-- <h5>{{comment[5]}}</h5>       -->
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+        <div id="neu">    
+            <h1>Neutral Comments</h1>
+            {% for comment in all_comments[1] %}
+            <div class="container">
+                <!-- <div class="card" > -->
+                  <!-- <div class="card-body"> -->
+                    <label for="from">Comment from</label>
+                    <a id="from" href="{{comment[2]}}">{{comment[1]}}</a>
+                    <p>{{comment[0]}}</p>
+                    <!-- <img class='_3me- _3mf1 img'src="{{comment[3]}}" alt="Jeffery Jar">
+                    <h5>{{comment[3]}}</h5> -->
+                    <!-- <h5>{{comment[3]}}</h5>
+                    <h5>{{comment[4]}}</h5>
+                    <h5>{{comment[5]}}</h5>       -->
+                  <!-- </div> -->
+                <!-- </div> -->
+              </div>
+            {% endfor %}
+        </div>
+        <div id="neg">
+            <h1>Negative Comments</h1>
+            {% for comment in all_comments[2] %}
+            <div class="container">
+                <div class="card">
+                  <div class="card-body">
+                    <label for="from">Comment from</label>
+                    <a id="from" href="{{comment[2]}}">{{comment[1]}}</a>
+                    <p>{{comment[0]}}</p>
+                    <!-- <h5>{{comment[3]}}</h5>
+                    <h5>{{comment[4]}}</h5>
+                    <h5>{{comment[5]}}</h5>       -->
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>        
+    </div>
+    
+  </div>
 
 
-{{prediction_text}}
-{{msg}}
-</html>
+
+    <script>
+    document.getElementById("pos").style.display = "none";
+    document.getElementById("neu").style.display = "none";
+    document.getElementById("neg").style.display = "none";
+</script>
+{% endblock content %}
