@@ -28,7 +28,7 @@ def create_app(config_class=Config):
     from social_media_analysis.comments.routes import comments
     from social_media_analysis.main.routes import main
     from social_media_analysis.errors.handlers import errors
-    from social_media_analysis.twitter.routes import twitter
+    # from social_media_analysis.twitter.routes import twitter
     from social_media_analysis.facebook.routes import facebook
     from social_media_analysis.youtube.routes import youtube
     from social_media_analysis.stack_overflow.routes import stack_overflow
@@ -37,7 +37,7 @@ def create_app(config_class=Config):
     app.register_blueprint(comments)
     app.register_blueprint(main)
     app.register_blueprint(errors)
-    app.register_blueprint(twitter)
+    # app.register_blueprint(twitter)
     app.register_blueprint(facebook)
     app.register_blueprint(stack_overflow)
     app.register_blueprint(youtube)
