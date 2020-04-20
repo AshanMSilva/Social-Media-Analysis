@@ -35,14 +35,6 @@ from social_media_analysis.codes.FacebookCodes.ad_clicks_prediction import AdPre
 
 import operator 
 facebook = Blueprint('facebook', __name__)
-# import os
-# SECRET_KEY = os.urandom(32)
-# facebook.config['SECRET_KEY'] = SECRET_KEY
-
-# instaModel = pickle.load(open('instamodel.pkl', 'rb')) 
-# fbLikeModel = pickle.load(open('url_for{{fbLikeModel.pkl}}', 'rb'))
-# fbAdsModel =pickle.load(open('fbAdsModel.pkl', 'rb')) 
-
 
 @facebook.route('/sentimentAnalyser')
 def sentimentAnalyser():
@@ -83,36 +75,41 @@ def sentiment():
         neg_list=[]
         # scores_list=[]
         for i in range(len(comments)):
-            comment=comments[i]
-            text=comment[0]
-            word=text
-            sent_tokenizer = PunktSentenceTokenizer(text) 
-            sents = sent_tokenizer.tokenize(text) 
-            porter_stemmer = PorterStemmer()
-            
-            nltk_tokens = nltk.word_tokenize(text) 
-            wordnet_lemmatizer = WordNetLemmatizer() 
-            nltk_tokens = nltk.word_tokenize(text) 
+            try:
+                comment=comments[i]
+                text=comment[0]
+                word=text
+                sent_tokenizer = PunktSentenceTokenizer(text) 
+                sents = sent_tokenizer.tokenize(text) 
+                porter_stemmer = PorterStemmer()
+                
+                nltk_tokens = nltk.word_tokenize(text) 
+                wordnet_lemmatizer = WordNetLemmatizer() 
+                nltk_tokens = nltk.word_tokenize(text) 
 
-            text = nltk.word_tokenize(text)
-            sid = SentimentIntensityAnalyzer() 
-            tokenizer = nltk.data.load('tokenizers/punkt/english.pickle') 
+                text = nltk.word_tokenize(text)
+                sid = SentimentIntensityAnalyzer() 
+                tokenizer = nltk.data.load('tokenizers/punkt/english.pickle') 
 
-            scores = sid.polarity_scores(word)
-            c= scores['compound']
-            del scores['compound']
-            res=max(scores.items(), key=operator.itemgetter(1))[0]
-            # comments[i].append(c)
-            # comments[i].append(scores)
-            if(res=='neu'):
-                neu_list.append(comments[i])
-            elif(res=='pos'):
-                pos_list.append(comments[i])
-            elif(res=='neg'):
-                neg_list.append(comments[i])
-            neu+=scores['neu']
-            pos+=scores['pos']
-            neg+=scores['neg']
+                scores = sid.polarity_scores(word)
+                c= scores['compound']
+                del scores['compound']
+                res=max(scores.items(), key=operator.itemgetter(1))[0]
+                # comments[i].append(c)
+                # comments[i].append(scores)
+                if(res=='neu'):
+                    neu_list.append(comments[i])
+                elif(res=='pos'):
+                    pos_list.append(comments[i])
+                elif(res=='neg'):
+                    neg_list.append(comments[i])
+                neu+=scores['neu']
+                pos+=scores['pos']
+                neg+=scores['neg']
+
+            except:
+                print()
+                #doing nothing
         pos_p=pos*100/(neg+pos+neu)
         neu_p=neu*100/(neg+pos+neu)
         neg_p=neg*100/(neg+pos+neu)
@@ -203,18 +200,15 @@ def fbAdClicksPredict():
     impre_final_features=pd.DataFrame.from_dict(impre_final)
     prediction_impre=AdImpressionPrediction()
     impre_outputt=prediction_impre.predict(impre_final_features)
-    impre_output=int(impre_outputt[0])
+    impre_output=int((impre_outputt[0]**2)**0.5)
 
     final={'mon':[mon] ,'tue':[tue] ,'wed':[wed] ,'thu':[thu] ,'fri':[fri] ,'sat':[sat] ,'sun':[sun] ,'male':[male] ,'female':[female] ,'all':[all] ,'TextWordCount':[len(txt.split())] ,'startAge':[startAge] ,'endAge':[endAge],'AdImpressions':[impre_output],'AdSpends':[adSpends] }
     final_features=pd.DataFrame.from_dict(final)
     prediction=AdPrediction()
     outputt=prediction.predict(final_features)
-    output=int(outputt[0])
+    output=int((outputt[0]**2)**0.5)
     impre_prediction=AdImpressionPrediction()
     bestSolutions=BestSolutions()
     best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(impre_final,prediction,impre_prediction),bestSolutions.getBestWeekDay(final,prediction)    ]
-    # best_results=[bestSolutions.getBestGender(final,prediction)]
 
-
-    # return render_template('facebook_ad_display.html', impre_prediction_text='clicks should be {}'.format(output) )
     return render_template('facebook_ad_display.html', results={'impressions':impre_output,'clicks':output},best_results=best_results )
