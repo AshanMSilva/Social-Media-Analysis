@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/bootstrap-social/bootstrap-social.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.css') }}">
 
     {% if title %}
         <title>Social Medial Analysis - {{ title }}</title>
@@ -27,7 +30,7 @@
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
-              <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
+              <a class="nav-item nav-link" href="{{ url_for('main.forum') }}">Forum</a>
               <a class="nav-item nav-link" href="{{ url_for('main.twitter')}}">Twitter</a>
               <a class="nav-item nav-link" href="{{ url_for('main.facebook')}}">Facebook</a>
               <a class="nav-item nav-link" href="{{ url_for('main.youtube')}}">Youtube</a>
@@ -37,32 +40,35 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
+                <!-- <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a> -->
                 <a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
                 <a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
               {% else %}
-                <a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
-                <a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+                <a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#loginformmodal">Login</a>
+                <a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#registerformmodal">Register</a>
               {% endif %}
             </div>
           </div>
         </div>
       </nav>
     </header>
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
+    <main role="main">
+      <!-- <div class="row">
+        <div class="col-md-8"> -->
           {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
+                <div class="alert alert-{{ category }} alert-dismissible fade show">
                   {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
               {% endfor %}
             {% endif %}
           {% endwith %}
           {% block content %}{% endblock %}
-        </div>
+       <!--  </div>
         <div class="col-md-4">
           <div class="content-section">
             <h3>Our Sidebar</h3>
@@ -76,8 +82,217 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
     </main>
+    <footer class="myfooter">
+
+      <div class="container">
+        <div class="row footer-container">
+          <div class="col-12 col-md-4 justify-content-center">
+            <div class="offset-md-3 offset-4">
+              <h5 class="footer-fonts">Links</h5>
+              <ul class="list-unstyled">
+                <li><a href="{{ url_for('main.home') }}" class="footer-fonts">Home</a></li>
+                <li><a href="{{ url_for('main.forum') }}" class="footer-fonts">Forum</a></li>
+                <li><a href="{{ url_for('main.facebook') }}" class="footer-fonts">Facebook</a></li>
+                <li><a href="{{ url_for('main.stack_overflow') }}" class="footer-fonts">Stack Overflow</a></li>
+                <li><a href="{{ url_for('main.twitter') }}" class="footer-fonts">Twitter</a></li>
+                <li><a href="{{ url_for('main.youtube') }}" class="footer-fonts">Youtube</a></li>
+              </ul>
+            </div>
+            
+          </div>
+          
+          <div class="col-12 col-md-4 justify-content-center">
+            <div class="offset-md-3 offset-4">
+              <h5 class="footer-fonts">Contact us</h5>
+              <i class="fa fa-map-marker"></i><span class="footer-fonts"> : No:210/A, Moratuwa Rd, Katubeddha</span><br />
+              <i class="fa fa-phone fa-lg"></i><span class="footer-fonts">: +947 1234 5678</span><br />
+              <i class="fa fa-fax fa-lg"></i><span class="footer-fonts">: +947 8765 4321</span><br />
+              <i class="fa fa-envelope fa-lg"></i>: <a href="mailto:smanalysis@gmail.com">smanalysis@gmail.com</a>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 ">
+            <div class="offset-md-3 offset-4">
+              <h5 class="footer-fonts">About us</h5>
+              <p class="footer-fonts">This web application is Created by group of cse students using the APIs, Bootstrap and Flask.</p>
+            </div>
+            <div class="text-center">
+              <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i class="fa fa-google-plus"></i></a>
+              <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i class="fa fa-facebook"></i></a>
+              <a class="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com/in/"><i class="fa fa-linkedin"></i></a>
+              <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i class="fa fa-twitter"></i></a>
+              <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube"></i></a>
+              <a class="btn btn-social-icon" href="mailto:"><i class="fa fa-envelope-o"></i></a>
+            </div>
+          </div>
+
+        </div>
+        <div class="row justify-content-center">             
+          <div class="col-auto">
+              <p class="footer-fonts">© Copyright 2020 Social Media Analysis</p>
+          </div>
+        </div>
+            
+      </div>
+    </footer>
+  </div>
+  <div class="modal fade" id="registerformmodal" tabindex="-1" role="dialog" aria-labelledby="registerformmodal" aria-hidden="true">
+    <div class="modal-dialog new-forum-modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registerformmodal">Register as a new User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body new-forum-modal-body">
+          <form method="POST" action="">
+            {{ registerform.hidden_tag() }}
+            <fieldset class="form-group">
+                <div class="form-group">
+                    {{ registerform.username.label(class="form-control-label") }}
+
+                    {% if registerform.username.errors %}
+                        {{ registerform.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in registerform.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ registerform.username(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ registerform.email.label(class="form-control-label") }}
+                    {% if registerform.email.errors %}
+                        {{ registerform.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in registerform.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ registerform.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ registerform.password.label(class="form-control-label") }}
+                    {% if registerform.password.errors %}
+                        {{ registerform.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in registerform.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ registerform.password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ registerform.confirm_password.label(class="form-control-label") }}
+                    {% if registerform.confirm_password.errors %}
+                        {{ registerform.confirm_password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in registerform.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ registerform.confirm_password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ registerform.signup(class="btn btn-outline-info") }}
+            </div>
+          </form>
+
+              
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+                <div class="col-12">
+                  <small class="text-muted">
+                      Already Have An Account? <a class="ml-2  close-registermodal" href="#" data-toggle="modal" data-target="#loginformmodal">Sign In</a>
+                  </small>
+                </div>      
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="loginformmodal" tabindex="-1" role="dialog" aria-labelledby="loginformmodal" aria-hidden="true">
+    <div class="modal-dialog new-forum-modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginformmodal">LogIn</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body new-forum-modal-body">
+            <form method="POST" action="">
+                {{ loginform.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Log In</legend>
+                    <div class="form-group">
+                        {{ loginform.email.label(class="form-control-label") }}
+                        {% if loginform.email.errors %}
+                            {{ loginform.email(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in loginform.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ loginform.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ loginform.password.label(class="form-control-label") }}
+                        {% if loginform.password.errors %}
+                            {{ loginform.password(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in loginform.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ loginform.password(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-check">
+                        {{ loginform.remember(class="form-check-input") }}
+                        {{ loginform.remember.label(class="form-check-label") }}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ loginform.login(class="btn btn-outline-info") }}
+                    <small class="text-muted ml-2">
+                        <a href="{{ url_for('users.reset_request') }}">Forgot Password?</a>
+                    </small>
+                </div>
+            </form>
+
+              
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+                <div class="col-12">
+                  <small class="text-muted">
+                      Need An Account? <a class="ml-2 close-loginmodal" href="#" data-toggle="modal" data-target="#registerformmodal">Sign Up Now</a>
+                  </small>
+                </div>      
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
 
 
     <!-- Optional JavaScript -->
@@ -85,8 +300,33 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-    
   </body>
+    <script type="text/javascript">
+    $(window).on('load',function(){
+      if({{modalshow}} === registerformmodal){
+         $('#{{modalshow}}').modal('show');
+         $('#loginformmodal').modal('hide');
+      }
+      else{
+        $('#{{loginmodalshow}}').modal('show');
+        $('#registerformmodal').modal('hide');
+      }
+     
+      
+    });
+</script>
+<script type="text/javascript">
+  $('.close-registermodal').click(function() {
+  $('#registerformmodal').modal('hide');
+});
+</script>  
+<script type="text/javascript">
+  $('.close-loginmodal').click(function() {
+  $('#loginformmodal').modal('hide');
+});
+</script> 
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script src="{{ url_for('static', filename='node_modules/chart.js/dist/Chart.min.js') }}"></script>  
+</body>
 </html>

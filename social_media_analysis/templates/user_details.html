@@ -24,11 +24,11 @@
   		</div>
   		<div class="col-md-8">
   			<ul class="list-group list-group-flush">
-			  <li class="list-group-item">Name             :  {{user.name}}</li>
+			  <li class="list-group-item">Name             :  {{user.name}} <span class="badge {{badge}}">{{verified}}</span></li>
 			  <li class="list-group-item">Joined Twitter on:  {{user._json.created_at}}</li>
 			  <li class="list-group-item">Location         :  {{user.location}}</li>
 			  <li class="list-group-item">Bio              :  {{user.description}}</li>
-			  <li class="list-group-item">URL              :  {{user.url}}</li>
+			  <li class="list-group-item">URL              :  <a href="{{user.url}}">{{user.url}}</a></li>
 			</ul>
   		</div>
   		
@@ -50,29 +50,146 @@
       </div>
       
     </div>
+    <h2>Tweets Analysis</h2>
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>100 Tweets</h3>
+        <p><span class="badge badge-success">NEW!</span> We looked inside some of the tweets by @{{user.screen_name}} and here's what we found interesting.</p>
+      </div>
+      <div class="col-md-8">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Replies                      :  {{tweetsdata.replies}}</li>
+          <li class="list-group-item">Tweets with @mentions        :  {{tweetsdata.mentions}}</li>
+          <li class="list-group-item">Tweets with #hashtags        :  {{tweetsdata.hashtags}}</li>
+          <li class="list-group-item">Retweets                     :  {{tweetsdata.retweets}}</li>
+          <li class="list-group-item">Tweets with links            :  {{tweetsdata.links}}</li>
+          <li class="list-group-item">Tweets with media            :  {{tweetsdata.medias}}</li>
+        </ul>
+
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Time</h3>
+        <p><span class="badge badge-success">NEW!</span> This bar chart shows the activity time based on the latest tweets. Careful about timezones.</p>
+      </div>
+      <div class="col-md-8">
+        <div id="chartContainertime" style="height: 150px; width: 100%;"></div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Likes</h3>
+        <p><span class="badge badge-success">NEW!</span> This line chart shows the number of likes per tweet based on the latest tweets.</p>
+      </div>
+      <div class="col-md-8">
+        <div id="chartContainerlikes" style="height: 200px; width: 100%;"></div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Retweets</h3>
+        <p><span class="badge badge-success">NEW!</span> This line chart shows the number of retweets per tweet based on the latest tweets.</p>
+      </div>
+      <div class="col-md-8">
+        <div id="chartContainerretweets" style="height: 200px; width: 100%;"></div>
+      </div>
+    </div>
   </div>
+	<script>
+ids={{ids}};
+favorites = {{favourites}};
+retweetscount ={{retweetscount}};
+dataarr=[];
+retweetsarr=[];
+for (var i = 0; i <ids.length; i++) {
+  a ={ label: ids[i] ,  y: favorites[i]  };
+  b = { label: ids[i] ,  y: retweetscount[i]  };
+  dataarr.push(a);
+  retweetsarr.push(b);
+}
 
-	<p>{{user}}</p><br><br><br>
-    <p>{{user.id}}</p>
-    <p>{{user.screen_name}}</p>
-	<p>{{user.location}}</p>
-	<p>{{user.description}}</p>
-	<p>{{user.url}}</p>
-	<p>{{user.followers_count}}</p>
-	<p>{{user.friends_count}}</p>
-	<p>{{user.listed_count}}</p>
-	<p>{{user._json.created_at}}</p>
-	<p>{{user.favourites_count}}</p>
-	<p>{{user.verified}}</p>
-	<p>{{user.statuses_count}}</p>
-	<p>{{user.lang}}</p>
-	<p>{{user.status}}</p>
-	<p>{{user.default_profile}}</p>
-	<p>{{user.default_profile_image}}</p>
-	<p>{{user.has_extended_profile}}</p>
-	<p>{{user.entities.hashtags}}</p>
-	
+window.onload = function () {
 
+//Better to construct options first and then pass it as a parameter
+var options = {
+  animationEnabled: true,
+  title: {             
+  },
+  data: [              
+  {
+    // Change type to "doughnut", "line", "splineArea", etc.
+    color:'blue',
+    type: "column",
+    dataPoints: [
+      { label: "0",  y: {{graphdata['0']}}  },
+      { label: "1",  y: {{graphdata['1']}}  },
+      { label: "2", y: {{graphdata['2']}}  },
+      { label: "3", y: {{graphdata['3']}}  },
+      { label: "4", y: {{graphdata['4']}}  },
+      { label: "5", y: {{graphdata['5']}}  },
+      { label: "6", y: {{graphdata['6']}}  },
+      { label: "7", y: {{graphdata['7']}}  },
+      { label: "8", y: {{graphdata['8']}}  },
+      { label: "9", y: {{graphdata['9']}}  },
+      { label: "10", y: {{graphdata['10']}}  },
+      { label: "11", y: {{graphdata['11']}}  },
+      { label: "12", y: {{graphdata['12']}}  },
+      { label: "13",  y: {{graphdata['13']}}  },
+      { label: "14",  y: {{graphdata['14']}}  },
+      { label: "15",  y: {{graphdata['15']}}  },
+      { label: "16",  y: {{graphdata['16']}}  },
+      { label: "17",  y: {{graphdata['17']}}  },
+      { label: "18",  y: {{graphdata['18']}}  },
+      { label: "19",  y: {{graphdata['19']}}  },
+      { label: "20",  y: {{graphdata['20']}}  },
+      { label: "21",  y: {{graphdata['21']}}  },
+      { label: "22",  y: {{graphdata['22']}}  },
+      { label: "23",  y: {{graphdata['23']}}  }
+    ]
+  }
+  ]
+};
+
+var optionstwo = {
+  animationEnabled: true,
+  title: {             
+  },
+  data: [              
+  {
+    // Change type to "doughnut", "line", "splineArea", etc.
+    color:'blue',
+    type: "line",
+    dataPoints: dataarr
+      
+  }
+  ]
+};
+
+var optionsthree = {
+  animationEnabled: true,
+  title: {             
+  },
+  data: [              
+   {
+    // Change type to "doughnut", "line", "splineArea", etc.
+    color:'blue',
+    type: "line",
+    dataPoints: retweetsarr
+      
+  }
+  ]
+};
+
+$("#chartContainertime").CanvasJSChart(options);
+$("#chartContainerlikes").CanvasJSChart(optionstwo);
+$("#chartContainerretweets").CanvasJSChart(optionsthree);
+}
+</script>
 
     <!-- <img src="{{user.profile_image_url}}"> -->
 {% endblock content %}

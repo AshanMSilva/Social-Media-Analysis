@@ -1,7 +1,7 @@
 body {
   background: #fafafa;
   color: #333333;
-  margin-top: 5rem;
+  margin-top: 3.5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -50,6 +50,14 @@ a.article-title:hover {
   width: 65px;
   margin-right: 16px;
 }
+.twitter-img{
+  height: :200px;
+  width: 200px;
+}
+.home-img{
+  height: 100px;
+  width: 100px;
+}
 
 .article-metadata {
   padding-bottom: 1px;
@@ -83,4 +91,27 @@ a.article-title:hover {
 }
 .account-name {
   font-size: 1.2rem;
+}
+.jumbotron {
+  margin-top: 0px;
+}
+.mycarousal{
+  height: 400px;
+}
+.myfooter{
+  background-color: #5f788a;
+  margin-top: 0px;
+}
+.new-forum-modal-dialog{
+  max-width: 700px;
+}
+.new-forum-modal-body{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.footer-fonts{
+  color: white;
+}
+.footer-container{
+  margin-top: 10px;
 }
