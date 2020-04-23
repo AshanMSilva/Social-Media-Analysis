@@ -1,0 +1,11 @@
+[2232:9876:0421/002550.997:ERROR:browser_switcher_service.cc(238)] XXX Init()
+[2232:9876:0421/002554.994:INFO:CONSOLE(0)] "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2", source: chrome-search://local-ntp/local-ntp.html (0)
+[2232:9876:0421/002557.489:INFO:CONSOLE(0)] "[DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o", source: https://www.facebook.com/kavinga.lankari.5 (0)
+[2232:9876:0421/002557.921:INFO:CONSOLE(0)] "
+%cStop! font-family:helvetica; font-size:20px; font-size:50px; font-weight:bold; color:red; -webkit-text-stroke:1px black;", source:  (0)
+[2232:9876:0421/002557.921:INFO:CONSOLE(0)] "
+%cThis is a browser feature intended for developers. If someone told you to copy and paste something here to enable a Facebook feature or "hack" someone's account, it is a scam and will give them access to your Facebook account. font-family:helvetica; font-size:20px; ", source:  (0)
+[2232:9876:0421/002557.923:INFO:CONSOLE(0)] "
+%cSee https://www.facebook.com/selfxss for more information. font-family:helvetica; font-size:20px; ", source:  (0)
+[2232:9876:0421/002557.924:INFO:CONSOLE(0)] "
+%c ", source:  (0)

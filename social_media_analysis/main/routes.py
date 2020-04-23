@@ -3,6 +3,7 @@ from social_media_analysis.models import Post
 from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm, TweetForm
 from social_media_analysis.posts.forms import PostForm
 from social_media_analysis.users.forms import RegistrationForm, LoginForm
+from social_media_analysis.facebook.forms import AdForm
 
 main = Blueprint('main', __name__)
 
@@ -53,7 +54,7 @@ def twitter():
 		modalshow='close'
 		registerform = RegistrationForm()
 		if(registerform.validate_on_submit()==False and registerform.signup.data):
-			modalshow='registerformmodal'
+			modalshow='registerformmodal' 
 		if registerform.validate_on_submit() and registerform.signup.data:
 			username=registerform.username.data
 			email=registerform.email.data
@@ -104,7 +105,8 @@ def facebook():
 		email=registerform.email.data
 		password=registerform.password.data
 		return redirect(url_for('users.register', username=username, email=email, password=password))
-	return render_template('facebook.html', title='Facebook', registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+	form=AdForm()
+	return render_template('facebook.html', form=form,title='Facebook', registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 @main.route("/youtube", methods=['GET', 'POST'])
 def youtube():
