@@ -1,0 +1,7 @@
+api key -   
+
+https://www.youtube.com/redirect?q=https%3A%2F%2Fwww.googleapis.com%2Fyoutube%2Fv3%2Factivities%3Fpart%3Dsnippet%2CcontentDetails%26channelId%3DChannel_id%26key%3DAPI&v=AcUauzCn7RE&redir_token=fGP_1t3FIEqcoQsnbvRg2a63I4p8MTU4NDY0NTQxNkAxNTg0NTU5MDE2&event=video_description
+
+https://www.youtube.com/redirect?q=https%3A%2F%2Fwww.googleapis.com%2Fyoutube%2Fv3%2FcommentThreads%3Fpart%3Dsnippet%26allThreadsRelatedToChannelId%3DChannel_id%26key%3DYOUR_API_KEY&v=AcUauzCn7RE&redir_token=fGP_1t3FIEqcoQsnbvRg2a63I4p8MTU4NDY0NTQxNkAxNTg0NTU5MDE2&event=video_description
+
+https://www.youtube.com/redirect?q=https%3A%2F%2Fwww.googleapis.com%2Fyoutube%2Fv3%2FcommentThreads%3Fpart%3Dsnippet%26videoId%3DVideo_id%26key%3DYOUR_API_KEY&v=AcUauzCn7RE&redir_token=fGP_1t3FIEqcoQsnbvRg2a63I4p8MTU4NDY0NTQxNkAxNTg0NTU5MDE2&event=video_description
