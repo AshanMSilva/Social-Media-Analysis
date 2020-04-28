@@ -244,6 +244,19 @@
                           {{ tweetform.tweet(class="form-control form-control-lg") }}
                       {% endif %}
                   </div>
+                  <div class="form-group">
+                  	{{ tweetform.time.label(class="form-control-label") }}
+                      {% if tweetform.time.errors %}
+                          {{ tweetform.time(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in tweetform.time.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ tweetform.time(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
               </fieldset>
               <div class="form-group">
                   {{ tweetform.likespredict(class="btn btn-outline-info") }}
@@ -253,4 +266,18 @@
       </div>
     </div>
   </div>
+  
+  
 {% endblock content %}
+
+{% block scripts %}
+	<script type="text/javascript">
+	    $(window).on('load',function(){
+	        $('#{{predtweetmodal}}').modal('show');
+	        $('#{{hashtagmodal}}').modal('show');
+	        $('#{{botmodal}}').modal('show');
+	        $('#{{screennamemodal}}').modal('show');
+	    });
+
+	</script>
+{% endblock scripts %}

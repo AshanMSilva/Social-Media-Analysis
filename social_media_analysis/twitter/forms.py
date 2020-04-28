@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, TextAreaField
+from wtforms import SubmitField, StringField, TextAreaField,TimeField
 from wtforms.validators import DataRequired
 
 
@@ -18,4 +18,5 @@ class HashtagForm(FlaskForm):
 class TweetForm(FlaskForm):
     name = StringField('Screen Name', validators=[DataRequired()])
     tweet = TextAreaField('Tweet', validators=[DataRequired()])
+    time = TimeField('Time', validators=[DataRequired()])
     likespredict = SubmitField('predict')

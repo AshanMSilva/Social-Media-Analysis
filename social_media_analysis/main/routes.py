@@ -59,28 +59,41 @@ def twitter():
 			email=registerform.email.data
 			password=registerform.password.data
 			return redirect(url_for('users.register', username=username, email=email, password=password))
+		
 		botform = BotForm()
+		botmodal='close'
+		if(botform.validate_on_submit()==False and botform.submit.data):
+			botmodal='botdetectionmodel'
 		if botform.validate_on_submit() and botform.submit.data:
 			bot_account_name = botform.name.data
 			return redirect(url_for('twitter.bot_account_detection', name=bot_account_name))
 
 		hashtagform = HashtagForm()
+		hashtagmodal='close'
+		if(hashtagform.validate_on_submit()==False and hashtagform.hashtagsubmit.data):
+			hashtagmodal='hashtagmodel'
 		if hashtagform.validate_on_submit() and hashtagform.hashtagsubmit.data:
 			hashtag = hashtagform.hashtag.data
 			return redirect(url_for('twitter.hashtag_tweets', hashtag=hashtag))
 
+		screennamemodal='close'
 		screennameform = NameForm()
+		if(screennameform.validate_on_submit()==False and screennameform.search.data):
+			screennamemodal='searchforaccount'
 		if screennameform.validate_on_submit() and screennameform.search.data:
 			screen_name = screennameform.name.data
 			return redirect(url_for('twitter.user_details', name=screen_name))
-
+		predtweetmodal='close'
 		tweetform = TweetForm()
+		if(tweetform.validate_on_submit()==False and tweetform.likespredict.data):
+			predtweetmodal='likespredmodal'
 		if tweetform.validate_on_submit() and tweetform.likespredict.data:
 			screen_name = tweetform.name.data
 			tweet = tweetform.tweet.data
-			return redirect(url_for('twitter.user_tweets', name=screen_name, tweet=tweet))
+			time = tweetform.time.data
+			return redirect(url_for('twitter.user_tweets', name=screen_name, tweet=tweet, time=time))
 
-		return render_template('twitter.html', title='Twitter', tweetform=tweetform, screennameform=screennameform, botform=botform, hashtagform=hashtagform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+		return render_template('twitter.html', title='Twitter', tweetform=tweetform, screennameform=screennameform, botform=botform, hashtagform=hashtagform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, predtweetmodal=predtweetmodal, screennamemodal=screennamemodal, botmodal=botmodal, hashtagmodal=hashtagmodal)
 	except:
 		flash('Something went Wrong. Please check weather enterd details are correct', 'warning')
 		return redirect(url_for('main.home'))

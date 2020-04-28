@@ -295,8 +295,11 @@ def bot_account_detection(name):
 @twitter.route("/twitter/likesprediction/<string:name>")
 @login_required
 def user_tweets(name):
-    try:
+    #try:
         pred_text = request.args.get('tweet')
+        time = request.args.get('time')
+        hour = int(time[0:2])
+        minute = int(time[3:5])
         if(pred_text==None):
             flash('prdiction tweet text cannot be null','warning')
             return redirect(url_for('main.twitter'))
@@ -326,7 +329,12 @@ def user_tweets(name):
         texts=[]
         likes=[]
         retweetscount=[]
+        hours =[]
+        minutes =[]
         for tweet in tweets:
+            minutes.append(tweet.created_at.minute)
+            hours.append(tweet.created_at.hour)
+            #print(minutes)
             if(hasattr(tweet, 'retweeted_status')):
                 texts.append(tweet.retweeted_status.full_text)
             else:
@@ -343,9 +351,19 @@ def user_tweets(name):
         #     features.append(feature)
         # features = np.array(features)
         nplikes = np.array(likes)
+        nphours = np.array(hours)
+        npminutes = np.array(minutes)
         npretweetscount = np.array(retweetscount)
-        retweetmodel = tweets_likes_prediction.train_model(padded_sequences, npretweetscount)
-        model = tweets_likes_prediction.train_model(padded_sequences, nplikes)
+        features =[]
+        for i in range(0, len(hours)):
+            l = np.append(padded_sequences[i], hours[i])
+            l2 = np.append(l, minutes[i])
+            features.append(l2)
+        npfeatures = np.array(features)
+        #print(npfeatures[0])
+        #print(padded_sequences[0])
+        retweetmodel = tweets_likes_prediction.train_model(npfeatures, npretweetscount)
+        model = tweets_likes_prediction.train_model(npfeatures, nplikes)
         tweetcount=[]
         for i in range(0, len(likes)):
             tweetcount.append(i)
@@ -354,10 +372,13 @@ def user_tweets(name):
         maxlength = padded_sequences[0].size
         pred_padded_sequence = tweets_likes_prediction.get_padded_sequeces_with_maxlength(pred_sequence, maxlength)
         #result = pred_padded_sequence
-        result = model.predict(pred_padded_sequence)
-        retweet_result= retweetmodel.predict(pred_padded_sequence)
+        pred_padded_sequence_with_hour = np.append(pred_padded_sequence[0],hour)
+        pred_padded_sequence_with_minute = np.append(pred_padded_sequence_with_hour,minute)
+        pred_padded_sequence_with_time = np.array([pred_padded_sequence_with_minute])
+        result = model.predict(pred_padded_sequence_with_time)
+        retweet_result= retweetmodel.predict(pred_padded_sequence_with_time)
         
         return render_template('user_tweets.html',result=result, retweet_result=retweet_result, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, user=user, pred_text=pred_text)
-    except:
-        flash('Something went Wrong. Please check whether enterd details are correct','warning')
-        return redirect(url_for('main.twitter'))
+    #except:
+        #flash('Something went Wrong. Please check whether enterd details are correct','warning')
+        #return redirect(url_for('main.twitter'))
