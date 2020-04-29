@@ -295,7 +295,7 @@ def bot_account_detection(name):
 @twitter.route("/twitter/likesprediction/<string:name>")
 @login_required
 def user_tweets(name):
-    #try:
+    try:
         pred_text = request.args.get('tweet')
         time = request.args.get('time')
         hour = int(time[0:2])
@@ -379,6 +379,6 @@ def user_tweets(name):
         retweet_result= retweetmodel.predict(pred_padded_sequence_with_time)
         
         return render_template('user_tweets.html',result=result, retweet_result=retweet_result, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, user=user, pred_text=pred_text)
-    #except:
-        #flash('Something went Wrong. Please check whether enterd details are correct','warning')
-        #return redirect(url_for('main.twitter'))
+    except:
+        flash('Something went Wrong. Please check whether enterd details are correct','warning')
+        return redirect(url_for('main.twitter'))
