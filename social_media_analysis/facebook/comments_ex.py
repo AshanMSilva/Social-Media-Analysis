@@ -35,5 +35,5 @@ with open("C:/Users/Dane/Desktop/(9) Campus Set Eka_කැම්පස් අප
             comments.append([container_small.text,profile_name,profile_link,lnk,imojies])
         except:
             x='s'
-    print (comments[6])
+    # print (comments[6])
 # print (pos_imojies['1f4aa'])

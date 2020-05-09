@@ -36,7 +36,7 @@
 				<div class="list-group">
 				  <a href="{{url_for('facebook.facebookAd')}}" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#adpredictmodel" >Advertisements Analysis</a>
 				  <a href="#" class="list-group-item list-group-item-action"  data-toggle="modal" data-target="#sentimentmodel">Comments Analysis</a>
-				  <a href="{{url_for('facebook.fblikes') }}" class="list-group-item list-group-item-action" data-toggle="modal" >Likes Count Prediction</a>
+				  <a href="{{url_for('facebook.checkex') }}" >Likes Count Prediction</a>
 				  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
 				</div>
 			</div>
@@ -181,6 +181,35 @@
 		  </div>
 		<!-- end of sentiment form -->
 
+
+		<!-- bot form-->
+		<div class="modal fade" id="botdetectionmodel" tabindex="-1" role="dialog" aria-labelledby="botdetectionmodel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
+					<form action="/bot" method="post" enctype="multipart/form-data">
+						<fieldset class="form-group">
+							<legend class="border-bottom mb-4">Detect Bot Accounts</legend>
+							<div class="form-group">
+								<label for="link" class="form-control-label">Profile Link :</label> 
+								<input type="text" name="link"class="form-control form-control-lg" >
+							</div>
+						</fieldset>
+						<div class="form-group">
+							<button type="submit" class="btn btn-outline-info">Ditect</button> 
+						</div>
+
+					</form>
+							
+				</div>
+				</div>
+			</div>
+			</div>
 
 		
 {% endblock content %}

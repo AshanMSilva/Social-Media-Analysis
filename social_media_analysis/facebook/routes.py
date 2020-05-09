@@ -33,6 +33,7 @@ from nltk.stem.porter import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer 
 from social_media_analysis.codes.FacebookCodes.post_like_prediction import LikePrediction 
 from social_media_analysis.codes.FacebookCodes.ad_clicks_prediction import AdPrediction,AdImpressionPrediction,BestSolutions
+from social_media_analysis.codes.FacebookCodes.bot_detection import BotAccountDetection
 
 import operator 
 facebook = Blueprint('facebook', __name__)
@@ -376,3 +377,56 @@ def fbAdClicksPredict():
     best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(impre_final,prediction,impre_prediction),bestSolutions.getBestWeekDay(final,prediction)    ]
     form=AdForm()
     return render_template('facebook_ad_display.html',form=form,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, results={'impressions':impre_output,'clicks':output},best_results=best_results )
+
+@facebook.route('/checkex')
+def checkex():
+    import time
+    import os
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.chrome.options import Options
+    d = os.getenv('CHROMEDRIVER')
+    chrome_options = Options()
+    chrome_options.add_argument("--user-data-dir=chrome-data")
+    driver = webdriver.Chrome(d,options=chrome_options)
+    chrome_options.add_argument("user-data-dir=chrome-data") 
+    driver.get('https://www.facebook.com')
+    user = 'silva.mkc510@gmailcom'
+    pwd = 'Silva.mkc510#'
+    assert "Facebook" in driver.title
+    time.sleep(5) # So i can see something!
+    elem = driver.find_element_by_id("email")
+    elem.send_keys(user)
+    time.sleep(5) # So i can see something!
+    elem = driver.find_element_by_id("pass")
+    elem.send_keys(pwd)
+    time.sleep(5) # So i can see something!
+    elem.send_keys(Keys.RETURN)
+
+@facebook.route('/bot', methods=['POST'])
+def bot():
+        #common ligin and signin routes
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='registerformmodal' 
+    if registerform.validate_on_submit() and registerform.signup.data:
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
+    ################################
+    profile_link=request.form["link"]
+    detection=BotAccountDetection()
+    info=detection.get_info(profile_link)
+    form=AdForm()
+    return render_template('facebook_bot_detection.html',form=form,bot_info=info ,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
