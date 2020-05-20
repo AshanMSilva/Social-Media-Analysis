@@ -46,6 +46,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user, remember=remember)
             next_page = request.args.get('next')
+            flash('Login Successful. Welcome to our Social Media Analysis Website', 'success')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
@@ -139,6 +140,10 @@ def user_posts(username):
 @users.route("/user/<string:username>/comments")
 def user_comments(username):
     try:
+        loginmodalshow='close'
+        loginform = LoginForm()
+        if(loginform.validate_on_submit()==False and loginform.login.data):
+            loginmodalshow='loginformmodal'
         modalshow='close'
         registerform = RegistrationForm()
         if(registerform.validate_on_submit()==False and registerform.signup.data):
@@ -153,7 +158,7 @@ def user_comments(username):
         comments = Comment.query.filter_by(comment_author=user)\
             .order_by(Comment.date_posted.desc())\
             .paginate(page=page, per_page=5)
-        return render_template('user_comments.html', comments=comments, user=user, registerform=registerform, modalshow=modalshow)
+        return render_template('user_comments.html', comments=comments, user=user, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
     except:
         flash('Something went Wrong. Please check whether enterd details are correct','warning')
         return redirect(url_for('main.home'))
@@ -185,7 +190,7 @@ def reset_request():
             user = User.query.filter_by(email=form.email.data).first()
             send_reset_email(user)
             flash('An email has been sent with instructions to reset your password.', 'info')
-            return redirect(url_for('users.login'))
+            return redirect(url_for('main.home'))
         return render_template('reset_request.html', title='Reset Password', form=form, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
     except:
         flash('Something went Wrong. Please check whether enterd details are correct','warning')
@@ -224,7 +229,7 @@ def reset_token(token):
             user.password = hashed_password
             db.session.commit()
             flash('Your password has been updated! You are now able to log in', 'success')
-            return redirect(url_for('users.login'))
+            return redirect(url_for('main.home'))
         return render_template('reset_token.html', title='Reset Password', form=form, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
     except:
         flash('Something went Wrong. Please check whether enterd details are correct','warning')
