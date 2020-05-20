@@ -323,6 +323,8 @@ def fbAdClicksPredict():
     ################################
    
     prediction=AdPrediction()
+    # if(prediction.validate_on_submit()==False):
+        
     day=request.form["weekday"]
     gender=request.form["gender"]
     txt =request.form["adText"]
@@ -427,6 +429,11 @@ def bot():
     ################################
     profile_link=request.form["link"]
     detection=BotAccountDetection()
-    info=detection.get_info(profile_link)
+    try:
+        info=detection.get_info(profile_link)
+    except:
+        flash('The link you entered is not valid!', 'warning')
+        return redirect(url_for('main.facebook'))
+    values=detection.calculate(info)
     form=AdForm()
-    return render_template('facebook_bot_detection.html',form=form,bot_info=info ,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    return render_template('facebook_bot_detection.html',form=form,bot_info=info ,cal_values=values, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)

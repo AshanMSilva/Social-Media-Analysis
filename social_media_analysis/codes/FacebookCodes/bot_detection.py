@@ -1,6 +1,6 @@
 import browser_cookie3
 import requests
-
+import time
 class BotAccountDetection():
     def get_first_tag(self,tag,unique,inputt):
         unique_start_index=int(inputt.find(unique))
@@ -253,6 +253,8 @@ class BotAccountDetection():
     def find_tag_photo_count(self,url,cj):
         edu_url=url+'/photos_of'
         req = requests.get(edu_url, cookies=cj)
+
+        # time.sleep(5)
         w=req.text
         details={}
         photo_container=self.get_element('ul',['id="u_0_3o"'],w)
@@ -269,3 +271,89 @@ class BotAccountDetection():
         photo_count=self.find_tag_photo_count(url,cj)
         info={**basic_info,**education_details,**relationship_details,**photo_count}
         return info
+
+    def calculate(self,info_dict):
+        neg=0
+        pos=0
+        check=[]
+        #address
+        if('Address' in info_dict):
+            pos+=20
+            check.append('add ok')
+        else:
+            neg+=20
+
+        #education/work
+        edu=0
+        edu_found=False
+        work_found=False
+        if('Education' in info_dict):
+            if(info_dict['Education'][0]!=None):
+                edu+=len(info_dict['Education'])*10
+                check.append('edu ok')
+                edu_found=True
+        if('Work' in info_dict):
+            if(info_dict['Work'][0]!=None):
+                edu+=len(info_dict['Work'])*10
+                check.append('work ok')
+                work_found=True
+        if(edu_found==False and work_found==False):
+            neg+=20
+        else:
+            if(edu<=20):
+                pos+=edu
+            else:
+                pos+=20
+
+        #family
+        if('Family Members' in info_dict):
+            num=info_dict['Family Members'][0]*10
+            if(num>0):
+                if(num<=20):
+                    check.append('fam'+str(num))
+                    pos+=num
+                else:
+                    pos+=20
+            else:
+                neg+=20
+        # tagged
+        if('tagged_photo_count' in info_dict):
+            num=info_dict['tagged_photo_count']
+            if(num>0):
+                # if(num<=20):
+                #     check.append('tag'+str(num))
+                #     pos+=num
+                # else:
+                pos+=20
+            else:
+                neg+=20
+
+        #others
+        other=0
+        if('Birthday' in info_dict):
+            other+=5
+        
+        if('Gender' in info_dict):
+            other+=5
+        if('Religious Views' in info_dict):
+            other+=5
+        if('Interested In' in info_dict):
+            other+=5
+
+        if('Mobile Phones' in info_dict):
+            other+=5
+        if(other>0):
+            if(other<20):
+                pos+=other
+                neg+=(20-other)/2
+            else:
+                pos+=20
+        else:
+            neg+=20
+        check.append('other'+str(other))
+        
+
+        neg_p=neg*100/(pos+neg)
+        pos_p=pos*100/(pos+neg)
+        res={'pos':pos_p,'neg':neg_p,'check':check}
+        return res

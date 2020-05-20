@@ -1,10 +1,66 @@
 {% extends "layout.html" %}
 {% block content %}
+<script>
+    window.onload = function() {
+
+    var chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        title: {
+            text: "Bot Account Detection"
+        },
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{label} {y}",
+            dataPoints: [
+                {y: parseFloat('{{ cal_values["pos"] }}'), label: "Real"},
+                {y: parseFloat('{{ cal_values["neg"] }}'), label: "Fake"}
+
+            ]
+        }]
+    });
+    chart.render();
+    
+    }
+    </script>
 
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-6">
-            <h1> {{bot_info}}</h1>
+            <!-- <h1> {{bot_info}}</h1> -->
+            <!-- <br> -->
+            <!-- <br> -->
+            <!-- <h1>{{ cal_values }}</h1> -->
+            <br><br>
+            <div id="chartContainer" style="height: 300px; width: 100%;" ></div>
+            <br><br>
+            <hr>
+            <br><br>
+            <div>
+                <h4>To calculate these values, the system considered, completeness of providing data to the profile. Such as,</h4>
+                <br>
+                <h5>Work and education details </h5> 
+                <h5>Location details</h5>
+                <h5>Contact infomation</h5>
+                <h5>basic infomation</h5>
+                <h5>Family and Relationship details</h5>
+                <h5>Number of friends</h5>
+                <h5>Tagged photos</h5>
+                
+                <!-- <div class="col-12 col-md-6">
+                    <h4>Here's how it works</h4>
+                    <p>
+                        We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.
+                    </p>
+                    <p>
+                        We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!
+                    </p>
+                </div> -->
+                <!-- , , , family and relationship details, Number of friends, Tagged photos  -->
+            </div>
+            <br><br>
+            <hr>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-3">

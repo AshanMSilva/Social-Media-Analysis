@@ -1,6 +1,5 @@
 
 import browser_cookie3
-from bs4 import BeautifulSoup
 import requests
 
 def get_first_tag(tag,unique,inputt):
