@@ -24,10 +24,13 @@
 			<div class="col-12 col-md-6">
 				<h4>Here's how it works</h4>
 				<p>
-					We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.
-				</p>
+					We analyze the given advertisement details and provide tips to increase the clicks count.
+				</p> 
 				<p>
-					We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!
+					We analyze the comments of your post and show each of them as positive, negative or neutral.
+				</p> 
+				<p>					
+					We analyse the information of your friend's Facebook account and detect the profile as fake or not.
 				</p>
 			</div>
 			<div class="col-12 col-md-6">
@@ -36,7 +39,7 @@
 				<div class="list-group">
 				  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#adpredictmodel" >Advertisements Analysis</a>
 				  <a href="#" class="list-group-item list-group-item-action"  data-toggle="modal" data-target="#sentimentmodel">Comments Analysis</a>
-				  <a href="{{url_for('facebook.checkex') }}" >Likes Count Prediction</a>
+				  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#likecountmdel">Bot detection</a>
 				  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
 				</div>
 			</div>
@@ -46,102 +49,102 @@
 	</div>
 
 
-	<!-- ad predict form -->
+	<!-- ad predict form -->  
 	<div class="modal fade" id="adpredictmodel" tabindex="-1" role="dialog" aria-labelledby="adpredictmodel" aria-hidden="true">
 		<div class="modal-dialog">
 		  <div class="modal-content">
 			<div class="modal-header">
+				<h5 class="modal-title" id="adpredictmodel">Predict Clicks for Your Advertisement</h5>
 			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			  </button>
 			</div>
 			<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
-	
-				<form method="POST" action="/fbAdClicksPredict">
-					{{ form.hidden_tag() }}
+				<form method="POST" action="">
+
+					{{ adform.hidden_tag() }}
 					<fieldset class="form-group">
-						<legend class="border-bottom mb-4">Predict Clicks for Your Advertisement</legend>
 						<div class="form-group">
-							{{ form.gender.label(class="form-control-label") }}
-							{% if form.gender.errors %}
-								{{ form.gender(class="form-control form-control-lg is-invalid") }}
+							{{ adform.gender.label(class="form-control-label") }}
+							{% if adform.gender.errors %}
+								{{ adform.gender(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.gender.errors %}
+									{% for error in adform.gender.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 							{% else %}
-								{{ form.gender(class="form-control form-control-lg") }}
+								{{ adform.gender(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
 						<div class="form-group">
-							{{ form.adText.label(class="form-control-label") }}
-							{% if form.adText.errors %}
-								{{ form.adText(class="form-control form-control-lg is-invalid") }}
+							{{ adform.adText.label(class="form-control-label") }}
+							{% if adform.adText.errors %}
+								{{ adform.adText(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.adText.errors %}
+									{% for error in adform.adText.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 							{% else %}
-								{{ form.adText(class="form-control form-control-lg") }}
+								{{ adform.adText(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
 						<div class="form-group">
-							{{ form.weekday.label(class="form-control-label") }}
-							{% if form.weekday.errors %}
-								{{ form.weekday(class="form-control form-control-lg is-invalid") }}
+							{{ adform.weekday.label(class="form-control-label") }}
+							{% if adform.weekday.errors %}
+								{{ adform.weekday(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.weekday.errors %}
+									{% for error in adform.weekday.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 							{% else %}
-								{{ form.weekday(class="form-control form-control-lg") }}
+								{{ adform.weekday(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
 						<div class="form-group">
-							{{ form.minAge.label(class="form-control-label") }}
-							{% if form.minAge.errors %}
-								{{ form.minAge(class="form-control form-control-lg is-invalid") }}
+							{{ adform.minAge.label(class="form-control-label") }}
+							{% if adform.minAge.errors %}
+								{{ adform.minAge(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.minAge.errors %}
+									{% for error in adform.minAge.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 							{% else %}
-								{{ form.minAge(class="form-control form-control-lg") }}
+								{{ adform.minAge(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
 						<div class="form-group">
-							{{ form.maxAge.label(class="form-control-label") }}
-							{% if form.maxAge.errors %}
-								{{ form.maxAge(class="form-control form-control-lg is-invalid") }}
+							{{ adform.maxAge.label(class="form-control-label") }}
+							{% if adform.maxAge.errors %}
+								{{ adform.maxAge(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.maxAge.errors %}
+									{% for error in adform.maxAge.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 							{% else %}
-								{{ form.maxAge(class="form-control form-control-lg") }}
+								{{ adform.maxAge(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
 						<div class="form-group">
-							{{ form.adSpends.label(class="form-control-label") }}
-							{% if form.adSpends.errors %}
-								{{ form.adSpends(class="form-control form-control-lg is-invalid") }}
+							{{ adform.adSpends.label(class="form-control-label") }}
+							{% if adform.adSpends.errors %}
+								{{ adform.adSpends(class="form-control form-control-lg is-invalid") }}
 								<div class="invalid-feedback">
-									{% for error in form.adSpends.errors %}
+									{% for error in adform.adSpends.errors %}
 										<span>{{ error }}</span>
 									{% endfor %}
 								</div>
 							{% else %}
-								{{ form.adSpends(class="form-control form-control-lg") }}
+								{{ adform.adSpends(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
 					</fieldset>
 					<div class="form-group">
-						{{ form.submit(class="btn btn-outline-info") }}
+						{{ adform.submit(class="btn btn-outline-info") }}
 					</div>
 				</form>
 						
@@ -151,24 +154,32 @@
 	  </div>
 	<!-- end of ad predict function -->
 
+
 		<!-- sentiment form-->
 		<div class="modal fade" id="sentimentmodel" tabindex="-1" role="dialog" aria-labelledby="sentimentmodel" aria-hidden="true">
 			<div class="modal-dialog">
 			  <div class="modal-content">
 				<div class="modal-header">
+				<h3 class="modal-title" id="sentimentmodel">Analyze Comments of Your Post</h3>
 				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				  </button>
 				</div>
 				<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
 					<form action="/sentiment" method="post" enctype="multipart/form-data">
-						<fieldset class="form-group">
-							<legend class="border-bottom mb-4">Analyze Comments of Your Post</legend>
+						<fieldset class="form-group">  
 							<div class="form-group">
 								<label for="upload" class="form-control-label">HTML File :</label> 
 								<input type="file" name="upload"class="form-control form-control-lg" >
 							</div>
 						</fieldset>
+						<h5>Upload the HTML script file, that contains all the comments of this post.  </h5>
+						<br>
+						<p>Tips for donwloading the file:</p>
+						<p>Click on the time stamp of the post. <br>
+							View all comments. <br>
+							Save the page.</p>
+						<br>
 						<div class="form-group">
 							<button type="submit" class="btn btn-outline-info">Analyse</button> 
 						</div>
@@ -182,35 +193,62 @@
 		<!-- end of sentiment form -->
 
 
-		<!-- bot form-->
-		<div class="modal fade" id="botdetectionmodel" tabindex="-1" role="dialog" aria-labelledby="botdetectionmodel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
-					<form action="/bot" method="post" enctype="multipart/form-data">
-						<fieldset class="form-group">
-							<legend class="border-bottom mb-4">Detect Bot Accounts</legend>
-							<div class="form-group">
-								<label for="link" class="form-control-label">Profile Link :</label> 
-								<input type="text" name="link"class="form-control form-control-lg" >
-							</div>
-						</fieldset>
-						<div class="form-group">
-							<button type="submit" class="btn btn-outline-info">Ditect</button> 
-						</div>
+	<!-- bot detection form -->  
+	<div class="modal fade" id="botdetectionmodel" tabindex="-1" role="dialog" aria-labelledby="botdetectionmodel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="botdetectionmodel">Bot Account Prediction</h4>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
+				<form method="POST" action="">
 
-					</form>
-							
-				</div>
-				</div>
+					{{ botform.hidden_tag() }}
+					<fieldset class="form-group">
+						<div class="form-group">
+							{{ botform.link.label(class="form-control-label") }}
+							{% if botform.link.errors %}
+								{{ botform.link(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in botform.link.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ botform.link(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</fieldset>
+					<h5>Before using this feature, you have to login with your Facebook account.</h5>
+					<p>Click <a href="https://www.facebook.com" target="_blank">here</a> to login with your Facebook account</p>
+					<br>
+					<div class="form-group">
+						{{ botform.submit(class="btn btn-outline-info") }}
+					</div>
+				</form>
+						
 			</div>
-			</div>
-	<!-- end of bot form-->
+		  </div>
+		</div>
+	  </div>
+	<!-- end of bot detection function -->
+
+
 		
 {% endblock content %}
 
+
+{% block scripts %}
+	<script type="text/javascript">
+	    $(window).on('load',function(){
+	        $('#{{adpredict_model}}').modal('show');
+	        $('#{{sentiment_model}}').modal('show');
+	        // $('#{{botmodal}}').modal('show');
+	        $('#{{botdetection_model}}').modal('show');
+	    });
+
+	</script>
+{% endblock scripts %}

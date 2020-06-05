@@ -154,7 +154,6 @@ def get_a_value_within_a_tag(tag,inputt): #this function get tag value within a 
 
 
 
-cj = browser_cookie3.chrome()
 # r = requests.get(url, cookies=cj)
 
 
@@ -268,7 +267,7 @@ def find_tag_photo_count(url):
     return details
 # https://www.facebook.com/dilshan.lakshaka/friends
 
-# url='https://www.facebook.com/sanduniayeshika.silva'
+url='https://www.facebook.com/sanduniayeshika.silva'
 # url = 'https://www.facebook.com/chinthakau'
 # url = 'https://www.facebook.com/dilshan.lakshaka'
 # url='https://www.facebook.com/thanuja.malshan'
@@ -281,12 +280,17 @@ def find_tag_photo_count(url):
 # # find_relationship_details(url)
 # get_friend_count(url)
 
-def get_info(url):
-    basic_info=find_basic_info(url)
-    education_details=find_education_details(url)
-    relationship_details=find_relationship_details(url)
-    photo_count=find_tag_photo_count(url)
-    info={**basic_info,**education_details,**relationship_details,**photo_count}
-    return info
+# cj = browser_cookie3.chrome()
+# def get_info(url):
+#     basic_info=find_basic_info(url)
+#     education_details=find_education_details(url)
+#     relationship_details=find_relationship_details(url)
+#     photo_count=find_tag_photo_count(url)
+#     info={**basic_info,**education_details,**relationship_details,**photo_count}
+#     return info
+#     # return basic_info
 
+
+
+# print (get_info(url))
 # get_a_value_within_a_tag('a',el)   

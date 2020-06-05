@@ -10,6 +10,7 @@ import xgboost as xgb
 from sklearn.metrics import mean_squared_error
 import pickle
 
+
 full=pd.read_csv('facebookAds.csv', sep=',', na_values='NaN')
 
 toDrop=['AdID','LandingPage','Location','Placements','AdSpendCurrency','SourceFile','SourceZip','pages']
@@ -24,6 +25,7 @@ count=modified['AdText'].copy()
 clicks_copy=modified['Clicks'].copy()
 impre_copy=modified['Impressions'].copy()
 spend_copy=modified['AdSpend'].copy()
+
 for i in range(len(modified)):  
     
     d=modified["CreationDate"][i]
@@ -76,7 +78,7 @@ modified['male']=((modified['Gender']=="Male")).astype(int)
 modified['female']=((modified['Gender']=="Female")).astype(int)
 modified['all']=((modified['Gender']=="All")).astype(int)
 
-modified['TextWordCount']= count.astype(np.int64)
+modified['AdTextRes']= count.astype(np.int64)
 modified["startAge"]=starts.astype(np.int64)
 modified["endAge"]=ends.astype(np.int64)
 
@@ -94,6 +96,8 @@ X_train = X_train.drop(['AdClicks'],axis=1)
 
 y_train_impre=modified['AdImpressions']
 X_train_impre=modified.drop(['AdImpressions','AdClicks'],axis=1)
+
+
 
 model_xgb= xgb.XGBRegressor(max_depth=6, learning_rate=0.01, n_estimators=2000)
 model_xgb_impre= xgb.XGBRegressor(max_depth=6, learning_rate=0.01, n_estimators=2000)

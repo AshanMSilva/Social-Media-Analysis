@@ -31,7 +31,7 @@ def init_database():
     # Create the database and the database table
     db.create_all()
 
-    # Insert user data
+    # Insert user data      
     user1 = User(username='ashan', email='patkennedy79@gmail.com', password='FlaskIsAwesome')
     user2 = User(username='silva', email='kennedyfamilyrecipes@gmail.com', password='PaSsWoRd')
     db.session.add(user1)

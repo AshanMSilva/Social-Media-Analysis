@@ -24,6 +24,8 @@ class BotAccountDetection():
         return (inputt[start_index:end_index+1])
     def get_parent_level_elements(self,tag,parent_tag,inputt):
         elements=[]
+        if(inputt==None):
+            return []
         start_index=len('<'+parent_tag)
         full_length=len(inputt)
         while(True):
@@ -103,6 +105,10 @@ class BotAccountDetection():
                         break
                     else:
                         i+=1
+
+                #check if found the correct tag
+                if(inputt[start_index:start_index+len('<'+tag)]!='<'+tag):
+                    return None
                 #find end index
                 temp_start=start_index+len('<'+tag)
                 found=1
@@ -129,6 +135,8 @@ class BotAccountDetection():
             print('cannot get the exact element')
 
     def get_a_value_within_a_tag(self,tag,inputt): #this function get tag value within a given input (not need to get exact tag)
+        if(inputt==None):
+            return None
         tag_start_index=int(inputt.find('<'+tag))
         # value start index
         i=1 
@@ -148,7 +156,7 @@ class BotAccountDetection():
                     i+=1
             return (inputt[value_start_index:value_end_index])
         except:
-            return
+            return None
         
 
 
@@ -183,27 +191,26 @@ class BotAccountDetection():
             req = requests.get(edu_url, cookies=cj)
             w=req.text
             category_containers=self.get_series_of_same_elememts('div',['class="_4qm1"'],w,4)
+
             for category_container in category_containers:
                 category_container_small=self.get_element('ul',['class="uiList fbProfileEditExperiences _4kg _4ks"'],category_container)    
                 # print ("category")
-                # print(category_container)
                 key_value_containers=self.get_parent_level_elements('li','ul',category_container_small)    
                 for key_value_container in key_value_containers:
+                    # break
                     key_container=self.get_element('div',['class="_4bl7 _3xdi _52ju"'],key_value_container)
                     key=self.get_a_value_within_a_tag('span',key_container)
                     details[key]=''
                     value_container=self.get_element('ul',['class="uiList _4kg"'],key_value_container)
-                    if(value_container==''):
+                    if(value_container==None):
                         value_container=self.get_element('div',['class="_4bl7 _pt5"'],key_value_container)
                     
                     value=self.get_a_value_within_a_tag('span',value_container)
-                    if(value==''):
+                    if(value==None):
                         value=self.get_a_value_within_a_tag('li',value_container)
-                        if(value==''):
+                        if(value==None):
                             value=self.get_a_value_within_a_tag('a',value_container)
                     details[key]=value
-
-                            # print('NO VALUE')
             return details
             
 
@@ -222,9 +229,11 @@ class BotAccountDetection():
             # print(key_container)
             details[key]=[[],[]]
             # print(category_container)
-            value_containers=self.get_parent_level_elements('li','ul',category_container_small)    
+            value_containers=self.get_parent_level_elements('li','ul',category_container_small)  
+            if(value_containers==[]):
+                return details
             check=self.get_element('span',['class="_50f8 _2iem"'],value_containers[0])
-            if(check!=''):
+            if(check!=None):
                 details[key][0]=0
             else:
                 details[key][0]=len(value_containers)
@@ -233,7 +242,7 @@ class BotAccountDetection():
                     value_container=self.get_element('div',['class="fsm fwn fcg"'],value_container_large)
                     # print(value_container)
                     value=self.get_a_value_within_a_tag('span',value_container)
-                    if(value==''):
+                    if(value==None):
                         value=self.get_a_value_within_a_tag('a',value_container)
                         
                     details[key][1].append(value)  
@@ -256,8 +265,9 @@ class BotAccountDetection():
 
         # time.sleep(5)
         w=req.text
+        # print (w)
         details={}
-        photo_container=self.get_element('ul',['id="u_0_3o"'],w)
+        photo_container=self.get_element('ul',['class="fbStarGrid'],w)
         # print(photo_container)
         photos=self.get_parent_level_elements('li','ul',photo_container)
         details['tagged_photo_count']=len(photos)

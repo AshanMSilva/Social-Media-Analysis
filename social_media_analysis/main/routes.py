@@ -3,7 +3,7 @@ from social_media_analysis.models import Post
 from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm, TweetForm
 from social_media_analysis.posts.forms import PostForm
 from social_media_analysis.users.forms import RegistrationForm, LoginForm
-from social_media_analysis.facebook.forms import AdForm
+from social_media_analysis.facebook.forms import AdForm,FbBotForm
 
 main = Blueprint('main', __name__)
 
@@ -118,8 +118,42 @@ def facebook():
 		email=registerform.email.data
 		password=registerform.password.data
 		return redirect(url_for('users.register', username=username, email=email, password=password))
-	form=AdForm()
-	return render_template('facebook.html', form=form,title='Facebook', registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+
+	#### handle facebook advertisements
+	adform = AdForm()
+	adpredict_model='close'
+	if(adform.validate_on_submit()==False and adform.submit.data):
+		adpredict_model='adpredictmodel'
+	if adform.validate_on_submit() and adform.submit.data:
+		gender = adform.gender.data
+		adText = adform.adText.data
+		weekday = adform.weekday.data
+		minAge = adform.minAge.data
+		maxAge = adform.maxAge.data
+		adSpends = adform.adSpends.data 
+		return redirect(url_for('facebook.fbAdClicksPredict',gender=gender,adText=adText,weekday=weekday,minAge=minAge,maxAge=maxAge,adSpends=adSpends))
+
+	### handle senetiments
+	# sentiform=SentimentForm()
+	# sentiment_model='close' 
+	# if(sentiform.validate_on_submit()==False and sentiform.submit.data):
+	# 	sentiment_model='sentimentmodel'
+	# if sentiform.validate_on_submit() and sentiform.submit.data:
+	# 	file_up = sentiform.upload
+	# 	return redirect(url_for('facebook.sentiment',file_up=file_up))
+
+	
+	### handle bot detection
+	botform=FbBotForm()
+	botdetection_model='close'
+	if(botform.validate_on_submit()==False and botform.submit.data):
+		botdetection_model='botdetectionmodel'
+	if botform.validate_on_submit() and botform.submit.data:
+		link = botform.link.data
+		return redirect(url_for('facebook.bot',link=link))
+
+
+	return render_template('facebook.html', adform=adform,botform=botform, title='Facebook', registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow,adpredict_model=adpredict_model)
 
 @main.route("/youtube", methods=['GET', 'POST'])
 def youtube():
