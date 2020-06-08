@@ -1,5 +1,6 @@
 import pickle
 import pandas as pd 
+import random
 
 ###sentiment
 from nltk.sentiment.vader import SentimentIntensityAnalyzer 
@@ -139,20 +140,22 @@ class BestSolutions():
         return prev
 
     def adspend_check(self,prev):
-        stt=prev[0]+200
+        stt=prev[0]+300
         for i in range(1,len(prev)):
-            gap=prev[i]-prev[i-1]
-            if(gap<0):
-                prev[i]=prev[i-1]
+
 
             if(stt<prev[i]):
                 # print(prev[i])
-                next_correct_index=len(prev)-1
+                next_correct_index=i-1
                 for j in range(i+1,len(prev)):
                     if(stt>prev[j]):
                         next_correct_index=j
                         break
                 prev[i]=(prev[i-1]+prev[next_correct_index])/2
+        for i in range(1,len(prev)):
+            gap=prev[i]-prev[i-1]
+            if(gap<0):
+                prev[i]=prev[i-1]+random.choice([1])
                 
         return prev
             
