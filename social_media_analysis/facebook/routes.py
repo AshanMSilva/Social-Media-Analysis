@@ -67,6 +67,7 @@ def sentiment():
 
     neg_imojies={'1f928': 0.3, '1f60f': 0.3, '1f612': 0.3, '1f61e': 0.3, '1f614': 0.3, '1f61f': 0.3, '1f615': 0.3, '1f641': 0.3, '2639': 0.3, '1f623': 0.3, '1f616': 0.3, '1f62b': 0.3, '1f629': 0.3, '1f97a': 0.3, '1f622': 0.3, '1f62d': 0.3, '1f624': 0.3, '1f620': 0.3, '1f621': 0.3, '1f92c': 0.3, '1f92f': 0.3, '1f633': 0.3, '1f975': 0.3, '1f976': 0.3, '1f631': 0.3, '1f628': 0.3, '1f630': 0.3, '1f625': 0.3, '1f613': 0.2, '1f644': 0.3, '1f62f': 0.3, '1f627': 0.3, '1f62e': 0.3, '1f632': 0.3, '1f634': 0.3, '1f924': 0.3, '1f62a': 0.3, '1f635': 0.3, '1f910': 0.3, '1f974': 0.3, '1f922': 0.3, '1f92e': 0.3, '1f927': 0.3, '1f637': 0.3, '1f915': 0.3, '1f920': 0.3, '1f608': 0.3, '1f47f': 0.3, '1f383': 0.1, '1f63a': 0.3, '1f494': 0.3}
     
+    # if(request.files['upload']):
     f=request.files['upload']
 
     data = f.read()
@@ -199,6 +200,7 @@ def sentiment():
     botdetection_model='close'
     if(botform.validate_on_submit()==False and botform.submit.data):
         botdetection_model='botdetectionmodel'
+        # return redirect(url_for('main.facebook'))
     if botform.validate_on_submit() and botform.submit.data:
         link = botform.link.data
         return redirect(url_for('facebook.bot',link=link))
@@ -424,7 +426,7 @@ def bot():
 
         info=detection.get_info(profile_link)
     except:
-        flash('The link you entered is not valid!', 'warning')
+        flash('Check the link you entered or check your connection!', 'warning')
         return redirect(url_for('main.facebook'))
     values=detection.calculate(info)
     if(values['neg']==100):
