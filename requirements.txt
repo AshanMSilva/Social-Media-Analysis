@@ -20,16 +20,25 @@ Werkzeug==0.14.1
 WTForms==2.1
 
 # facebook requirements
+
+flask_wtf
+wtforms
+flask
+flask_login
+pickle
+datetime
+bs4==0.0.1
+cssutils==1.0.2
 time 
-pandas 
+pandas
 matplotlib 
-nltk 
+nltk==3.4.5 
 io 
 operator
 unicodedata 
 numpy 
 re 
-pickle
-datetime
-bs4
-cssutils
+string 
+browser_cookie3==0.11.1
+requests==2.23.0
+random

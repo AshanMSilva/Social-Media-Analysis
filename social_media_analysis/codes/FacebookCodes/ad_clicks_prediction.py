@@ -155,7 +155,7 @@ class BestSolutions():
         for i in range(1,len(prev)):
             gap=prev[i]-prev[i-1]
             if(gap<0):
-                prev[i]=prev[i-1]+random.choice([1])
+                prev[i]=prev[i-1]+random.choice([1,0])
                 
         return prev
             

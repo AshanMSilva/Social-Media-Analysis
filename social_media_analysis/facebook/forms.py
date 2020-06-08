@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField,RadioField,TextAreaField,IntegerField,SelectField,validators,FileField
+from wtforms import SubmitField,FloatField, StringField,RadioField,TextAreaField,IntegerField,SelectField,validators,FileField
 from wtforms.validators import DataRequired,ValidationError
 
 
@@ -18,14 +18,31 @@ class AdForm(FlaskForm):
 #   validators.Email("Please enter your email address.")])       
     minAge = IntegerField("Minimum Age",validators=[DataRequired("Should be an integer !")])
     maxAge = IntegerField("Maximum Age",validators=[DataRequired("Should be an integer !")])  
-    adSpends = IntegerField("Ad Spends in USD",validators=[DataRequired("Should be an integer !")])
+    adSpends = FloatField("Ad Spends in USD",validators=[DataRequired("Should be an integer !")])
     # language = SelectField('Programming Languages', choices = [('java', 'Java'),('py', 'Python')]) 
     submit = SubmitField('Predict')
 
     def validate_maxAge(self,field):
+        if(type(field.data)!=int):
+            raise ValidationError("Should be an integer")
         if(field.data<=self.minAge.data):
         # if (minAge.data>self.maxAge.data):
             raise ValidationError("Invalid Age Range !!")
+        if(field.data>65):
+            raise ValidationError("Maximum age is 65 !!")
+
+    def validate_minAge(self,field):
+        if(type(field.data)!=int):
+            raise ValidationError("Should be an integer")        
+        if(field.data<13):
+            raise ValidationError("Minimum age is 13 !!")
+    def validate_adSpends(self,field):
+        if( type(field.data)!=float):
+            raise ValidationError("Should be a number")        
+        if(field.data<0):
+            raise ValidationError("Should be positive")
+
+
 # class SentimentForm(FlaskForm):
 #     upload=FileField("Upload your file here!",validators=[DataRequired()])
 #     submit = SubmitField('Analyse')
