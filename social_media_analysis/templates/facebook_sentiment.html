@@ -50,15 +50,23 @@
         <div id="chartContainer" style="height: 300px; width: 100%;" ></div>
     </div>
     <div class="col-md-1"></div>
-    <div class="col-md-3">
-      <h4>Give it a spin!</h4>
+    <div class="col-md-3" style="background-color: white;">
+		<br><br>
+      	<h4>Tips:</h4>
+		<p> For a better result, upload the file which contains all the comments</p>
+		<p>Click <a href="https://www.facebook.com" target="_blank">here</a> to download another post</p>
+		<br>
+		<div class="list-group">
+			<a href="#" class="list-group-item list-group-item-action"  data-toggle="modal" data-target="#sentimentmodel">Analyse Next Post</a>
+		</div>
+      <!-- <h4>Give it a spin!</h4>
       <p>Just click following link below to explore the facebook..!</p>
       <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#adpredictmodel" >Advertisements Analysis</a>
         <a href="#" class="list-group-item list-group-item-action"  data-toggle="modal" data-target="#sentimentmodel">Comments Analysis</a>
         <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#likecountmdel">Bot detection</a>
         <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
-      </div>
+      </div> -->
     </div>
     <div class="col-md-1"></div>
 </div>
@@ -263,7 +271,7 @@
 						<fieldset class="form-group">  
 							<div class="form-group">
 								<label for="upload" class="form-control-label">HTML File :</label> 
-								<input type="file" name="upload"class="form-control form-control-lg" >
+								<input type="file" required name="upload"class="form-control form-control-lg" >
 							</div>
 						</fieldset>
 						<h5>Upload the HTML script file, that contains all the comments of this post.  </h5>
@@ -349,6 +357,7 @@
     document.getElementById("neu").style.display = "none";
     document.getElementById("neg").style.display = "none";
 </script>
+
 
 {% endblock scripts %}    
 
