@@ -426,7 +426,7 @@ def bot():
 
         info=detection.get_info(profile_link)
     except:
-        flash('Check the link you entered or check your connection!', 'warning')
+        flash('Link you entered is not valid or some issue with your connection ', 'warning')
         return redirect(url_for('main.facebook'))
     values=detection.calculate(info)
     if(values['neg']==100):
