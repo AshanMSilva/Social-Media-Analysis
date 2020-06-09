@@ -1,4 +1,4 @@
-from flask import render_template, request, Blueprint, redirect, url_for
+from flask import render_template, request, Blueprint, redirect, url_for, flash
 from social_media_analysis.models import Post
 from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm, TweetForm
 from social_media_analysis.posts.forms import PostForm

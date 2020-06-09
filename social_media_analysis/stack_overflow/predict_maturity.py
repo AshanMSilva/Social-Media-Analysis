@@ -80,7 +80,7 @@ class PredictMaturity:
         return predict_data
 
     def get_predict_data(self,predict_data):
-        filename="finalized_model.sav"
+        filename="social_media_analysis/stack_overflow/finalized_model.sav"
         loaded_model = pickle.load(open(filename, 'rb'))
         predict_data["percentage"] = loaded_model.predict(predict_data)
 
@@ -89,6 +89,7 @@ class PredictMaturity:
     def get_percentage_list(self):
         data = self.all_questions[["creation_date","percentage"]]
         data_points = []
+        data=data.sort_values(by="creation_date")
         for i in range(len(data)) : 
             date = data.loc[i, "creation_date"]
             number = round(data.loc[i, "percentage"],1)
@@ -97,7 +98,7 @@ class PredictMaturity:
                         "y" : number
                      }
             data_points.append(record)
-        data_points=json.dumps(data_points)   
+        data_points=json.dumps(data_points)  
         return data_points
 
     def get_user_technologies(self):
@@ -226,11 +227,11 @@ class PredictMaturity:
 
 
 
-c = PredictMaturity(20654)   
+# c = PredictMaturity(20654)   
 
-print (c.get_user_maturity())
-print(c.get_percentage_list())
-print(c.get_user_technologies())
+# print (c.get_user_maturity())
+# print(c.get_percentage_list())
+# print(c.get_user_technologies())
 
 
 
