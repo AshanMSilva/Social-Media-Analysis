@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container" class="user-details-header">
+  	<div class="row">
+  		<div class="col-md-2">
+  			<img src="{{bannerurl}}" alt="" class="img-thumbnail">
+  		</div>
+  		<div class="col-md-10">
+  			<span class="account-name" style="font-size:30px;"> {{name}}   <hr></span>
+          	<a href="{{url}}" target="_blank">Go to Channel</a>
+  		</div>
+  		
+  	</div> 	
+  </div>
+  
+  
+  <div class="container">
+  	<h2>Overview channel information and statistics</h2>
+  	<hr>
+  	<div class="row">
+  		<div class="col-md-4">
+  			<h3>Basic Information</h3>
+  			<p>Simply type youtube.com/<i>CustomURL</i> or click the above link to visit this channel.</p>
+  		</div>
+  		<div class="col-md-8">
+  			<ul class="list-group list-group-flush">
+			  <li class="list-group-item"><b>Channel Title</b>             :  {{name}}</li>
+			  <li class="list-group-item"><b>Channel ID</b>                :  {{Cid}}</li>
+			  <li class="list-group-item"><b>Description</b>               :  {{description}}</li>
+			  <li class="list-group-item"><b>Joined YouTube on</b>         :  {{date}}</li>
+			  <li class="list-group-item"><b>Country</b>                   :  {{location}}</li>
+			  <li class="list-group-item"><b>Custom URL</b>                :  {{customurl}}</li>
+			  
+			</ul>
+  		</div>
+  		
+  	</div>
+    <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Statistics</h3>
+         
+      </div>
+      <div class="col-md-8">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Subscribers</b>               :  {{sub}}</li>
+          <li class="list-group-item"><b>Number of Videos</b>          :  {{vid}}</li>
+          <li class="list-group-item"><b>Total No. of Views</b>        :  {{view}}</li>
+          <li class="list-group-item"><b>Views per video</b>           :  {{viewratio}} 
+          {% if viewratio>=100000 %} 
+          <span class="badge badge-primary">HIGH</span>
+          {% elif 10000<=viewratio<100000 %}
+          <span class="badge badge-success">AVERAGE</span>
+          {% elif 1000<=viewratio<10000 %}
+          <span class="badge badge-warning">BELOW AVERAGE</span>
+          {% else %}
+          <span class="badge badge-danger">LOW</span>
+          {% endif %}
+          </li>
+          
+        </ul>
+      </div>
+     </div> 
+      <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Featured & Status</h3>
+         
+      </div>
+      <div class="col-md-8">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Featured Channels</b>      :  {% for channel in featured %} 
+                                                                {{channel}}<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                {% endfor %}</li>
+          <li class="list-group-item"><b>Privacy</b>                :  {{privacy}}</li>
+          <li class="list-group-item"><b>Language</b>                :  {{language}}</li>
+          <li class="list-group-item"><b>Profile Colour</b>         :  {{colour}} <svg width="20" height="20">
+<rect width="20" height="20" style="fill:{{colour}};stroke-width:3;stroke:rgb(0,0,0)" />
+</svg></li>
+          
+        </ul>
+        
+      </div>
+      
+    </div>
+      	   
+{% endblock content %}

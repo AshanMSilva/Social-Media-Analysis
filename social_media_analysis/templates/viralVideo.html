@@ -1,0 +1,435 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+ <div class="container" class="user-details-header">
+  	<div class="row">
+      	<div class="col-md-2">
+  			<img src="{{ url_for('static', filename='images/youtube_PNG21.png') }}" alt="" class="img-thumbnail">
+  		</div>
+  		 <div class="col-md-10">
+  			 <h2 style="text-align:center">Analysis on Viral Videos</h2>
+  			 </br>
+  			 <p>The followings show you a complete analysis of 1000 all time most viewed videos in YouTube. You can use these analysed data to understand 
+  			 what it takes to go viral in YouTube</p>
+  		</div>
+  		
+  	</div> 	
+  </div>
+  
+  <hr>
+ 
+ <div class="container">
+  <div class="row">
+      <div class="col-md-4">
+        <h3>Characteristics of video</h3>
+         <p>Video category, content language and duration play a major role on popularity of the video.</p>
+         </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+         </br></br></br></br></br></br></br></br></br></br></br></br></br>
+         <p>Time to publish is the time gap between the date creation of channel and the date video released.</p>
+      </div>
+      <div class="col-md-8">
+          
+            <div id="pieChartCategory" style="height: 300px; width: 100%;"></div>
+          	<hr>
+          	<div id="barGraphDuration" style="height: 300px; width: 100%;"></div>
+            <hr>
+ 			<div id="pieChartLanguage" style="height: 300px; width: 100%;"></div>
+ 			 <hr>
+            <div id="barGraphDays" style="height: 300px; width: 100%;"></div>
+            
+            
+      </div>
+      
+     </div>
+     
+     <hr>
+     
+     <div class="row">
+      <div class="col-md-4">
+        <h3>Virality</h3>
+         <p>This is how viwers have liked or disliked the 15 most viewed videos on YouTube.</p>
+         </br>
+         <p>Note:- video index is increasing in the descending order of views of videos.  i.e. index 0 is the most viewed video. </p>
+      </div>
+      <div class="col-md-8">
+      
+          
+         <div id="ViralityGraph" style="height: 350px; width: 100%;"></div>
+           
+        
+      </div>
+      
+     </div>
+     
+     <hr>
+     
+     <div class="row">
+      <div class="col-md-4">
+        <h3>Characteristics of user</h3>
+          <p>Characteristics of user/channel like number of subscribers, total number of views and videos are critical to virality of a video.</p>
+      </div>
+      <div class="col-md-8">
+        
+        
+        <div id="barGraphViews" style="height: 300px; width: 100%;"></div>
+            <hr>    
+         <div id="pieChartLocation" style="height: 300px; width: 100%;"></div>
+          	<hr>
+         <div id="barGraphSub" style="height: 300px; width: 100%;"></div>
+            <hr>
+        <div id="barGraphVid" style="height: 300px; width: 100%;"></div>
+            
+            
+      </div>
+      
+     </div>
+     <hr>
+    </div> 
+     
+<script type="text/javascript">
+window.onload = function() {
+
+var options = {
+	exportEnabled: false,
+	animationEnabled: true,
+	title:{
+		text: "Content Language"
+	},
+	 
+	legend:{
+		horizontalAlign: "right",
+		verticalAlign: "center"
+	},
+	data: [{
+		type: "pie",
+		showInLegend: true,
+		toolTipContent: "<b>{name}</b>: {y} ",
+		indexLabel: "{name}",
+		legendText: "{name}: #percent%",
+		indexLabelPlacement: "outside",
+		dataPoints: [
+    		{ y: {{languagePair[1][1]}}, name: "English" , color: "#7CFC00"},
+    		{ y: {{languagePair[3][1]}}, name: "Russian", color:"#191970"},
+			{ y: {{languagePair[2][1]}}, name: "Spanish", color:"#FFD700"},
+			{ y: {{languagePair[0][1]}}, name: "Not Specified",color: "#00BFFF" }
+		]
+	}]
+};
+
+var options1 = {
+	exportEnabled: false,
+	animationEnabled: true,
+	title:{
+		text: "Location of user"
+	},
+	 
+	legend:{
+		horizontalAlign: "right",
+		verticalAlign: "center"
+	},
+	data: [{
+		type: "pie",
+		showInLegend: true,
+		toolTipContent: "<b>{name}</b>: {y} ",
+		indexLabel: "{name}",
+		legendText: "{name}: #percent%",
+		indexLabelPlacement: "outside",
+		dataPoints: [
+    		{ y: {{locationPair[4][1]}}, name: "India", color:"#FF4500"},
+    		{ y: {{locationPair[5][1]}}, name: "Norway", color:"#FFA07A"},
+    		{ y: {{locationPair[8][1]}}, name: "Russia", color:"#FFFFE0"},
+    		{ y: {{locationPair[9][1]}}, name: "Turkey", color:"#FFFF00"},
+    		{ y: {{locationPair[10][1]}}, name: "USA", color:"#00FFFF"},
+    		{ y: {{locationPair[6][1]}}, name: "Not Specified", color:"#191970"},
+			{ y: {{locationPair[0][1]}}, name: "Canada",color: "#00BFFF" },
+			{ y: {{locationPair[1][1]}}, name: "Colombia" , color: "#7CFC00"},
+			{ y: {{locationPair[2][1]}}, name: "Germany", color:"#FFD700"},
+			{ y: {{locationPair[3][1]}}, name: "UK", color:"#000000"},
+			{ y: {{locationPair[7][1]}}, name: "Puerto Rico", color:"#FF00FF"}
+		 
+			
+		]
+	}]
+}; 
+var options2 = {
+	exportEnabled: false,
+	animationEnabled: true,
+	title:{
+		text: "Video Category"
+	},
+	 
+	legend:{
+		horizontalAlign: "right",
+		verticalAlign: "center"
+	},
+	data: [{
+		type: "pie",
+		showInLegend: true,
+		toolTipContent: "<b>{name}</b>: {y} ",
+		indexLabel: "{name}",
+		legendText: "{name}: #percent%",
+		indexLabelPlacement: "outside",
+		dataPoints: [
+    		{ y: {{categoryPair[3][1]}}, name: "Music" , color: "#7CFC00"},
+    		{ y: {{categoryPair[0][1]}}, name: "Education", color:"#FF4500"},
+			{ y: {{categoryPair[1][1]}}, name: "Entertainment",color: "#00BFFF" },
+			{ y: {{categoryPair[2][1]}}, name: "Film & Animation", color:"#191970"}
+		]
+	}]
+};
+
+var options3 =  {
+    exportEnabled: false,
+	animationEnabled: true,
+	 
+	axisX: {
+		title: "video index"
+	},
+	axisY2: {
+		title: "Number of likes/dislikes/ratio"
+		 
+	},
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: true 
+	},
+	data: [{
+		type:"line",
+		axisYType: "secondary",
+		name: "Likes per 10000 videos",
+		showInLegend: true,
+		toolTipContent: "<b>Likes</b>: {y} ",
+		markerSize: 0,
+		dataPoints: [		
+			{ x: 1, y: {{likePerc[0]}} },
+			{ x: 2, y: {{likePerc[1]}} },
+			{ x: 3, y: {{likePerc[2]}} },
+			{ x: 4, y: {{likePerc[3]}} },
+			{ x: 5, y: {{likePerc[4]}} },
+			{ x: 6, y: {{likePerc[5]}} },
+			{ x: 7, y: {{likePerc[6]}} },
+			{ x: 8, y: {{likePerc[7]}} },
+			{ x: 9, y: {{likePerc[8]}} },
+			{ x: 10, y: {{likePerc[9]}} },
+			{ x: 11, y: {{likePerc[10]}} },
+			{ x: 12, y: {{likePerc[11]}} },
+			{ x: 13, y: {{likePerc[12]}} },
+			{ x: 14, y: {{likePerc[13]}} },
+			{ x: 15, y: {{likePerc[14]}} }
+		]
+	},
+	{
+		type: "line",
+		axisYType: "secondary",
+		name: "Dislikes per 10000 videos",
+		showInLegend: true,
+		toolTipContent: "<b>Dislikes</b>: {y} ",
+		markerSize: 0,
+		dataPoints: [
+			{ x: 1, y: {{dislikePerc[0]}} },
+			{ x: 2, y: {{dislikePerc[1]}} },
+			{ x: 3, y: {{dislikePerc[2]}} },
+			{ x: 4, y: {{dislikePerc[3]}} },
+			{ x: 5, y: {{dislikePerc[4]}} },
+			{ x: 6, y: {{dislikePerc[5]}} },
+			{ x: 7, y: {{dislikePerc[6]}} },
+			{ x: 8, y: {{dislikePerc[7]}} },
+			{ x: 9, y: {{dislikePerc[8]}} },
+			{ x: 10, y: {{dislikePerc[9]}} },
+			{ x: 11, y: {{dislikePerc[10]}} },
+			{ x: 12, y: {{dislikePerc[11]}} },
+			{ x: 13, y: {{dislikePerc[12]}} },
+			{ x: 14, y: {{dislikePerc[13]}} },
+			{ x: 15, y: {{dislikePerc[14]}} }
+			 
+		]
+	},
+	 
+	{
+		type: "line",
+		axisYType: "secondary",
+		name: "Like to Dislike Ratio",
+		showInLegend: true,
+		toolTipContent: "<b>Likes/Dislikes</b>: {y} ",
+		markerSize: 0, 
+		dataPoints: [
+			{ x: 1, y: {{likeDisRatio[0]}} },
+			{ x: 2, y: {{likeDisRatio[1]}} },
+			{ x: 3, y: {{likeDisRatio[2]}} },
+			{ x: 4, y:{{ likeDisRatio[3]}} },
+			{ x: 5, y: {{likeDisRatio[4]}} },
+			{ x: 6, y: {{likeDisRatio[5]}} },
+			{ x: 7, y: {{likeDisRatio[6]}} },
+			{ x: 8, y: {{likeDisRatio[7]}} },
+			{ x: 9, y:{{ likeDisRatio[8]}} },
+			{ x: 10, y: {{likeDisRatio[9]}} },
+			{ x: 11, y: {{likeDisRatio[10]}} },
+			{ x: 12, y: {{likeDisRatio[11]}} },
+			{ x: 13, y: {{likeDisRatio[12]}} },
+			{ x: 14, y: {{likeDisRatio[13]}} },
+			{ x: 15, y: {{likeDisRatio[14]}} }
+		]
+	}]
+};
+
+
+var optionsBar1 =  {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Duration of Video"
+	},
+	axisY: {
+		title: "No. of videos"
+	},
+	data: [{        
+		type: "column",  
+		dataPoints: [      
+			{ y: {{dur[0]}}, label: "less than 1min" },
+			{ y: {{dur[1]}},  label: "1-2 min" },
+			{ y: {{dur[2]}},  label: "2-3 min" },
+			{ y: {{dur[3]}},  label: "3-4 min" },
+			{ y: {{dur[4]}},  label: "4-5 min" },
+			{ y: {{dur[5]}}, label: "5-6 min" },
+			{ y: {{dur[6]}},  label: "6-7 min" },
+			{ y: {{dur[7]}},  label: "7-8 min" },
+			{ y: {{dur[8]}},  label: "8-9 min" },
+			{ y: {{dur[9]}},  label: "9-10 min" },
+			{ y: {{dur[10]}},  label: "more than 10 min" },
+		]
+	}]
+};
+
+
+var optionsBar2 =  {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Subscriber Count of Channel"
+	},
+	axisY: {
+		title: "No. of channels"
+	},
+	axisX: {
+		title: "No. of subscribers"
+	},
+	dataPointMaxWidth: 50,
+	data: [{        
+		type: "column",  
+		dataPoints: [      
+			{ y: {{sub[0]}}, label: "less than 100K" },
+			{ y: {{sub[1]}},  label: "100K-500K" },
+			{ y: {{sub[2]}},  label: "500K-1M" },
+			{ y: {{sub[3]}},  label: "1M-2M" },
+			{ y: {{sub[4]}},  label: "2M-5M" },
+			{ y: {{sub[5]}}, label: "more than 5M" } 
+		]
+	}]
+};
+
+
+var optionsBar3 =  {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Total Video Count of Channel"
+	},
+	axisY: {
+		title: "No. of channels"
+	},
+	axisX: {
+		title: "No. of videos"
+	},
+	dataPointMaxWidth: 50,
+	data: [{        
+		type: "column",  
+		dataPoints: [      
+			{ y: {{vid[0]}}, label: "less than 20" },
+			{ y: {{vid[1]}},  label: "20-100" },
+			{ y: {{vid[2]}},  label: "100-500" },
+			{ y: {{vid[3]}},  label: "500-1000" },
+			{ y: {{vid[4]}},  label: "1000-2000" },
+			{ y: {{vid[5]}}, label: "more than 2000" } 
+		]
+	}]
+};
+
+
+var optionsBar4 =  {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Time to Publish"
+	},
+	axisY: {
+		title: "No. of videos"
+	},
+	axisX: {
+		title: "No. of days"
+	},
+	dataPointMaxWidth: 50,
+	data: [{        
+		type: "column",  
+		dataPoints: [      
+			{ y: {{days[0]}}, label: "less than 1 month" },
+			{ y: {{days[1]}},  label: "1-3 months" },
+			{ y: {{days[2]}},  label: "3 months - 1 year" },
+			{ y: {{days[3]}},  label: "1-2 years" },
+			{ y: {{days[4]}},  label: "2-5 years" },
+			{ y: {{days[5]}}, label: "5-10 years" },
+			{ y: {{days[6]}}, label: "more than 10 years" }
+		]
+	}]
+};
+
+
+var optionsBar5 =  {
+	animationEnabled: true,
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	title:{
+		text: "Total Views of Channel"
+	},
+	axisY: {
+		title: "No. of channels"
+	},
+	axisX: {
+		title: "No. of views"
+	},
+	dataPointMaxWidth: 50,
+	data: [{        
+		type: "column",  
+		dataPoints: [      
+			{ y: {{views[0]}}, label: "less than 1B" },
+			{ y: {{views[1]}},  label: "1B-10B" },
+			{ y: {{views[2]}},  label: "10B-20B" },
+			{ y: {{views[3]}},  label: "20B-30B" },
+			{ y: {{views[4]}},  label: "30B-40B" },
+			{ y: {{views[5]}}, label: "40B-50B" },
+			{ y: {{views[6]}}, label: "more than 50B" }
+		]
+	}]
+};
+
+
+
+
+$("#pieChartLanguage").CanvasJSChart(options);
+$("#pieChartLocation").CanvasJSChart(options1);
+$("#pieChartCategory").CanvasJSChart(options2);
+$("#ViralityGraph").CanvasJSChart(options3);
+$("#barGraphDuration").CanvasJSChart(optionsBar1);
+$("#barGraphSub").CanvasJSChart(optionsBar2);
+$("#barGraphVid").CanvasJSChart(optionsBar3);
+$("#barGraphDays").CanvasJSChart(optionsBar4);
+$("#barGraphViews").CanvasJSChart(optionsBar5);
+
+}
+</script>  
+   
+{% endblock content %}

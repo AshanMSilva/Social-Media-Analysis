@@ -5,24 +5,218 @@
 		  	<div class="row">	
 			    <div class="col-12 col-md-8 col-lg-9">
 			    	<h1 class="display-4 font-weight-bold">YouTube Analytics</h1>
-		    		<p class="lead">
-		    			This is an YouTube analytics application that gives you rich insights about any public YouTube profile. We gather near real-time data about topics, mentions, hashtags, followers, location and more!
+		    		<p class="lead">This is an YouTube analytics application that gives you rich insights about any public YouTube profile. We gather near real-time data about topics, mentions, hashtags, followers, location and more!
 					</p>
 			    </div>
 			    <div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
-			    	<img class="twitter-img" src="{{ url_for('static', filename='images/youtube-logo.jpg') }}">
+			    	<img class="twitter-img" src="{{ url_for('static', filename='images/youtube_PNG21.png') }}">
 			    </div>
 		    </div>
 		    
 		    <!-- <nav aria-label="breadcrumb"> -->
-			  <ol class="breadcrumb">
-			    <li class="breadcrumb-item"><a href="{{url_for('main.home')}}">Home</a></li>
-			    <li class="breadcrumb-item active" aria-current="page">YouTube</li>
-			  </ol>
 			<!-- </nav> -->
 		    <hr>
 		    
+		    <div class="row">
+				<div class="col-12 col-md-6">
+					<h4>Here's how it works</h4>
+					<p>
+						We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.
+					</p>
+					<p>
+						We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!
+					</p>
+				</div>
+				<div class="col-12 col-md-6">
+					<h4>Give it a spin!</h4>
+					<p>Just click following link below to explore YouTube..!</p>
+					<div class="list-group">
+					  <a href="#" class="list-group-item list-group-item-action"data-toggle="modal" data-target="#channeldetails">View Channel Details</a>
+					 <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#analysecomments">Analyse Comments</a> 
+					 <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#predictviews">View Prediction</a> 
+					  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#viralvideos">Analyse Viral Videos</a> 
+					</div>
+				</div>
+			</div>		    
 		</div>
 	</div>
-    <h1>Youtube Page</h1>
+	
+
+  	 <div class="modal fade" id="channeldetails" tabindex="-1" role="dialog" aria-labelledby="channeldetails" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="channeldetails">View Channel Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+    <div class="model-body">
+         <form method="POST" action="">
+		         {{ channeldetailform.hidden_tag() }}
+		            <div class="form-group">
+		                {{ channeldetailform.name.label(class="form-control-label") }}
+		                {% if channeldetailform.name.errors %}
+		                    {{ channeldetailform.name(class="form-control is-invalid") }}
+		                    <div class="invalid-feedback">
+		                        {% for error in channeldetailform.name.errors %}
+		                            <span>{{ error }}</span>
+		                        {% endfor %}
+		                    </div>
+		                {% else %}
+		                    {{ channeldetailform.name(class="form-control", placeholder="ex - UC98x5I1LVPhtnUHDyujq7zg") }}
+		                {% endif %}
+		            </div>
+		        <div class="form-group">
+		            {{ channeldetailform.search(class="btn btn-outline-info submit", type="submit") }}
+		        </div>
+		    </form>
+		              	
+        </div>
+        </div>
+    </div>
+  </div>
+        
+        
+  <div class="modal fade" id="predictviews" tabindex="-1" role="dialog" aria-labelledby="likespredmodal" aria-hidden="true">
+    <div class="modal-dialog new-forum-modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="predictviews">Predict Views & Likes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body new-forum-modal-body">
+          <form method="POST" action="">
+              {{ viewpredictionform.hidden_tag() }}
+              <fieldset class="form-group">
+                  <legend class="border-bottom mb-4">{{ legend }}</legend>
+                  <div class="form-group">
+                      {{ viewpredictionform.channel.label(class="form-control-label") }}
+                      {% if viewpredictionform.channel.errors %}
+                          {{ viewpredictionform.channel(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in viewpredictionform.channel.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ viewpredictionform.channel(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+                  <div class="form-group">
+                      {{ viewpredictionform.category.label(class="form-control-label") }}
+                      {% if viewpredictionform.category.errors %}
+                          {{ viewpredictionform.category(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in viewpredictionform.category.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ viewpredictionform.category(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+                  <div class="form-group">
+                  	{{ viewpredictionform.length.label(class="form-control-label") }}
+                      {% if viewpredictionform.length.errors %}
+                          {{ viewpredictionform.length(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in viewpredictionform.length.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ viewpredictionform.length(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+              </fieldset>
+              <div class="form-group">
+                  {{ viewpredictionform.viewspredict(class="btn btn-outline-info") }}
+              </div>
+          </form>       
+        </div>
+      </div>
+    </div>
+  </div>
+  
+         
+        
+        <div class="modal fade" id="analysecomments" tabindex="-1" role="dialog" aria-labelledby="analysecomments" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="analysecomments">Analyse Comments</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body">
+         <form method="POST" action="">
+		         {{ sentimentanalysisform.hidden_tag() }}
+		            <div class="form-group">
+		                {{ sentimentanalysisform.name.label(class="form-control-label") }}
+		                {% if sentimentanalysisform.name.errors %}
+		                    {{ sentimentanalysisform.name(class="form-control is-invalid") }}
+		                    <div class="invalid-feedback">
+		                        {% for error in sentimentanalysisform.name.errors %}
+		                            <span>{{ error }}</span>
+		                        {% endfor %}
+		                    </div>
+		                {% else %}
+		                    {{ sentimentanalysisform.name(class="form-control", placeholder="ex - IVrGz8w0H8c") }}
+		                {% endif %}
+		            </div>
+		        <div class="form-group">
+		            {{ sentimentanalysisform.searchSent(class="btn btn-outline-info submit", type="submit") }}
+		        </div>
+		    </form>
+		              	
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+ <div class="modal fade" id="viralvideos" tabindex="-1" role="dialog" aria-labelledby="viralvideos" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="viralvideos">Analyse Viral Videos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="model-body">
+        <p>You can view a complete analysis of 1000 most viewed videos on YouTube.</p>
+         <form method="POST" action="">
+		         {{ viralvideofrom.hidden_tag() }}
+		             
+		        <div class="form-group">
+		            {{ viralvideofrom.searchView(class="btn btn-outline-info submit", type="submit") }}
+		        </div>
+		    </form>
+		              	
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ 
+ 
 {% endblock content %}
+ 
+{% block scripts %}
+	<script type="text/javascript">
+	    $(window).on('load',function(){
+	        $('#{{viewpredictionmodal}}').modal('show');
+	        $('#{{channeldetailmodal}}').modal('show');
+	        $('#{{sentimentanalysismodal}}').modal('show');
+	        
+	       
+	    });
+
+	</script>
+{% endblock scripts %}

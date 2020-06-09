@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+  <div class="container">
     <h1 class="mb-3">Comments by {{ user.username }} ({{ comments.total }})</h1>
     {% for comment in comments.items %}
         <article class="media content-section">
@@ -25,4 +26,5 @@
         ...
       {% endif %}
     {% endfor %}
+    </div>
 {% endblock content %}
