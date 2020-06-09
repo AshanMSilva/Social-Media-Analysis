@@ -377,8 +377,9 @@ def user_tweets(name):
         #pred_padded_sequence_with_time = np.array([pred_padded_sequence_with_minute])
         result = model.predict(pred_padded_sequence)
         retweet_result= retweetmodel.predict(pred_padded_sequence)
-        
-        return render_template('user_tweets.html',result=result, retweet_result=retweet_result, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, user=user, pred_text=pred_text)
+        intResult = abs(int(result))
+        intRetweetResult =abs(int(retweet_result))
+        return render_template('user_tweets.html',result=intResult, retweet_result=intRetweetResult, retweetscount=retweetscount, likes=likes, tweetcount=tweetcount, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, user=user, pred_text=pred_text)
     except:
         flash('Something went Wrong. Please check whether enterd details are correct','warning')
         return redirect(url_for('main.twitter'))

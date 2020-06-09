@@ -9,7 +9,7 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -35,7 +35,7 @@ class TweetLikesPrediction():
         X_train, X_test, Y_train, Y_test = train_test_split(features, labels, test_size=0.2, random_state=0)
         
         #print(training_data.duration)
-        logReg =LogisticRegression()
+        logReg =LinearRegression()
         
         logReg.fit(features, labels)
         #prediction= logReg.predict(X_test)
