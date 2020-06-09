@@ -90,8 +90,8 @@ def twitter():
 		if tweetform.validate_on_submit() and tweetform.likespredict.data:
 			screen_name = tweetform.name.data
 			tweet = tweetform.tweet.data
-			time = tweetform.time.data
-			return redirect(url_for('twitter.user_tweets', name=screen_name, tweet=tweet, time=time))
+			#time = tweetform.time.data
+			return redirect(url_for('twitter.user_tweets', name=screen_name, tweet=tweet))
 
 		return render_template('twitter.html', title='Twitter', tweetform=tweetform, screennameform=screennameform, botform=botform, hashtagform=hashtagform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, predtweetmodal=predtweetmodal, screennamemodal=screennamemodal, botmodal=botmodal, hashtagmodal=hashtagmodal)
 	except:

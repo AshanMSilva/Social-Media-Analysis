@@ -18,5 +18,5 @@ class HashtagForm(FlaskForm):
 class TweetForm(FlaskForm):
     name = StringField('Screen Name', validators=[DataRequired()])
     tweet = TextAreaField('Tweet', validators=[DataRequired()])
-    time = TimeField('Time', validators=[DataRequired()])
+    #time = TimeField('Time (hh:mm)', validators=[DataRequired()])
     likespredict = SubmitField('predict')
