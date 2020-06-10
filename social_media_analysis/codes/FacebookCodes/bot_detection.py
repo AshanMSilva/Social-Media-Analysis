@@ -206,9 +206,9 @@ class BotAccountDetection():
                         value_container=self.get_element('div',['class="_4bl7 _pt5"'],key_value_container)
                     
                     value=self.get_a_value_within_a_tag('span',value_container)
-                    if(value==None):
+                    if(value==None or value==""):
                         value=self.get_a_value_within_a_tag('li',value_container)
-                        if(value==None):
+                        if(value==None or value==""):
                             value=self.get_a_value_within_a_tag('a',value_container)
                     details[key]=value
             return details
@@ -232,17 +232,17 @@ class BotAccountDetection():
             value_containers=self.get_parent_level_elements('li','ul',category_container_small)  
             if(value_containers==[]):
                 return details
-            check=self.get_element('span',['class="_50f8 _2iem"'],value_containers[0])
+            check=self.get_element('span',['class="_50f8 _2iem"'],value_containers[0]) 
             if(check!=None):
                 details[key][0]=0
             else:
                 details[key][0]=len(value_containers)
-                for value_container_large in value_containers:
+                for value_container_large in value_containers: # ech li part
 
                     value_container=self.get_element('div',['class="fsm fwn fcg"'],value_container_large)
                     # print(value_container)
                     value=self.get_a_value_within_a_tag('span',value_container)
-                    if(value==None):
+                    if(value==None or value==""):
                         value=self.get_a_value_within_a_tag('a',value_container)
                         
                     details[key][1].append(value)  
