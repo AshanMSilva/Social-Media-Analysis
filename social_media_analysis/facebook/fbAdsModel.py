@@ -98,7 +98,6 @@ y_train_impre=modified['AdImpressions']
 X_train_impre=modified.drop(['AdImpressions','AdClicks'],axis=1)
 
 
-
 model_xgb= xgb.XGBRegressor(max_depth=6, learning_rate=0.01, n_estimators=2000)
 model_xgb_impre= xgb.XGBRegressor(max_depth=6, learning_rate=0.01, n_estimators=2000)
 model_xgb.fit(X_train, y_train)
