@@ -1,5 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
+<style>
+	/* facebook css files */
+	
+	.loader {
+	
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 100px;
+	  height: 100px;
+	  left: 1000%;
+	  -webkit-animation: spin 2s linear infinite; /* Safari */
+	  animation: spin 2s linear infinite;
+	}
+	
+	
+	/* Safari */
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+	
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+	.loadercontainer {
+		text-align: center;
+		width: 400px;
+		/* height: 220px; */
+		position: fixed;
+		left: 35%;
+		  top: 35%;
+		background-color:#33C6FF;
+	
+	}</style>
 <script>
     window.onload = function() {
 
@@ -28,40 +64,15 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-6">
-			<!-- <h1> {{bot_info}}</h1> -->
+			<!-- <h5> {{bot_info}}</h5>
+			<br>
+			<h5>{{ display_info }}</h5> -->
 			<h5>Make sure that you are logged in your Facebook account and the target user is in your friend list.</h5>
             <!-- <br> -->
             <!-- <br> -->
             <!-- <h1>{{ cal_values }}</h1> -->
             <br><br>
             <div id="chartContainer" style="height: 300px; width: 100%;" ></div>
-            <br><br>
-            <hr>
-            <br><br>
-            <div>
-                <h4>To calculate these values, the system considered, completeness of providing data to the profile. Such as,</h4>
-                <br>
-                <h5>Work and education details </h5> 
-                <h5>Location details</h5>
-                <h5>Contact infomation</h5>
-                <h5>basic infomation</h5>
-                <h5>Family and Relationship details</h5>
-                <h5>Number of friends</h5>
-                <h5>Tagged photos</h5>
-                
-                <!-- <div class="col-12 col-md-6">
-                    <h4>Here's how it works</h4>
-                    <p>
-                        We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.
-                    </p>
-                    <p>
-                        We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!
-                    </p>
-                </div> -->
-                <!-- , , , family and relationship details, Number of friends, Tagged photos  -->
-            </div>
-            <br><br>
-            <hr>
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-3">
@@ -75,12 +86,65 @@
           </div>
         </div>
         <div class="col-md-1"></div>
-    </div>
+	</div>
+	<br><hr><br>
+	<div class="row">
+		<div class="col-12 col-md-1"></div>
+		<div class="col-12 col-md-4"> 
+			<h4>To calculate these values, the system considered, completeness of providing data to the profile. Such as,</h4>
+			<br>
+			<h5>Work and education details </h5> 
+			<h5>Location details</h5>
+			<h5>Contact infomation</h5>
+			<h5>basic infomation</h5>
+			<h5>Family and Relationship details</h5>
+			<!-- <h5>Number of friends</h5> -->
+			<h5>Tagged photos</h5>
+		</div>
+		<div class="col-12 col-md-1"></div>
+		<div class="col-12 col-md-5" style="background-color: white;">
+			<h4>We collected following infomation from your account</h4>
+			<br>
+			{% for field in fields %}
+				<div class="row">
+					<div class="col-12 col-md-5"><h5>{{ field }} </h5></div>
+					<div class="col-12 col-md-1"></div>
+					<div class="col-12 col-md-6"><h5>{{ display_info[field] }}</h5></div>
+				</div>
+			{% endfor %}
 
+			{% for field in list_fields %}
+				{% for attribute in display_info[field] %}
+					<div class="row">
+						<div class="col-12 col-md-5"><h5>{{ field }} </h5></div>
+						<div class="col-12 col-md-1"></div>
+						<div class="col-12 col-md-6"><h5>{{ attribute }}</h5></div>
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
+		<div class="col-12 col-md-1"></div>
+		<br>
+	</div>
 
 
   <!-- model navigator -->
   
+  <div class="loadercontainer" id="loadercontainer" style="display: none; " >
+	<h5>It may consume some time to calculate</h5>
+	<h5>Please wait..</h5>
+	<br>
+	<div class="row">
+		<div style="width: 150px;"></div>
+
+			<div class="loader" id="load" ></div>
+		<!-- </div> -->
+		<div style="width: 150px;"></div>
+	</div>
+	<br>
+	<div id="time"></div>
+	<br>
+</div>
 
 	<!-- ad predict form -->  
 	<div class="modal fade" id="adpredictmodel" tabindex="-1" role="dialog" aria-labelledby="adpredictmodel" aria-hidden="true">
@@ -176,7 +240,7 @@
 							{% endif %}
 						</div>
 					</fieldset>
-					<div class="form-group">
+					<div class="form-group" onclick="loading()">
 						{{ adform.submit(class="btn btn-outline-info") }}
 					</div>
 				</form>
@@ -213,7 +277,7 @@
 							View all comments. <br>
 							Save the page.</p>
 						<br>
-						<div class="form-group">
+						<div class="form-group" onclick="loading()">
 							<button type="submit" class="btn btn-outline-info">Analyse</button> 
 						</div>
 
@@ -258,7 +322,7 @@
 					<h5>Before using this feature, you have to login with your Facebook account.</h5>
 					<p>Click <a href="https://www.facebook.com" target="_blank">here</a> to login with your Facebook account</p>
 					<br>
-					<div class="form-group">
+					<div class="form-group" onclick="loading()">
 						{{ botform.submit(class="btn btn-outline-info") }}
 					</div>
 				</form>
@@ -284,4 +348,29 @@
 	    });
 
 	</script>
+		<script>
+			function loading(){
+				// alert("aaaa")
+				document.getElementById("adpredictmodel").style.display="none"
+				document.getElementById("sentimentmodel").style.display="none"
+				document.getElementById("botdetectionmodel").style.display="none"
+				document.getElementById("loadercontainer").style.display="block";
+				setInterval(setTime, 1000);
+			}
+			time_index=0;
+			function setTime(){
+				min=parseInt(time_index/60);
+				sec=time_index%60;
+				if(String(min).length<2){
+					min='0'+min
+				}
+				if(String(sec).length<2){
+					sec='0'+sec
+				}
+				document.getElementById("time").innerHTML=min+" : "+sec;	
+				time_index++;	
+			}
+	
+		</script>
+	
 {% endblock scripts %}

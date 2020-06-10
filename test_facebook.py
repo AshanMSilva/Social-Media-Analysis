@@ -34,22 +34,22 @@ def test_client():
 #     # print (a)
 #     assert a==real
 
-# def test_facebook_bot(test_client):
-
-#     response=test_client.post('/facebook/bot', data=dict(link='https://www.facebook.com/sisara.kahatapitiya.9'))
-
-#     assert response.status_code == 200
-
 def test_facebook_bot(test_client):
 
-    response=test_client.post('/bot')
-    assert response.status_code == 200 
+    response=test_client.post('/facebook/bot', data=dict(link='https://www.facebook.com/sisara.kahatapitiya.9'))
 
-def test_face(test_client):
-    app = flask.Flask(__name__)
-    with app.test_client() as c:
-        rv = c.get('/?tequila=42')
-        assert request.args['tequila'] == '42'
+    assert response.status_code == 200
+
+# def test_facebook_bot(test_client):
+
+#     response=test_client.post('/bot')
+#     assert response.status_code == 200 
+
+# def test_face(test_client):
+#     app = flask.Flask(__name__)
+#     with app.test_client() as c:
+#         rv = c.get('/?tequila=42')
+#         assert request.args['tequila'] == '42'
 # def test_nnn(test_client):
 #     app = flask.Flask(__name__)
 #     with app.test_client() as c:

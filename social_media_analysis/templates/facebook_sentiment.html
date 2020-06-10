@@ -1,5 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
+<style>
+	/* facebook css files */
+	
+	.loader {
+	
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 100px;
+	  height: 100px;
+	  left: 1000%;
+	  -webkit-animation: spin 2s linear infinite; /* Safari */
+	  animation: spin 2s linear infinite;
+	}
+	
+	
+	/* Safari */
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+	
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+	.loadercontainer {
+		text-align: center;
+		width: 400px;
+		/* height: 220px; */
+		position: fixed;
+		left: 35%;
+		  top: 35%;
+		background-color:#33C6FF;
+	
+	}</style>
 <script>
     function displayPositive(){
         document.getElementById("pos").style.display = "block";
@@ -149,6 +185,21 @@
 
   <!-- model navigator -->
 
+  	<div class="loadercontainer" id="loadercontainer" style="display: none; " >
+		<h5>It may consume some time to calculate</h5>
+		<h5>Please wait..</h5>
+		<br>
+		<div class="row">
+			<div style="width: 150px;"></div>
+
+				<div class="loader" id="load" ></div>
+			<!-- </div> -->
+			<div style="width: 150px;"></div>
+		</div>
+		<br>
+		<div id="time"></div>
+		<br>
+	</div>
 
 	<!-- ad predict form -->  
 	<div class="modal fade" id="adpredictmodel" tabindex="-1" role="dialog" aria-labelledby="adpredictmodel" aria-hidden="true">
@@ -244,7 +295,7 @@
 							{% endif %}
 						</div>
 					</fieldset>
-					<div class="form-group">
+					<div class="form-group" onclick="loading()">
 						{{ adform.submit(class="btn btn-outline-info") }}
 					</div>
 				</form>
@@ -281,7 +332,7 @@
 							View all comments. <br>
 							Save the page.</p>
 						<br>
-						<div class="form-group">
+						<div class="form-group" onclick="loading()">
 							<button type="submit" class="btn btn-outline-info">Analyse</button> 
 						</div>
 
@@ -326,7 +377,7 @@
 					<h5>Before using this feature, you have to login with your Facebook account.</h5>
 					<p>Click <a href="https://www.facebook.com" target="_blank">here</a> to login with your Facebook account</p>
 					<br>
-					<div class="form-group">
+					<div class="form-group" onclick="loading()">
 						{{ botform.submit(class="btn btn-outline-info") }}
 					</div>
 				</form>
@@ -357,7 +408,30 @@
     document.getElementById("neu").style.display = "none";
     document.getElementById("neg").style.display = "none";
 </script>
+<script>
+	function loading(){
+		// alert("aaaa")
+		document.getElementById("adpredictmodel").style.display="none"
+		document.getElementById("sentimentmodel").style.display="none"
+		document.getElementById("botdetectionmodel").style.display="none"
+		document.getElementById("loadercontainer").style.display="block";
+		setInterval(setTime, 1000);
+	}
+	time_index=0;
+	function setTime(){
+		min=parseInt(time_index/60);
+		sec=time_index%60;
+		if(String(min).length<2){
+			min='0'+min
+		}
+		if(String(sec).length<2){
+			sec='0'+sec
+		}
+		document.getElementById("time").innerHTML=min+" : "+sec;	
+		time_index++;	
+	}
 
+</script>
 
 {% endblock scripts %}    
 

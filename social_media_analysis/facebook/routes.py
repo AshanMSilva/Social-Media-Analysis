@@ -37,11 +37,11 @@ from social_media_analysis.codes.FacebookCodes.ad_clicks_prediction import AdPre
 from social_media_analysis.codes.FacebookCodes.bot_detection import BotAccountDetection
 
 import operator 
-facebook = Blueprint('facebook', __name__)
+facebook = Blueprint('facebook', __name__) 
 
 @facebook.route('/sentiment', methods=['GET','POST'])
 def sentiment():
-        #common ligin and signin routes
+        #common ligin and signin routes    
     loginmodalshow='close'
     loginform = LoginForm()
     if(loginform.validate_on_submit()==False and loginform.login.data):
@@ -79,7 +79,11 @@ def sentiment():
             list_of_comments = main_content.findAll('li')
         except:
             main_content= soup.find('ul', {'class': '_7791'})
-            list_of_comments = main_content.findAll('li')
+            try:
+                list_of_comments = main_content.findAll('li')
+            except:
+                main_content = soup.find('ul', {'class': '_77bp'})
+                list_of_comments = main_content.findAll('li')
         for container_large in list_of_comments:
             try:
                 img_link= container_large.img.get('src')
@@ -88,8 +92,8 @@ def sentiment():
                 profile_link=comment_container.a.get('href')
                 container_small = container_large.find('span', {'class': '_3l3x'}) #imoji spnas & text in here
                 imoji_spans=container_small.findAll('span', {'class': '_5mfr'})
-                imojies=[]
-                for imoji_span in imoji_spans:
+                imojies=[]  
+                for imoji_span in imoji_spans: 
                     span_style=imoji_span.find('span')['style']
                     style=cssutils.parseStyle(span_style)
                     imoji_url=style['background-image']
@@ -110,11 +114,13 @@ def sentiment():
     pos_list=[]
     neu_list=[]
     neg_list=[]
+
+
     if(len(comments)==0):
         flash("Your file doesn't contain any comments",'warning')
         return redirect(url_for("main.facebook"))
     for i in range(len(comments)):
-        try:
+        if(True):
             comment=comments[i]
             text=comment[0]
             word=text
@@ -136,14 +142,14 @@ def sentiment():
 
             # add imoji values
             imojies=comments[i][4]
-            if(len(imojies)>0):
-                neg_temp=scores['neg']
-                pos_temp=scores['pos']
-                neu_temp=scores['neu']
-                scores['neg']=0
-                scores['pos']=0
-                scores['neu']=0
-                found=False
+            
+            neg_temp=scores['neg']
+            pos_temp=scores['pos']
+            neu_temp=scores['neu']
+            scores['neg']=0
+            scores['pos']=0
+            scores['neu']=0
+            found=False
             for imoji in imojies:
                 if(imoji in pos_imojies):
                     scores['pos']+=pos_imojies[imoji]
@@ -171,7 +177,8 @@ def sentiment():
             pos+=scores['pos']
             neg+=scores['neg']
 
-        except:
+        # except:
+        else:
             print()
             #doing nothing
     pos_p=pos*100/(neg+pos+neu)
@@ -417,17 +424,10 @@ def bot():
     profile_link=request.args["link"]
     detection=BotAccountDetection()
     try:
-        #### check if logged
-        # logged_info=detection.get_info('https://www.facebook.com/sanduniayeshika.silva')
-        # logged_cal_values=detection.calculate(logged_info)
-        # if(logged_cal_values['pos']!=100):
-        #     flash('You are not logged in your facebook account!', 'warning')
-        #     return redirect(url_for('main.facebook'))
-
-        info=detection.get_info(profile_link)
+        info=detection.get_info(profile_link) 
     except:
-        flash('Link you entered is not valid or some issue with your connection ', 'warning')
-        return redirect(url_for('main.facebook'))
+        flash('Link you entered is not valid or some issue with your connection  ', 'warning')
+        return redirect(url_for('main.facebook')) 
     values=detection.calculate(info)
     if(values['neg']==100):
         flash('The profile link you entered is not valid!', 'warning')
@@ -456,5 +456,28 @@ def bot():
         link = botform.link.data
         return redirect(url_for('facebook.bot',link=link))
 
+    ### get display info ###
+    display_info={}
+    fields=[]
+    list_fields=[]
+    for field in info:
+        if(field=="tagged_photo_count"):
+            if(info[field]>0):
+                display_info["Tagged Photos"]="Yes" 
+                fields.append("Tagged Photos")
+        elif (field=="Family Members"):
+            if(len(info[field][1])>0):
+                display_info["Family Member"]=info[field][1]
+                list_fields.append("Family Member")
+        elif(type(info[field])==list):
+            if(info[field][0]!=None and info[field][0]!=""):
+                display_info[field]=info[field]
+                list_fields.append(field)
+        else:
+            if(info[field]!=None and info[field]!=""):
+                display_info[field]=info[field]
+                fields.append(field)
+           
 
-    return render_template('facebook_bot_detection.html', adform=adform , botform=botform, bot_info=info ,cal_values=values, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+
+    return render_template('facebook_bot_detection.html', adform=adform , botform=botform,list_fields=list_fields, fields=fields, bot_info=info ,display_info=display_info,cal_values=values, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)

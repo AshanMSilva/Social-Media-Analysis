@@ -81,7 +81,7 @@ class BestSolutions():
         input_data['female']=0
         input_data['all']=1
         final_features=pd.DataFrame.from_dict(input_data)
-        all_result= model.predict(final_features)
+        all_result= model.predict(final_features) 
 
         return [int(male_result),int(female_result),int(all_result)]
 
@@ -140,7 +140,7 @@ class BestSolutions():
         return prev
 
     def adspend_check(self,prev):
-        stt=prev[0]+300
+        stt=prev[0]+100
         for i in range(1,len(prev)):
 
 
