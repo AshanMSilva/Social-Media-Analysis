@@ -1,641 +1,1025 @@
-{% extends "layout.html" %}
-
-{% block content %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='stack_overflow.css') }}">
-	<div class="jumbotron jumbotron-fluid" style="padding: 20px 60px;margin: auto;">
-	  <div class="container" >
-	  	<div class="row">
-	  		<div class="col-12 col-md-8 col-lg-9">
-				  <h1 class="display-4 font-weight-bold">StackOverflow Analytics</h1>
-				  <h3 class="display-6 ">Check Maturity Level of Posting a Question in <strong>Stack Overflow</strong></h3>
-	    		<p class="lead">
-	    			This is an StackOverflow analytics application that gives you rich insights about any public StackOverflow profile. We generates your Stack Profile Questions details and give a full analyze about your Maturity of posting question and Technology usage on Stack overflow.!
-				</p>
-	  		</div>
-	  		<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
-		    	<img class="twitter-img" src="{{ url_for('static', filename='images/stackoverflow.png') }}">
-		    </div>
-	  	</div>
-	    <!-- <nav aria-label="breadcrumb"> -->
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item"><a href="{{url_for('main.home')}}">Home</a></li>
-		    <li class="breadcrumb-item active" aria-current="page">StackOverflow</li>
-		  </ol>
-		<!-- </nav> -->
-		<hr>
-	    
-	  </div>
-	</div>
-	
-    <div class="container-fluid">
-		<div class="row">
-			<div class="col-xs-12 col-sm-4">
-			  <div class="percentage" style="padding: 0px 30px; display: flex; align-items: center; justify-content: center;background: white; margin: 10px 20px; width: 100%; min-height: 400px; color: rgb(17, 16, 16);">
-				   <div class="card" style="border: none;-webkit-box-shadow: 0px 0px 7px 1px rgba(199,199,208,1); -moz-box-shadow: 0px 0px 7px 1px rgba(199,199,208,1); box-shadow: 0px 0px 7px 1px rgba(199,199,208,1);">
-					   <div class="percentageCircle" style="width: 350px;height: 350px;background-color: white;min-height: 300px;background-color: white;align-items: center;justify-content: center;margin: auto; ">
-						   <div class="overview-chart-body">
-							   <div id="chart" style="height: 350px;"></div>
-						   </div>
-					   </div>
-					   <div class="card-body">
-						   <div class="input-btn-group">
-							   <form class="form-submit" method="post"  role="form" action="">
-								   <div class="input-group" style="float: bottom;margin-top: auto;">
-									   <input name="userID" id="userID" type="text" class="form-control width100" placeholder="Input User ID" style="width: 80%;">
-									   <span class="input-group-btn">
-										  <button id="button" class="btn btn-secondary" type="button"><i class="fa fa-search"></i></button>
-									  </span>
-								   </div>
-							   </form>
-						   </div>
-					   </div>
-	  
-				   </div>
-	  
-	  
-	  
-			  </div>
-			</div>
-			
-			
-			<div class="col-xs-12 col-sm-8">
-			  <div class="box collaps" style="display: flex;align-items: center;justify-content: center;background: white; margin: 0;padding: 10px;width: 100%;min-height: 100px;color: rgb(17, 16, 16);">
-				  <div class="container">
-					  <div class="accordion" id="accordionExample">
-						  <div class="card">
-							  <div class="card-head" id="headingOne">
-								  <h2 class="mb-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									  <strong>Q : What is Maturity of Posting a Question in Stack Overflow?</strong>
-								  </h2>
-							  </div>
-	  
-							  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-								  <div class="card-body">
-									   Maturity of Posting a Question in Stack Overflow is the overall percentage level of a user which he gained while for questions on Stack Overflow.<br>
-									  For each question a percentage will be calculated according some reasonable facts of the question.
-	  
-								  </div>
-	  
-							  </div>
-						  </div>
-						  <div class="card">
-							  <div class="card-head" id="headingTwo">
-								  <h2 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									  <strong>Q : What are the facts which have considered to calculate maturity of a question? </strong>
-								  </h2>
-							  </div>
-							  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-								  <div class="card-body">
-									  For each question the percentage of maturity will be calculated according to below qualities of question.
-	  
-										  <ul>
-											  <li>Score of the question[Upvotes - Downvotes]</li>
-											  <li>Number of Views </li>
-											  <li>Amount of tags</li>
-											  <li>Whether the question is  edited or not?</li>
-											  <li>Whether the question is answered or not?</li>
-											  <li>Whether the question is closed or not?</li>
-										  </ul>
-	  
-	  
-	  
-								  </div>
-							  </div>
-						  </div>
-						  <div class="card">
-							  <div class="card-head" id="headingThree">
-								  <h2 class="mb-0 collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									  <strong>Q : How to find User ID of my Stack Overflow account?</strong>
-								  </h2>
-							  </div>
-							  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-								  <div class="card-body">
-									  It's the number in the middle of your <a href="https://stackoverflow.com/users/current" }}>Profile URL</a>,<br>
-									  <p style="font-weight: normal">Eg: <i>http://meta.stackoverflow.com/users/3349551/nodisplayname</i> <br>
-									  For this link the User Id is <strong>3349551</strong></p>
-								  </div>
-							  </div>
-						  </div>
-					  </div>
-				  </div>
-	  
-				  
-			  </div>
-				<div id="errorAlert" class="alert alert-danger" role="alert" style="display: none;"></div>
-			</div>
-			
-		  </div>
-
-	</div>
-	<div id="mainContainer" class="jumbotron" style="margin: auto;padding: 0 100px; background-color: white;">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12" style="background-color: white; text-align: center; padding: 0;">
-                <div class="title1" style="background-color: #e6e6e6;border: darkgray;  "><strong id="chartTitle" style="font-size: 40px; "></strong></div>
-                <div id="chartContainer" style="height: 500px; width: 100%; margin: auto; padding: 0px;"></div>
-            </div>
-        </div>
-        <div class="row" style="margin: 0 150px;">
-            <div class="col-xs-12 col-sm-12" style="background-color: #d9d9d9; padding: 0 50px; margin-top: 30px;">
-                <div  class="mainChart" style=" margin: auto; padding: 0; text-align: center;">
-                    <i class="fa fa-stack-overflow fa-3x" aria-hidden="true" style="padding: 10px;"></i><strong style="font-size:40px;">Most Popular Technologies</strong>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="background-color: white; padding: 0 0px; margin: 0 150px;">
-
-            <div class="col-sm-12 col-xs-12 d-flex flex-column align-self-start" style="padding: 0;">
-                <div id="Container1" style="height: 100%; width: 100%; margin: auto;  text-align: center;">
-                    <div id="title1" style="background-color: #e6e6e6; "><strong id="lanTitle" style="font-size: 25px;"></strong></div>
-                    <div id="barChartContainer1" style="height: 100%; width: 100%;  padding: 10px; "></div>
-                </div>
-                <div id="Container2" style="height: 100%; width: 100%; margin: auto;  text-align: center;">
-                    <div id="title2" style="background-color: #e6e6e6; "><strong id="webTitle" style="font-size: 25px;"></strong></div>
-                    <div id="barChartContainer2" style="height: 100%; width: 100%;  padding: 10px; "></div>
-                </div>
-                <div id="Container3" style="height: 100%; width: 100%; margin: auto;  text-align: center;">
-                    <div id="title3" style="background-color: #e6e6e6; "><strong id="otherTitle" style="font-size: 25px;"></strong></div>
-                    <div id="barChartContainer3" style="height: 100%; width: 100%;  padding: 10px; "></div>
-                </div>
-                <div id="Container4" style="height: 100%; width: 100%; margin: auto;  text-align: center;">
-                    <div id="title4" style="background-color: #e6e6e6; "><strong id="dataTitle" style="font-size: 25px;"></strong></div>
-                    <div id="barChartContainer4" style="height: 100%; width: 100%;  padding: 10px; "></div>
-                </div>
-                <div id="Container5" style="height: 100%; width: 100%; margin: auto;  text-align: center;">
-                    <div id="title5" style="background-color: #e6e6e6;"><strong id="platTitle" style="font-size: 25px;"></strong></div>
-                    <div id="barChartContainer5" style="height: 100%; width: 100%;  padding: 10px; "></div>
-                </div>
-            </div>
-
-
-        </div>
+{% extends "layout.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='stack_overflow.css') }}"
+/>
+<div
+  class="jumbotron jumbotron-fluid"
+  style="padding: 20px 60px; margin: auto;"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-8 col-lg-9">
+        <h1 class="display-4 font-weight-bold">StackOverflow Analytics</h1>
+        <h3 class="display-6">
+          Check Maturity Level of Posting a Question in
+          <strong>Stack Overflow</strong>
+        </h3>
+        <p class="lead">
+          This is an StackOverflow analytics application that gives you rich
+          insights about any public StackOverflow profile. We generates your
+          Stack Profile Questions details and give a full analyze about your
+          Maturity of posting question and Technology usage on Stack overflow.!
+        </p>
+      </div>
+      <div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
+        <img
+          class="twitter-img"
+          src="{{ url_for('static', filename='images/stackoverflow.png') }}"
+        />
+      </div>
     </div>
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script type="text/javascript"  src="https://code.highcharts.com/highcharts.js"></script>
-    <script type="text/javascript"  src="https://code.highcharts.com/highcharts-more.js"></script>
-    <script type="text/javascript"  src="https://code.highcharts.com/modules/solid-gauge.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-	<script>
-		//var dates=[{"x": "2011-01-01", "y": 80.0}, {"x": "2011-05-02", "y": 50.0}, {"x": "2011-09-04", "y": 44.0}, {"x": "2011-10-11", "y": 37.0}, {"x": "2011-12-15", "y": 53.0}, {"x":"2012-01-05","y": 12.0},{"x": "2012-03-04", "y": 67.0}, {"x": "2012-04-11", "y": 74.0}, {"x": "2012-07-15", "y": 80.0}, {"x": "2012-08-21", "y": 16.0}, {"x": "2012-09-15", "y": 25.0}, {"x": "2012-11-04", "y": 71.0}, {"x": "2013-01-05", "y": 37.0}, {"x": "2013-02-11", "y": 50.0}, {"x": "2013-03-21", "y": 12.0}, {"x": "2013-04-02", "y": 68.0}, {"x": "2013-05-05", "y": 80.0}, {"x": "2013-06-02", "y": 25.0}, {"x": "2013-10-04", "y": 19.0}, {"x": "2013-12-21", "y": 25.0}, {"x": "2014-01-05", "y": 43.0}, {"x": "2014-01-02", "y": 32.0}, {"x": "2014-04-11", "y": 50.0}, {"x": "2014-06-02", "y": 21.0}, {"x": "2014-08-04", "y": 71.0}, {"x": "2014-10-15", "y": 42.0}, {"x": "2014-12-02", "y": 50.0}, {"x": "2015-01-21", "y": 32.0}, {"x": "2015-02-04", "y": 61.0}, {"x": "2015-05-15", "y": 54.0}, {"x": "2015-06-02", "y": 13.0}, {"x": "2015-07-04", "y": 43.0}, {"x": "2015-08-21", "y": 71.0}, {"x": "2015-09-04", "y": 36.0}, {"x": "2015-10-11", "y": 44.0}, {"x": "2015-11-02", "y": 67.0}, {"x": "2015-12-04", "y": 18.0}, {"x": "2016-01-15", "y": 44.0}, {"x": "2016-02-04", "y": 28.0}, {"x": "2016-03-02", "y": 16.0}, {"x": "2016-04-11", "y": 80.0}, {"x": "2016-05-21", "y": 74.0}, {"x": "2016-06-15", "y": 13.0}, {"x": "2016-07-02", "y": 44.0}, {"x": "2016-09-28", "y": 62.0}, {"x": "2016-10-21", "y": 37.0}, {"x": "2016-11-15", "y": 67.0}, {"x": "2016-12-02", "y": 59.0}, {"x": "2017-11-28", "y": 28.0}, {"x": "2017-01-11", "y": 44.0}, {"x": "2017-02-04", "y": 58.0}, {"x": "2017-03-04", "y": 84.0}, {"x": "2017-04-21", "y": 12.0}, {"x": "2017-05-21", "y": 44.0}, {"x": "2017-06-04", "y": 23.0}, {"x": "2017-07-21", "y": 32.0}, {"x": "2017-08-02", "y": 62.0}, {"x": "2017-09-05", "y": 32.0}, {"x": "2017-09-12", "y": 57.0}, {"x": "2017-09-21", "y": 71.0}, {"x": "2017-10-15", "y": 62.0}, {"x": "2017-11-04", "y": 32.0}, {"x": "2017-12-15", "y": 25.0}, {"x": "2018-01-04", "y": 50.0},{"x": "2018-02-04", "y": 21.0}, {"x": "2018-03-05", "y": 12.0},{"x": "2018-04-04", "y": 53.0}, {"x": "2018-05-21", "y": 67.0}, {"x": "2018-06-15", "y": 17.0}, {"x": "2018-07-11", "y": 71.0}, {"x": "2018-08-04", "y": 38.0}, {"x": "2018-09-04", "y": 25.0}, {"x": "2018-10-05", "y": 55.0}, {"x": "2018-11-04", "y": 12.0}, {"x": "2018-12-11", "y": 33.0}, {"x": "2019-01-01", "y": 50.0}, {"x": "2019-01-02", "y": 45.0}, {"x": "2019-01-13", "y": 12.0}, {"x": "2019-01-24", "y": 25.0}, {"x": "2019-01-25", "y": 52.0}, {"x": "2019-02-06", "y": 32.0}, {"x": "2019-02-07", "y": 67.0}, {"x": "2019-02-08", "y": 52.0}, {"x": "2019-02-12", "y": 25.0}, {"x": "2019-02-11", "y": 32.0}, {"x": "2019-02-12", "y": 71.0}, {"x": "2019-03-15", "y": 44.0}, {"x": "2019-03-01", "y": 67.0}, {"x": "2019-03-06", "y": 44.0}, {"x": "2019-03-18", "y": 25.0}, {"x": "2019-06-18", "y": 50.0}, {"x": "2019-07-18", "y": 12.0}, {"x": "2019-07-18", "y": 50.0}, {"x": "2019-07-18", "y": 32.0}, {"x": "2019-07-11", "y": 25.0}, {"x": "2019-07-28", "y": 50.0}, {"x": "2019-09-11", "y": 32.0}, {"x": "2019-09-28", "y": 44.0}, {"x": "2019-09-28", "y": 67.0}, {"x": "2019-09-28", "y": 50.0}, {"x": "2019-09-11", "y": 32.0}, {"x": "2019-10-11", "y": 44.0}, {"x": "2019-10-28", "y": 50.0}, {"x": "2019-11-11", "y": 71.0}, {"x": "2019-11-28", "y": 32.0}, {"x": "2019-11-11", "y": 50.0}, {"x": "2019-12-03", "y": 12.0}, {"x": "2019-12-06", "y": 71.0}, {"x": "2019-12-08", "y": 32.0}, {"x": "2019-12-11", "y": 50.0}, {"x": "2020-01-02", "y": 71.0}, {"x": "2020-01-10", "y": 25.0}, {"x": "2020-01-18", "y": 67.0}, {"x": "2020-01-24", "y": 12.0}, {"x": "2020-01-28", "y": 50.0},{"x": "2020-02-08", "y": 25.0}, {"x": "2020-02-18", "y": 81.0} ]
-        //barchartData={"languages": [{"name": "Java", "percentage": 37.0}, {"name": "Python", "percentage": 6.2}, {"name": "Ruby", "percentage": 3.3}, {"name": "HTML", "percentage": 2.2}, {"name": "CSS", "percentage": 0.7}, {"name": "Go", "percentage": 4.7}, {"name": "JavaScript", "percentage": 12.0}, {"name": "C#", "percentage": 7.2}, {"name": "C++", "percentage": 1.1}, {"name": "C", "percentage": 0.4}, {"name": "SQL", "percentage": 5.1}, {"name": "Scala", "percentage": 4.0}, {"name": "Clojure", "percentage": 0.4}, {"name": "Objective-C", "percentage": 0.4}], "web_frameworks": [{"name": "Reactjs", "percentage": 0.4}, {"name": "Express", "percentage": 0.4}, {"name": "Spring", "percentage": 1.1}], "other_frameworks": [{"name": "Pandas", "percentage": 6.3}, {"name": "React-Native", "percentage": 4.4}], "databases": [{"name": "Oracle", "percentage": 4.3}, {"name": "PostgreSQL", "percentage": 0.4}, {"name": "SQL-Server", "percentage": 0.7}], "platforms": [{"name": "MacOS", "percentage": 2.5}, {"name": "Windows", "percentage": 0.7}, {"name": "Linux", "percentage": 0.4}]};
-        var percentageval=0;
-		var chart=Highcharts.chart('chart', {
-                chart: {
-                    type: 'solidgauge',
+    <!-- <nav aria-label="breadcrumb"> -->
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{url_for('main.home')}}">Home</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">StackOverflow</li>
+    </ol>
+    <!-- </nav> -->
+    <hr />
+  </div>
+</div>
 
-                    events: {
-                        render() {
-                            let chart = this,
-                                label1 = chart.series[0].dataLabelsGroup;
-                        }
-                    }
-                },
-                title:{
-                    text : "Maturity Level"
-                },
-                pane: {
-                    startAngle: 0,
-                    endAngle: 360,
-                    background: [{
-                        outerRadius: '112%',
-                        innerRadius: '100%',
-                        borderWidth: 0
-                    }]
-                },
-                yAxis: {
-                    min: 0,
-                    max: 100,
-                    lineWidth: 0,
-                    tickPositions: []
-                },
-                plotOptions: {
-                    solidgauge: {
-                        dataLabels: {
-                            enabled: true,
-                            verticalAlign: 'middle'
-                        },
-                    }
-                },
-                series: [{
-                    data: [{
-                        color: "#ff8400",
-                        radius: '110%',
-                        innerRadius: '100%',
-                        y: percentageval,
-                        dataLabels: {
-                            y: 0,
-                            format: '{y}%',
-                            borderWidth: 0,
-                            style: {
-                                fontSize: '40px'
-                            }
-                        }
-                    }]
-                }]
-        });
-        
-		percentageval=67;
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <div
+        class="alert alert-danger"
+        id="login-error"
+        style="display: none; margin: 20px 25px 20px 80px; padding: 10px;"
+      >
+        <button type="button" class="close">x</button>
+        Incorrect User ID. Please input a correct User ID again!
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-4">
+      <div
+        class="percentage"
+        style="
+          padding: 0px 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: white;
+          margin: 10px 20px;
+          width: 100%;
+          min-height: 400px;
+          color: rgb(17, 16, 16);
+        "
+      >
+        <div
+          class="card"
+          style="
+            border: none;
+            -webkit-box-shadow: 0px 0px 7px 1px rgba(199, 199, 208, 1);
+            -moz-box-shadow: 0px 0px 7px 1px rgba(199, 199, 208, 1);
+            box-shadow: 0px 0px 7px 1px rgba(199, 199, 208, 1);
+          "
+        >
+          <div
+            class="percentageCircle"
+            style="
+              width: 350px;
+              height: 350px;
+              background-color: white;
+              min-height: 300px;
+              background-color: white;
+              align-items: center;
+              justify-content: center;
+              margin: auto;
+            "
+          >
+            <div class="overview-chart-body">
+              <div id="chart" style="height: 350px;"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-btn-group">
+              <form class="form-submit" method="post" role="form" action="">
+                <div
+                  class="input-group"
+                  style="float: bottom; margin-top: auto;"
+                >
+                  <input
+                    name="userID"
+                    id="userID"
+                    type="text"
+                    class="form-control width100 material-tooltip-main"
+                    placeholder="Input User ID"
+                    style="width: 80%;"
+                    data-toggle="tooltip"
+                    data-placement="bottom" 
+                    title="Input your Stack Overflow User ID here."
+                    required
+                  />
+                  <span class="input-group-btn">
+                    <button id="button" class="btn btn-secondary" type="button">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-		
+    <div class="col-xs-12 col-sm-8">
+      <div
+        class="box collaps"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: white;
+          margin: 0;
+          padding: 10px;
+          width: 100%;
+          min-height: 100px;
+          color: rgb(17, 16, 16);
+        "
+      >
+        <div class="container">
+          <div class="accordion" id="accordionExample">
+            <div class="card">
+              <div class="card-head" id="headingOne">
+                <h2
+                  class="mb-0"
+                  data-toggle="collapse"
+                  data-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
+                  <strong
+                    >Q : What is Maturity of Posting a Question in Stack
+                    Overflow?</strong
+                  >
+                </h2>
+              </div>
 
-		function getData(data) {
-                var dataPoints = [];
-                for (var i = 0; i < data.length; i++) {
+              <div
+                id="collapseOne"
+                class="collapse show"
+                aria-labelledby="headingOne"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body">
+                  Maturity of Posting a Question in Stack Overflow is the
+                  overall percentage level of a user which he gained while for
+                  questions on Stack Overflow.<br />
+                  For each question a percentage will be calculated according
+                  some reasonable facts of the question.
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head" id="headingTwo">
+                <h2
+                  class="mb-0 collapsed"
+                  data-toggle="collapse"
+                  data-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
+                  <strong
+                    >Q : What are the facts which have considered to calculate
+                    maturity of a question?
+                  </strong>
+                </h2>
+              </div>
+              <div
+                id="collapseTwo"
+                class="collapse"
+                aria-labelledby="headingTwo"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body">
+                  For each question the percentage of maturity will be
+                  calculated according to below qualities of question.
 
-                    dataPoints.push({
-                        x: new Date(data[i]["x"]),
-                        y: data[i]["y"]
-                    });
-                }
-                return dataPoints;
-            }
-        function getBarData(name,barchartData) {
-            var temp=barchartData[name];
-            var dataPoints = [];
-            for (let i = 0; i < temp.length; i++) {
-                dataPoints.push({
-                    y: temp[i]["percentage"],
-                    label: temp[i]["name"],
-                    indexLabel:temp[i]["percentage"]+"%"
-                });
-                dataPoints.push({
+                  <ul>
+                    <li>Score of the question[Upvotes - Downvotes]</li>
+                    <li>Number of Views</li>
+                    <li>Amount of tags</li>
+                    <li>Whether the question is edited or not?</li>
+                    <li>Whether the question is answered or not?</li>
+                    <li>Whether the question is closed or not?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head" id="headingThree">
+                <h2
+                  class="mb-0 collapsed"
+                  data-toggle="collapse"
+                  data-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
+                  <strong
+                    >Q : How to find User ID of my Stack Overflow
+                    account?</strong
+                  >
+                </h2>
+              </div>
+              <div
+                id="collapseThree"
+                class="collapse"
+                aria-labelledby="headingThree"
+                data-parent="#accordionExample"
+              >
+                <div class="card-body">
+                  It's the number in the middle of your
+                  <a href="https://stackoverflow.com/users/current" }}
+                    >Profile URL</a
+                  >,<br />
+                  <p style="font-weight: normal;">
+                    Eg:
+                    <i
+                      >http://meta.stackoverflow.com/users/3349551/nodisplayname</i
+                    >
+                    <br />
+                    For this link the User Id is <strong>3349551</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        id="errorAlert"
+        class="alert alert-danger"
+        role="alert"
+        style="display: none;"
+      ></div>
+    </div>
+  </div>
+</div>
+<div
+  id="mainContainer"
+  class="jumbotron"
+  style="margin: auto; padding: 0 100px; background-color: white;"
+>
+  <div class="row">
+    <div
+      class="col-xs-12 col-sm-12"
+      style="background-color: white; text-align: center; padding: 0;"
+    >
+      <div class="title1" style="background-color: #e6e6e6; border: darkgray;">
+        <strong id="chartTitle" style="font-size: 40px;"></strong>
+      </div>
+      <div
+        id="chartContainer"
+        style="height: 500px; width: 100%; margin: auto; padding: 0px;"
+      ></div>
+    </div>
+  </div>
+  <div class="row" style="margin: 0 150px;">
+    <div
+      class="col-xs-12 col-sm-12"
+      style="background-color: #d9d9d9; padding: 0 50px; margin-top: 30px;"
+    >
+      <div
+        class="mainChart"
+        style="margin: auto; padding: 0; text-align: center;"
+      >
+        <i
+          class="fa fa-stack-overflow fa-3x"
+          aria-hidden="true"
+          style="padding: 10px;"
+        ></i
+        ><strong style="font-size: 40px;">Most Popular Technologies</strong>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+    style="background-color: white; padding: 0 0px; margin: 0 150px;"
+  >
+    <div
+      class="col-sm-12 col-xs-12 d-flex flex-column align-self-start"
+      style="padding: 0;"
+    >
+      <div
+        id="Container1"
+        style="height: 100%; width: 100%; margin: auto; text-align: center;"
+      >
+        <div id="title1" style="background-color: #e6e6e6;">
+          <strong id="lanTitle" style="font-size: 25px;"></strong>
+        </div>
+        <div
+          id="barChartContainer1"
+          style="height: 100%; width: 100%; padding: 10px;"
+        ></div>
+      </div>
+      <div
+        id="Container2"
+        style="height: 100%; width: 100%; margin: auto; text-align: center;"
+      >
+        <div id="title2" style="background-color: #e6e6e6;">
+          <strong id="webTitle" style="font-size: 25px;"></strong>
+        </div>
+        <div
+          id="barChartContainer2"
+          style="height: 100%; width: 100%; padding: 10px;"
+        ></div>
+      </div>
+      <div
+        id="Container3"
+        style="height: 100%; width: 100%; margin: auto; text-align: center;"
+      >
+        <div id="title3" style="background-color: #e6e6e6;">
+          <strong id="otherTitle" style="font-size: 25px;"></strong>
+        </div>
+        <div
+          id="barChartContainer3"
+          style="height: 100%; width: 100%; padding: 10px;"
+        ></div>
+      </div>
+      <div
+        id="Container4"
+        style="height: 100%; width: 100%; margin: auto; text-align: center;"
+      >
+        <div id="title4" style="background-color: #e6e6e6;">
+          <strong id="dataTitle" style="font-size: 25px;"></strong>
+        </div>
+        <div
+          id="barChartContainer4"
+          style="height: 100%; width: 100%; padding: 10px;"
+        ></div>
+      </div>
+      <div
+        id="Container5"
+        style="height: 100%; width: 100%; margin: auto; text-align: center;"
+      >
+        <div id="title5" style="background-color: #e6e6e6;">
+          <strong id="platTitle" style="font-size: 25px;"></strong>
+        </div>
+        <div
+          id="barChartContainer5"
+          style="height: 100%; width: 100%; padding: 10px;"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+  integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+  crossorigin="anonymous"
+></script>
+<script
+  type="text/javascript"
+  src="https://code.highcharts.com/highcharts.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://code.highcharts.com/highcharts-more.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://code.highcharts.com/modules/solid-gauge.js"
+></script>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+<script>
+  
+  var dates = [];
+  barchartData = {
+    languages: 0,
+    web_frameworks: 0,
+    other_frameworks: 0,
+    databases: 0,
+    platforms: 0,
+  };
+  var percentageval = 0;
+
+  $(".alert .close").on("click", function (e) {
+    $(this).parent().hide();
+  });
+
+  var chart = Highcharts.chart("chart", {
+    chart: {
+      type: "solidgauge",
+
+      events: {
+        render() {
+          let chart = this,
+            label1 = chart.series[0].dataLabelsGroup;
+        },
+      },
+    },
+    title: {
+      text: "Maturity Level",
+    },
+    pane: {
+      startAngle: 0,
+      endAngle: 360,
+      background: [
+        {
+          outerRadius: "112%",
+          innerRadius: "100%",
+          borderWidth: 0,
+        },
+      ],
+    },
+    yAxis: {
+      min: 0,
+      max: 100,
+      lineWidth: 0,
+      tickPositions: [],
+    },
+    plotOptions: {
+      solidgauge: {
+        dataLabels: {
+          enabled: true,
+          verticalAlign: "middle",
+        },
+      },
+    },
+    series: [
+      {
+        data: [
+          {
+            color: "#ff8400",
+            radius: "110%",
+            innerRadius: "100%",
+            y: percentageval,
+            dataLabels: {
+              y: 0,
+              format: "{y}%",
+              borderWidth: 0,
+              style: {
+                fontSize: "40px",
+              },
+            },
+          },
+        ],
+      },
+    ],
+  });
+
+  function getData(data) {
+    var dataPoints = [];
+    for (var i = 0; i < data.length; i++) {
+      dataPoints.push({
+        x: new Date(data[i]["x"]),
+        y: data[i]["y"],
+      });
+    }
+    return dataPoints;
+  }
+  function getBarData(name, barchartData) {
+    var temp = barchartData[name];
+    var dataPoints = [];
+    dataPoints.push({
+        y: 0,
+        label: " ",
+        indexLabel: "",
+      });
+    for (let i = 0; i < temp.length; i++) {
+      dataPoints.push({
+        y: temp[i]["percentage"],
+        label: temp[i]["name"],
+        indexLabel: temp[i]["percentage"] + "%",
+      });
+      dataPoints.push({
+        y: 0,
+        label: " ",
+        indexLabel: "",
+      });
+    }
+    return dataPoints;
+  }
+  function getsize(name) {
+    if (barchartData[name]) {
+      var value = barchartData[name].length;
+    } else {
+      var value = 0;
+    }
+
+    return value * 40;
+  }
+  function isNumeric(value) {
+    return /^-{0,1}\d+$/.test(value);
+  }
+
+  $(document).ready(function () {
+    $("#mainContainer").hide();
+    $("#Container1").hide();
+    $("#Container2").hide();
+    $("#Container3").hide();
+    $("#Container4").hide();
+    $("#Container5").hide();
+
+    $("#button").click(function () {
+      var userID = $("#userID").val();
+      console.log(typeof userID);
+      if (userID == "" || !isNumeric(userID)) {
+        $("#login-error").show();
+      } else {
+        $("#login-error").hide();
+        chart.update({
+          series: [
+            {
+              data: [
+                {
+                  y: percentageval,
+                  dataLabels: {
                     y: 0,
-                    label: " ",
-                    indexLabel:""
-                });
-            }
-            return dataPoints;
+                    format: "{y}%",
+                    borderWidth: 0,
+                    style: {
+                      fontSize: "40px",
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        });
+
+        CanvasJS.addColorSet("greenShades", [
+          //colorSet Array
+          "#606902",
+          "#8bb384",
+          "#2F4F4F",
+          "#008080",
+          "#2E8B57",
+          "#3CB371",
+          "#5ced5c",
+        ]);
+        CanvasJS.addColorSet("greyShades", [
+          //colorSet Array
+          "#bdbdbd",
+          "#78909c",
+          "#546e7a",
+          "#455a64",
+          "#37474f",
+          "#263238",
+        ]);
+        CanvasJS.addColorSet("blueShades", [
+          //colorSet Array
+          "#34495E",
+          "#9575cd",
+          "#5c6bc0",
+          "#3949ab",
+          "#03a9f4",
+          "#0d47a1",
+          "#1a237e",
+        ]);
+        CanvasJS.addColorSet("brownShades", [
+          //colorSet Array
+          "#bcaaa4",
+          "#a1887f",
+          "#795548",
+          "#757575",
+          "#5d4037",
+          "#424242",
+        ]);
+
+        dates = [];
+        barchartData = {
+          languages: 0,
+          web_frameworks: 0,
+          other_frameworks: 0,
+          databases: 0,
+          platforms: 0,
+        };
+        
+
+
+        $.ajax({
+        	url:'/maturity',
+        	type:"POST",
+        	data:{userID:userID}
+        }).done(function(data){
+        	percentageval=data.id;
+          
+
+          dates = [];
+          dates =data.dates;
+          barchartData=data.barchartData;
+          console.log(dates);
+          console.log(barchartData);
+
+          if(percentageval == 0){
+            $("#login-error").show();
+          }
+          else{
+            chart.update({
+        		series: [{
+           			 data: [{
+                		y: percentageval,
+                		dataLabels: {
+                    		y: 0,
+                    		format: '{y}%',
+        					borderWidth: 0,
+                    		style: {
+                        		fontSize: '40px'
+                    		}
+
+                		}
+            		}]
+        		}]
+        	});
+        var chartContainer = new CanvasJS.Chart("chartContainer", {
+          animationEnabled: true,
+          theme: "light2",
+          backgroundColor: "white",
+          options: {
+              animation: {
+                duration: 50000 // general animation time
+              }
+          },
+          title: {
+            text: " ",
+          },
+          height: 500,
+          width: 1350,
+          axisX: {
+            valueFormatString: "DD MMM YY",
+          },
+          axisY: {
+            title: "Percentage Level",
+            suffix: "%",
+            minimum: 0,
+            maximum: 100,
+          },
+          toolTip: {
+            shared: true,
+          },
+          legend: {
+            cursor: "pointer",
+            verticalAlign: "bottom",
+            horizontalAlign: "left",
+            dockInsidePlotArea: true,
+          },
+          data: [
+            {
+              type: "line",
+              showInLegend: true,
+              name: "Percentage",
+              markerType: "circle",
+              xValueFormatString: "DD MMM, YY",
+              color: "#f48024",
+              yValueFormatString: "#,##",
+              dataPoints: getData(dates),
+            },
+          ],
+        });
+        $("#chartTitle").html(
+          '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>User Performance'
+        );
+        chartContainer.render();
+        if (barchartData["languages"]) {
+          var chart1 = new CanvasJS.Chart("barChartContainer1", {
+            animationEnabled: true,
+            colorSet: "blueShades",
+            height: getsize("languages"),
+            title: {
+              text: "",
+            },
+
+            axisY: {
+              tickThickness: 0,
+              lineThickness: 0,
+              valueFormatString: " ",
+              gridThickness: 0,
+            },
+            axisX: {
+              tickThickness: 0,
+              lineThickness: 0,
+              labelFontSize: 14,
+              labelFontColor: "black",
+              labelFontWeight: "bold",
+              interval: 1,
+            },
+            data: [
+              {
+                indexLabelFontSize: 11,
+                toolTipContent:
+                  '<span style="color:#62C9C3">{label}:</span> <span style="color:#CD853F"><strong>{y}%</strong></span>',
+                indexLabelPlacement: "top",
+                indexLabelFontColor: "black",
+                indexLabelFontWeight: "bold",
+                indexLabelFontFamily: "Verdana",
+                float: "center",
+                type: "bar",
+                dataPoints: getBarData("languages", barchartData),
+              },
+            ],
+          });
+          $("#barChartContainer1").css({
+            "min-height": getsize("languages") + "px",
+          });
+          $("#Container1").css({ "margin-top": "30px" }, { padding: "10px" });
+          $("#lanTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Programming, Scripting, and Markup Languages'
+          );
+          $("#title1").css({ padding: "10px 0" });
+          chart1.render();
+
+
+          chart1.options.height = getsize("languages");
+          chart1.options.width = 950;
+
+          $("#barChartContainer1").css({
+            "min-height": getsize("languages") + "px",
+          });
+          $("#Container1").css({ "margin-top": "30px" }, { padding: "10px" });
+          $("#lanTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Programming, Scripting, and Markup Languages'
+          );
+          $("#title1").css({ padding: "10px 0" });
+
+          chart1.render();
+
+          $("#Container1").show();
         }
-        function getsize(name) {
-            var value=barchartData[name].length;
-            return value*40;
+        if (barchartData["web_frameworks"]) {
+          var chart2 = new CanvasJS.Chart("barChartContainer2", {
+            animationEnabled: true,
+            colorSet: "greyShades",
+            height: getsize("web_frameworks")+20,
+            title: {
+              text: " ",
+            },
+
+            axisY: {
+              tickThickness: 0,
+              lineThickness: 0,
+              valueFormatString: " ",
+              gridThickness: 0,
+            },
+            axisX: {
+              tickThickness: 0,
+              lineThickness: 0,
+              labelFontSize: 14,
+              labelFontColor: "black",
+              labelFontWeight: "bold",
+              interval: 1,
+            },
+            data: [
+              {
+                indexLabelFontSize: 11,
+                toolTipContent:
+                  '<span style="color:#62C9C3">{label}:</span> <span style="color:#CD853F"><strong>{y}%</strong></span>',
+                indexLabelPlacement: "top",
+                indexLabelFontColor: "black",
+                indexLabelFontWeight: "bold",
+                indexLabelFontFamily: "Verdana",
+                float: "center",
+                type: "bar",
+                dataPoints: getBarData("web_frameworks", barchartData),
+              },
+            ],
+          });
+          $("#barChartContainer2").css({
+            "min-height": getsize("web_frameworks") + "px",
+          });
+          $("#webTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Web Frameworks'
+          );
+          $("#title2").css({ padding: "10px 0" });
+          $("#Container2").css({ "margin-top": "30px" }, { padding: "10px" });
+          chart2.render();
+
+
+          chart2.options.height = getsize("web_frameworks");
+          chart2.options.width = 950;
+
+          $("#barChartContainer2").css({
+            "min-height": getsize("web_frameworks") + "px",
+          });
+          $("#webTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Web Frameworks'
+          );
+          $("#title2").css({ padding: "10px 0" });
+          $("#Container2").css({ "margin-top": "30px" }, { padding: "10px" });
+
+          chart2.render();
+          $("#Container2").show();
+        }
+        if (barchartData["other_frameworks"]) {
+          var chart3 = new CanvasJS.Chart("barChartContainer3", {
+            animationEnabled: true,
+            colorSet: "greenShades",
+            height: getsize("other_frameworks"),
+            title: {
+              text: " ",
+            },
+
+            axisY: {
+              tickThickness: 0,
+              lineThickness: 0,
+              valueFormatString: " ",
+              gridThickness: 0,
+            },
+            axisX: {
+              tickThickness: 0,
+              lineThickness: 0,
+              labelFontSize: 14,
+              labelFontColor: "black",
+              labelFontWeight: "bold",
+              interval: 1,
+            },
+            data: [
+              {
+                indexLabelFontSize: 11,
+                toolTipContent:
+                  '<span style="color:#62C9C3">{label}:</span> <span style="color:#CD853F"><strong>{y}%</strong></span>',
+                indexLabelPlacement: "top",
+                indexLabelFontColor: "black",
+                indexLabelFontWeight: "bold",
+                indexLabelFontFamily: "Verdana",
+                float: "center",
+                type: "bar",
+                dataPoints: getBarData("other_frameworks", barchartData),
+              },
+            ],
+          });
+          $("#barChartContainer3").css({
+            "min-height": getsize("other_frameworks") + "px",
+          });
+          $("#otherTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Other Frameworks, Libraries, and Tools'
+          );
+          $("#title3").css({ padding: "10px 0" });
+          $("#Container3").css({ "margin-top": "30px" }, { padding: "10px 0" });
+          chart3.render();
+
+
+          chart3.options.height = getsize("other_frameworks");
+          chart3.options.width = 950;
+
+          $("#barChartContainer3").css({
+            "min-height": getsize("other_frameworks") + "px",
+          });
+          $("#otherTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Other Frameworks, Libraries, and Tools'
+          );
+          $("#title3").css({ padding: "10px 0" });
+          $("#Container3").css({ "margin-top": "30px" }, { padding: "10px 0" });
+
+          chart3.render();
+
+          $("#Container3").show();
+        }
+        if (barchartData["databases"]) {
+          var chart4 = new CanvasJS.Chart("barChartContainer4", {
+            animationEnabled: true,
+            colorSet: "brownShades",
+            height: getsize("databases"),
+            title: {
+              text: " ",
+            },
+
+            axisY: {
+              tickThickness: 0,
+              lineThickness: 0,
+              valueFormatString: " ",
+              gridThickness: 0,
+            },
+            axisX: {
+              tickThickness: 0,
+              lineThickness: 0,
+              labelFontSize: 14,
+              labelFontColor: "black",
+              labelFontWeight: "bold",
+              interval: 1,
+            },
+            data: [
+              {
+                indexLabelFontSize: 11,
+                toolTipContent:
+                  '<span style="color:#62C9C3">{label}:</span> <span style="color:#CD853F"><strong>{y}%</strong></span>',
+                indexLabelPlacement: "top",
+                indexLabelFontColor: "black",
+                indexLabelFontWeight: "bold",
+                indexLabelFontFamily: "Verdana",
+                float: "center",
+                type: "bar",
+                dataPoints: getBarData("databases", barchartData),
+              },
+            ],
+          });
+          $("#barChartContainer4").css({
+            "min-height": getsize("databases") + "px",
+          });
+          $("#dataTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Databases'
+          );
+          $("#title4").css({ padding: "10px 0" });
+          $("#Container4").css({ "margin-top": "30px" }, { padding: "10px" });
+          chart4.render();
+
+
+          chart4.options.height = getsize("databases");
+          chart4.options.width = 950;
+
+          $("#barChartContainer4").css({
+            "min-height": getsize("databases") + "px",
+          });
+          $("#dataTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Databases'
+          );
+          $("#title4").css({ padding: "10px 0" });
+          $("#Container4").css({ "margin-top": "30px" }, { padding: "10px" });
+          chart4.render();
+          $("#Container4").show();
+        }
+        if (barchartData["platforms"]) {
+          var chart5 = new CanvasJS.Chart("barChartContainer5", {
+            animationEnabled: true,
+            colorSet: "greyShades",
+            height: getsize("platforms"),
+            title: {
+              text: " ",
+            },
+
+            axisY: {
+              tickThickness: 0,
+              lineThickness: 0,
+              valueFormatString: " ",
+              gridThickness: 0,
+            },
+            axisX: {
+              tickThickness: 0,
+              lineThickness: 0,
+              labelFontSize: 14,
+              labelFontColor: "black",
+              labelFontWeight: "bold",
+              interval: 1,
+            },
+            data: [
+              {
+                indexLabelFontSize: 11,
+                toolTipContent:
+                  '<span style="color:#62C9C3">{label}:</span> <span style="color:#CD853F"><strong>{y}%</strong></span>',
+                indexLabelPlacement: "top",
+                indexLabelFontColor: "black",
+                indexLabelFontWeight: "bold",
+                indexLabelFontFamily: "Verdana",
+                float: "center",
+                type: "bar",
+                dataPoints: getBarData("platforms", barchartData),
+              },
+            ],
+          });
+          $("#barChartContainer5").css({
+            "min-height": getsize("platforms") + "px",
+          });
+          $("#platTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Platforms'
+          );
+          $("#title5").css({ padding: "10px 0" });
+          $("#Container5").css({ "margin-top": "30px" }, { padding: "10px" });
+          chart5.render();
+
+
+          chart5.options.height = getsize("platforms");
+          chart5.options.width = 950;
+
+          $("#barChartContainer5").css({
+            "min-height": getsize("platforms") + "px",
+          });
+          $("#platTitle").html(
+            '<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Platforms'
+          );
+          $("#title5").css({ padding: "10px 0" });
+          $("#Container5").css({ "margin-top": "30px" }, { padding: "10px" });
+          chart5.render();
+
+          $("#Container5").show();
+        }
+        $("#mainContainer").show();
+
         }
 
-		window.onload = function () {
-            CanvasJS.addColorSet("greenShades",
-                [//colorSet Array
-                    "#606902",
-                    "#8bb384",
-                    "#2F4F4F",
-                    "#008080",
-                    "#2E8B57",
-                    "#3CB371",
-                    "#5ced5c"
-                ]);
-            CanvasJS.addColorSet("greyShades",
-                [//colorSet Array
-                    "#bdbdbd",
-                    "#78909c",
-                    "#546e7a",
-                    "#455a64",
-                    "#37474f",
-                    "#263238"
-                ]);
-            CanvasJS.addColorSet("blueShades",
-                [//colorSet Array
-                    "#34495E",
-                    "#9575cd",
-                    "#5c6bc0",
-                    "#3949ab",
-                    "#03a9f4",
-                    "#0d47a1",
-                    "#1a237e"
-                ]);
-            CanvasJS.addColorSet("brownShades",
-                [//colorSet Array
-                    "#bcaaa4",
-                    "#a1887f",
-                    "#795548",
-                    "#757575",
-                    "#5d4037",
-                    "#424242"
-                ]);
-            
-            var chartContainer = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                theme: "light2",
-                backgroundColor: "white",
-                title:{
-                    text: " "
-                },
-                axisX:{
-                    valueFormatString: "DD MMM YY"
-                },
-                axisY: {
-                    title: "Percentage Level",
-                    suffix: "%",
-                    minimum: 0,
-                    maximum:100
-                },
-                toolTip:{
-                    shared:true
-                },
-                legend:{
-                    cursor:"pointer",
-                    verticalAlign: "bottom",
-                    horizontalAlign: "left",
-                    dockInsidePlotArea: true
-                },
-                data: [
-                    {
-                        type: "area",
-                        showInLegend: true,
-                        name: "Percentage",
-                        markerType: "circle",
-                        xValueFormatString: "DD MMM, YY",
-                        color: "#f48024",
-                        yValueFormatString: "#,##",
-                        dataPoints: getData(dates)
-                    }
-                ]
-            });
-            $('#chartTitle').html('<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>User Performance');
-            chartContainer.render();
 
-            if (barchartData["languages"]){
-                var chart1 = new CanvasJS.Chart("barChartContainer1",{
-                    animationEnabled: true,
-                    colorSet:"blueShades",
-                    height:getsize("languages"),
-                    title: {
-                        text: ""
-                        
-                    },
 
-                    axisY: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        valueFormatString: " ",
-                        gridThickness: 0
-                    },
-                    axisX: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        labelFontSize: 14,
-                        labelFontColor: "black",
-                        labelFontWeight: "bold",
-                        interval: 1
-                    },
-                    data: [
-                        {
-                            indexLabelFontSize: 11,
-                            toolTipContent: '<span style="color:#62C9C3">{label}:</span> <span style="color:#CD853F"><strong>{y}%</strong></span>',
-                            indexLabelPlacement: "top",
-                            indexLabelFontColor: "black",
-                            indexLabelFontWeight: "bold",
-                            indexLabelFontFamily: "Verdana",
-                            float: "center",
-                            type: "bar",
-                            dataPoints: getBarData("languages",barchartData)
-                        }
-                    ]
 
-                });
-                $('#barChartContainer1').css({'min-height': (getsize("languages")) + 'px'});
-                $('#Container1').css({'margin-top': '30px'},{'padding': '10px'});
-                $('#lanTitle').html('<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Programming, Scripting, and Markup Languages');
-                $('#title1').css({'padding': '10px 0'});
-                chart1.render();
-            }
-            if(barchartData["web_frameworks"]){
-                var chart2 = new CanvasJS.Chart("barChartContainer2",{
-                    animationEnabled: true,
-                    colorSet:"greyShades",
-                    height:getsize("web_frameworks"),
-                    title: {
-                        text: " "
-                    },
-
-                    axisY: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        valueFormatString: " ",
-                        gridThickness: 0
-                    },
-                    axisX: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        labelFontSize: 14,
-                        labelFontColor: "black",
-                        labelFontWeight: "bold",
-                        interval: 1
-                    },
-                    data: [
-                        {
-                            indexLabelFontSize: 11,
-                            toolTipContent: "<span style=\"color:#62C9C3\">{label}:</span> <span style=\"color:#CD853F\"><strong>{y}%</strong></span>",
-                            indexLabelPlacement: "top",
-                            indexLabelFontColor: "black",
-                            indexLabelFontWeight: "bold",
-                            indexLabelFontFamily: "Verdana",
-                            float: "center",
-                            type: "bar",
-                            dataPoints: getBarData("web_frameworks",barchartData)
-
-                        }
-                    ]
-
-                });
-                $('#barChartContainer2').css({'min-height': (getsize("web_frameworks")) + 'px'});
-                $('#webTitle').html('<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Web Frameworks');
-                $('#title2').css({'padding': '10px 0'});
-                $('#Container2').css({'margin-top': '30px'},{'padding': '10px'});
-                chart2.render();
-            }
-            if(barchartData["other_frameworks"]){
-                var chart3 = new CanvasJS.Chart("barChartContainer3",{
-                    animationEnabled: true,
-                    colorSet:"greenShades",
-                    height:getsize("other_frameworks"),
-                    title: {
-                        text: " "
-                    },
-
-                    axisY: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        valueFormatString: " ",
-                        gridThickness: 0
-                    },
-                    axisX: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        labelFontSize: 14,
-                        labelFontColor: "black",
-                        labelFontWeight: "bold",
-                        interval: 1
-                    },
-                    data: [
-                        {
-                            indexLabelFontSize: 11,
-                            toolTipContent: "<span style=\"color:#62C9C3\">{label}:</span> <span style=\"color:#CD853F\"><strong>{y}%</strong></span>",
-                            indexLabelPlacement: "top",
-                            indexLabelFontColor: "black",
-                            indexLabelFontWeight: "bold",
-                            indexLabelFontFamily: "Verdana",
-                            float: "center",
-                            type: "bar",
-                            dataPoints: getBarData("other_frameworks",barchartData)
-                        }
-                    ]
-
-                });
-                $('#barChartContainer3').css({'min-height': (getsize("other_frameworks")) + 'px'});
-                $('#otherTitle').html('<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Other Frameworks, Libraries, and Tools');
-                $('#title3').css({'padding': '10px 0'});
-                $('#Container3').css({'margin-top': '30px'},{'padding': '10px 0'});
-                chart3.render();
-            }
-            if(barchartData["databases"]){
-                var chart4 = new CanvasJS.Chart("barChartContainer4",{
-                    animationEnabled: true,
-                    colorSet:"brownShades",
-                    height:getsize("databases"),
-                    title: {
-                        text: " "
-                    },
-
-                    axisY: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        valueFormatString: " ",
-                        gridThickness: 0
-                    },
-                    axisX: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        labelFontSize: 14,
-                        labelFontColor: "black",
-                        labelFontWeight: "bold",
-                        interval: 1
-                    },
-                    data: [
-                        {
-                            indexLabelFontSize: 11,
-                            toolTipContent: "<span style=\"color:#62C9C3\">{label}:</span> <span style=\"color:#CD853F\"><strong>{y}%</strong></span>",
-                            indexLabelPlacement: "top",
-                            indexLabelFontColor: "black",
-                            indexLabelFontWeight: "bold",
-                            indexLabelFontFamily: "Verdana",
-                            float: "center",
-                            type: "bar",
-                            dataPoints: getBarData("databases",barchartData)
-                        }
-                    ]
-
-                });
-                $('#barChartContainer4').css({'min-height': (getsize("databases")) + 'px'});
-                $('#dataTitle').html('<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Databases');
-                $('#title4').css({'padding': '10px 0'});
-                $('#Container4').css({'margin-top': '30px'},{'padding': '10px'});
-                chart4.render();
-            }
-            if(barchartData["platforms"]){
-                var chart5 = new CanvasJS.Chart("barChartContainer5",{
-                    animationEnabled: true,
-                    colorSet:"greyShades",
-                    height:getsize("platforms"),
-                    title: {
-                        text: " "
-                    },
-
-                    axisY: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        valueFormatString: " ",
-                        gridThickness: 0
-                    },
-                    axisX: {
-                        tickThickness: 0,
-                        lineThickness: 0,
-                        labelFontSize: 14,
-                        labelFontColor: "black",
-                        labelFontWeight: "bold",
-                        interval: 1
-                    },
-                    data: [
-                        {
-                            indexLabelFontSize: 11,
-                            toolTipContent: "<span style=\"color:#62C9C3\">{label}:</span> <span style=\"color:#CD853F\"><strong>{y}%</strong></span>",
-                            indexLabelPlacement: "top",
-                            indexLabelFontColor: "black",
-                            indexLabelFontWeight: "bold",
-                            indexLabelFontFamily: "Verdana",
-                            float: "center",
-                            type: "bar",
-                            dataPoints: getBarData("platforms",barchartData)
-                        }
-                    ]
-
-                });
-                $('#barChartContainer5').css({'min-height': (getsize("platforms")) + 'px'});
-                $('#platTitle').html('<i class="fa fa-bar-chart fa-1x" aria-hidden="true" style="padding-right: 20px;"></i>Platforms');
-                $('#title5').css({'padding': '10px 0'});
-                $('#Container5').css({'margin-top': '30px'},{'padding': '10px'});
-                chart5.render();
-            };
-
-        }
-		$(document).ready(function(){
-			$("#mainContainer").hide()
-			$("#button").click(function(){
-				var userID=$("#userID").val();
-				$.ajax({
-					url:'/maturity',
-					type:"POST",
-					data:{userID:userID}
-				}).done(function(data){
-					percentageval=data.id;
-					chart.update({
-        				series: [{
-                   			 data: [{
-                        		y: percentageval,
-                        		dataLabels: {
-                            		y: 0,
-                            		format: '{y}%',
-									borderWidth: 0,
-                            		style: {
-                                		fontSize: '40px'
-                            		}
-                            		
-                        		}
-                    		}]
-                		}]
-    				});
-					// newDates=data.dates	
-					// datesDetails=(getData(newDates))	
-					// console.log(datesDetails[0])
-					// typeof datesDetails
-					// chartContainer.data[0].addTo("dataPoints",datesDetails[0]);				
-					// // chartContainer.render();
-
-					// barchartData=data.barchartData
-					// console.log(data.barchartData["languages"])
-
-					// chart1.options.height = getsize("languages");
-					// chart2.options.height = getsize("web_frameworks");	
-					// chart3.options.height = getsize("other_frameworks");	
-					// chart4.options.height = getsize("databases");	
-					// chart5.options.height = getsize("platforms");	
-
-					// chart1.options.data.dataPoints = getBarData("languages",barchartData);
-					// chart2.options.data.dataPoints = getBarData("web_frameworks",barchartData);
-					// chart3.options.data.dataPoints = getBarData("other_frameworks",barchartData);
-					// chart4.options.data.dataPoints = getBarData("databases",barchartData);
-					// chart5.options.data.dataPoints = getBarData("platforms",barchartData);
-
-					// chart1.render();
-					// chart2.render();
-					// chart3.render();
-					// chart4.render();
-					// chart5.render();
-					
-					$("#mainContainer").show()
-					
-				});
-			});
-		});
-	</script>
+        });
+       
+      }
+    });
+  });
+</script>
 {% endblock content %}
