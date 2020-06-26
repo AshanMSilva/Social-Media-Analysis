@@ -241,9 +241,9 @@ class PredictMaturity:
 
 
 
-c = PredictMaturity(20654)   
+#c = PredictMaturity(20654)   
 
-print (c.get_user_maturity())
+#print (c.get_user_maturity())
 # print(c.get_percentage_list())
 # print(c.get_user_technologies()) 
 
