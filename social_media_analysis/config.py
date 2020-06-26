@@ -7,7 +7,7 @@ class Config:
     #SQLALCHEMY_DATABASE_URI = 'mysql://root@localhost/social_media_analysis'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///site.db'
     MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 25
+    MAIL_PORT = 443
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'smanalysis.uom@gmail.com'
     MAIL_PASSWORD = 'Smanalysis@123'
