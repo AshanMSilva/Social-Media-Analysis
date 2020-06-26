@@ -16,7 +16,6 @@ from textblob import TextBlob
  
 from social_media_analysis.twitter.codes import twitter_credentials
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import re

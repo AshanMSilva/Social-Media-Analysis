@@ -102,7 +102,7 @@ def update_post(post_id):
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_post(post_id):
-    try:
+    #try:
         post = Post.query.get_or_404(post_id)
         if post.author != current_user:
             abort(403)
@@ -110,6 +110,6 @@ def delete_post(post_id):
         db.session.commit()
         flash('Your post has been deleted!', 'success')
         return redirect(url_for('main.forum'))
-    except:
-        flash('Something went Wrong. Please check whether enterd details are correct','warning')
-        return redirect(url_for('main.forum'))
+    #except:
+        #flash('Something went Wrong. Please check whether enterd details are correct','warning')
+        #return redirect(url_for('main.forum'))

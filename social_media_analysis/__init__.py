@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from social_media_analysis.config import Config
+from flask import flash
 
 
 db = SQLAlchemy()
