@@ -38,12 +38,12 @@ def test_twitter_search(test_client):
 
 def test_twittersearch(test_client):
     
-    response = test_client.get('/twitter/mahelajay')
+    response = test_client.get('/twitter/mahelajay',follow_redirects=True)
     post_response = test_client.post('/twitter/mahelajay')
     delete_response = test_client.delete('/twitter/mahelajay')
     put_response = test_client.put('/twitter/mahelajay')
                                 
-    assert response.status_code == 302
+    assert response.status_code == 200
     assert post_response.status_code == 405
     assert delete_response.status_code == 405
     assert put_response.status_code == 405
@@ -55,36 +55,36 @@ def test_wrongroute(test_client):
 
 def test_twitterhashtag(test_client):
 
-    response = test_client.get('twitter/hashtag/covid')
+    response = test_client.get('twitter/hashtag/covid',follow_redirects=True)
     post_response = test_client.post('twitter/hashtag/covid')
     delete_response = test_client.delete('twitter/hashtag/covid')
     put_response = test_client.put('twitter/hashtag/covid')
                                 
-    assert response.status_code == 302
+    assert response.status_code == 200
     assert post_response.status_code == 405
     assert delete_response.status_code == 405
     assert put_response.status_code == 405
 
 def test_twitterbotaccount(test_client):
    
-    response = test_client.get('/twitter/botaccount/mahelajay')
+    response = test_client.get('/twitter/botaccount/mahelajay',follow_redirects=True)
     post_response = test_client.post('/twitter/botaccount/mahelajay')
     delete_response = test_client.delete('/twitter/botaccount/mahelajay')
     put_response = test_client.put('/twitter/botaccount/mahelajay')
                                 
-    assert response.status_code == 302
+    assert response.status_code == 200
     assert post_response.status_code == 405
     assert delete_response.status_code == 405
     assert put_response.status_code == 405
 
 def test_twitterlikes(test_client):
    
-    response = test_client.get('/twitter/likesprediction/mahelajay', data=dict(time='22:10', tweet='AshanMSilva as shhd dhd'))
+    response = test_client.get('/twitter/likesprediction/mahelajay', data=dict(time='22:10', tweet='AshanMSilva as shhd dhd') ,follow_redirects=True)
     post_response = test_client.post('/twitter/likesprediction/mahelajay')
     delete_response = test_client.delete('/twitter/likesprediction/mahelajay')
     put_response = test_client.put('/twitter/likesprediction/mahelajay')
                                 
-    assert response.status_code == 302
+    assert response.status_code == 200
 
     assert post_response.status_code == 405
     assert delete_response.status_code == 405
