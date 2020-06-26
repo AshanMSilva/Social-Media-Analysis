@@ -1,0 +1,459 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+	/* facebook css files */
+	
+	.loader {
+	
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 100px;
+	  height: 100px;
+	  left: 1000%;
+	  -webkit-animation: spin 2s linear infinite; /* Safari */
+	  animation: spin 2s linear infinite;
+	}
+	
+	
+	/* Safari */
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+	
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+	.loadercontainer {
+		text-align: center;
+		width: 400px;
+		/* height: 220px; */
+		position: fixed;
+		left: 35%;
+		  top: 35%;
+		background-color:#33C6FF;
+	
+	}</style>
+<script>
+    var all= {{ best_results | tojson }} ;
+    var spend_results=all[1];
+    clicks_ch_data=[]
+    // impre_ch_data=[]
+    spend_results.forEach(add_data);
+    function add_data(item, index) {
+        clicks_ch_data.push({x:item[0],y:item[1]});
+        // impre_ch_data.push({x:item[0],y:item[2]});
+    }
+</script>
+<script>
+    window.onload = function () {
+
+    //Better to construct options first and then pass it as a parameter
+    var gender_options = {
+        animationEnabled: true,
+        title: {
+            text: "Select The Best Gender for Your Advertisement",                
+            fontColor: "Peru"
+        },	
+        axisY: {
+            tickThickness: 0,
+            lineThickness: 0,
+            valueFormatString: " ",
+            gridThickness: 0                    
+        },
+        axisX: {
+            tickThickness: 0,
+            lineThickness: 0,
+            labelFontSize: 18,
+            labelFontColor: "Peru"				
+        },
+        data: [{
+            indexLabelFontSize: 26,
+            toolTipContent: "<span style=\"color:#62C9C3\">{indexLabel}:</span> <span style=\"color:#CD853F\"><strong>{y}</strong></span>",
+            indexLabelPlacement: "inside",
+            indexLabelFontColor: "white",
+            indexLabelFontWeight: 600,
+            indexLabelFontFamily: "Verdana",
+            color: "#62C9C3",
+            type: "bar",
+            dataPoints: [
+            { y: parseInt('{{best_results[0][2]}}'), label: '{{best_results[0][2]}}', indexLabel: "All" },
+            { y: parseInt('{{best_results[0][1]}}'), label: '{{best_results[0][1]}}', indexLabel: "Female" },
+            { y: parseInt('{{best_results[0][0]}}'), label: '{{best_results[0][0]}}', indexLabel: "Male" },
+            ]
+        }]
+    };
+
+    var day_options = {
+        animationEnabled: true,
+        title: {
+            text: "Select The Best Weekday for Your Advertisement",                
+            fontColor: "Peru"
+        },	
+        axisY: {
+            tickThickness: 0,
+            lineThickness: 0,
+            valueFormatString: " ",
+            gridThickness: 0                    
+        },
+        axisX: {
+            tickThickness: 0,
+            lineThickness: 0,
+            labelFontSize: 18,
+            labelFontColor: "Peru"				
+        },
+        data: [{
+            indexLabelFontSize: 26,
+            toolTipContent: "<span style=\"color:#D3FF33\">{indexLabel}:</span> <span style=\"color:#CD853F\"><strong>{y}</strong></span>",
+            indexLabelPlacement: "inside",
+            indexLabelFontColor: "white",
+            indexLabelFontWeight: 600,
+            indexLabelFontFamily: "Verdana",
+            color: "#D3FF33",
+            type: "bar",
+            dataPoints: [
+            { y: parseInt('{{best_results[2]["sat"]}}'), label: '{{best_results[2]["sat"]}}', indexLabel: "Saturday" },
+            { y: parseInt('{{best_results[2]["fri"]}}'), label: '{{best_results[2]["fri"]}}', indexLabel: "Friday" },
+            { y: parseInt('{{best_results[2]["thu"]}}'), label: '{{best_results[2]["thu"]}}', indexLabel: "Thursday" },
+            { y: parseInt('{{best_results[2]["wed"]}}'), label: '{{best_results[2]["wed"]}}', indexLabel: "Wednesday" },
+            { y: parseInt('{{best_results[2]["tue"]}}'), label: '{{best_results[2]["tue"]}}', indexLabel: "Tuesdayday" },
+            { y: parseInt('{{best_results[2]["mon"]}}'), label: '{{best_results[2]["mon"]}}', indexLabel: "Monday" },
+            { y: parseInt('{{best_results[2]["sun"]}}'), label: '{{best_results[2]["sun"]}}', indexLabel: "Sunday" },
+            ]
+        }]
+    };
+
+
+    
+var spend_chart = new CanvasJS.Chart("spend_chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Clicks  with Ad spends"
+	},
+	toolTip: {
+		shared: true
+	},
+	axisX: {
+		title: "Ad spend",
+		// suffix : " RUB"
+	},
+	axisY: {
+		title: "Clicks",
+		titleFontColor: "#4F81BC",
+		// suffix : " m/s",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	// axisY2: {
+	// 	title: "Impressions",
+	// 	titleFontColor: "#C0504E",
+	// 	// suffix : " m",
+	// 	lineColor: "#C0504E",
+	// 	tickColor: "#C0504E"
+	// },
+	data: [{
+		type: "spline",
+		name: "clicks",
+		xValueFormatString: "#### USD",
+		// yValueFormatString: "#,##0  ",
+        
+		dataPoints: clicks_ch_data
+	}
+	// ,
+	// {
+	// 	type: "spline",  
+	// 	axisYType: "secondary",
+	// 	name: "impressions",
+	// 	// yValueFormatString: "#,##0.# ",
+	// 	dataPoints: impre_ch_data
+	// }
+	]
+});
+    spend_chart.render();
+
+    $("#gender_chartContainer").CanvasJSChart(gender_options);
+    $("#day_chartContainer").CanvasJSChart(day_options);
+    }
+    </script>
+
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+            <div>
+				<!-- <h1 >Impressions should be {{ results['impressions'] }}</h1> -->
+				
+                <h1>Clicks should be {{ results['clicks'] }}</h1>
+            </div>
+            <div>
+                <div id="gender_chartContainer" style="height: 250px; width: 100%;"></div>
+                <br>
+                <div id="spend_chartContainer" style="height: 300px; width: 100%;"></div>
+                <br>
+                <div id="day_chartContainer" style="height: 300px; width: 100%;"></div>
+                <br>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+          <h4>Give it a spin!</h4>
+          <p>Just click following link below to explore the facebook..!</p>
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#adpredictmodel" >Advertisements Analysis</a>
+            <a href="#" class="list-group-item list-group-item-action"  data-toggle="modal" data-target="#sentimentmodel">Comments Analysis</a>
+            <!-- <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#likecountmdel">Bot detection</a> -->
+            <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
+          </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+
+
+
+  <!-- model navigator -->
+  <div class="loadercontainer" id="loadercontainer" style="display: none; " >
+	<h5>It may consume some time to calculate</h5>
+	<h5>Please wait..</h5>
+	<br>
+	<div class="row">
+		<div style="width: 150px;"></div>
+
+			<div class="loader" id="load" ></div>
+		<!-- </div> -->
+		<div style="width: 150px;"></div>
+	</div>
+	<br>
+	<div id="time"></div>
+	<br>
+</div>
+
+
+
+	<!-- ad predict form -->  
+	<div class="modal fade" id="adpredictmodel" tabindex="-1" role="dialog" aria-labelledby="adpredictmodel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="adpredictmodel">Predict Clicks for Your Advertisement</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
+				<form method="POST" action="">
+
+					{{ adform.hidden_tag() }}
+					<fieldset class="form-group">
+						<div class="form-group">
+							{{ adform.gender.label(class="form-control-label") }}
+							{% if adform.gender.errors %}
+								{{ adform.gender(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in adform.gender.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ adform.gender(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+						<div class="form-group">
+							{{ adform.adText.label(class="form-control-label") }}
+							{% if adform.adText.errors %}
+								{{ adform.adText(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in adform.adText.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ adform.adText(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+						<div class="form-group">
+							{{ adform.weekday.label(class="form-control-label") }}
+							{% if adform.weekday.errors %}
+								{{ adform.weekday(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in adform.weekday.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ adform.weekday(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+						<div class="form-group">
+							{{ adform.minAge.label(class="form-control-label") }}
+							{% if adform.minAge.errors %}
+								{{ adform.minAge(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in adform.minAge.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ adform.minAge(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+						<div class="form-group">
+							{{ adform.maxAge.label(class="form-control-label") }}
+							{% if adform.maxAge.errors %}
+								{{ adform.maxAge(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in adform.maxAge.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ adform.maxAge(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+						<div class="form-group">
+							{{ adform.adSpends.label(class="form-control-label") }}
+							{% if adform.adSpends.errors %}
+								{{ adform.adSpends(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in adform.adSpends.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ adform.adSpends(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</fieldset>
+					<div class="form-group" onclick="loading()">
+						{{ adform.submit(class="btn btn-outline-info") }}
+					</div>
+				</form>
+						
+			</div>
+		  </div>
+		</div>
+	  </div>
+	<!-- end of ad predict function -->
+
+
+		<!-- sentiment form-->
+		<div class="modal fade" id="sentimentmodel" tabindex="-1" role="dialog" aria-labelledby="sentimentmodel" aria-hidden="true">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				<h3 class="modal-title" id="sentimentmodel">Analyze Comments of Your Post</h3>
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
+					<form action="/sentiment" method="post" enctype="multipart/form-data">
+						<fieldset class="form-group">  
+							<div class="form-group">
+								<label for="upload" class="form-control-label">HTML File :</label> 
+								<input type="file"  required name="upload"class="form-control form-control-lg" >
+							</div>
+						</fieldset>
+						<h5>Upload the HTML script file, that contains all the comments of this post.  </h5>
+						<br>
+						<p>Tips for donwloading the file:</p>
+						<p>Click on the time stamp of the post. <br>
+							View all comments. <br>
+							Save the page.</p>
+						<br>
+						<div class="form-group" onclick="loading()">
+							<button type="submit" class="btn btn-outline-info">Analyse</button> 
+						</div>
+
+					</form>
+							
+				</div>
+			  </div>
+			</div>
+		  </div>
+		<!-- end of sentiment form -->
+
+
+	<!-- bot detection form -->  
+	<div class="modal fade" id="botdetectionmodel" tabindex="-1" role="dialog" aria-labelledby="botdetectionmodel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="botdetectionmodel">Bot Account Prediction</h4>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
+				<form method="POST" action="">
+
+					{{ botform.hidden_tag() }}
+					<fieldset class="form-group">
+						<div class="form-group">
+							{{ botform.link.label(class="form-control-label") }}
+							{% if botform.link.errors %}
+								{{ botform.link(class="form-control form-control-lg is-invalid") }}
+								<div class="invalid-feedback">
+									{% for error in botform.link.errors %}
+										<span>{{ error }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								{{ botform.link(class="form-control form-control-lg") }}
+							{% endif %}
+						</div>
+					</fieldset>
+					<h5>Before using this feature, you have to login with your Facebook account.</h5>
+					<p>Click <a href="https://www.facebook.com" target="_blank">here</a> to login with your Facebook account</p>
+					<br>
+					<div class="form-group" onclick="loading()">
+						{{ botform.submit(class="btn btn-outline-info") }}
+					</div>
+				</form>
+						
+			</div>
+		  </div>
+		</div>
+	  </div>
+	<!-- end of bot detection function -->
+
+
+		
+{% endblock content %}
+
+
+{% block scripts %}
+	<script type="text/javascript">
+	    $(window).on('load',function(){
+	        $('#{{adpredict_model}}').modal('show');
+	        $('#{{sentiment_model}}').modal('show');
+	        // $('#{{botmodal}}').modal('show');
+	        $('#{{botdetection_model}}').modal('show');
+	    });
+
+	</script>
+		<script>
+			function loading(){
+				// alert("aaaa")
+				document.getElementById("adpredictmodel").style.display="none"
+				document.getElementById("sentimentmodel").style.display="none"
+				document.getElementById("botdetectionmodel").style.display="none"
+				document.getElementById("loadercontainer").style.display="block";
+				setInterval(setTime, 1000);
+			}
+			time_index=0;
+			function setTime(){
+				min=parseInt(time_index/60);
+				sec=time_index%60;
+				if(String(min).length<2){
+					min='0'+min
+				}
+				if(String(sec).length<2){
+					sec='0'+sec
+				}
+				document.getElementById("time").innerHTML=min+" : "+sec;	
+				time_index++;	
+			}
+	
+		</script>
+{% endblock scripts %}

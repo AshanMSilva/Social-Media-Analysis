@@ -35,7 +35,6 @@ def test_twitter_search(test_client):
                                 follow_redirects=True)
     assert response.status_code == 200
 
-
 def test_twittersearch(test_client):
     
     response = test_client.get('/twitter/mahelajay',follow_redirects=True)
@@ -104,3 +103,8 @@ def test_twitter_hashtag(test_client):
                                 follow_redirects=True)
     assert response.status_code == 200
 
+def test_facebook_bot(test_client):
+
+    response=test_client.post('/facebook/bot', data=dict(link='https://www.facebook.com/sisara.kahatapitiya.9'))
+
+    assert response.status_code == 200

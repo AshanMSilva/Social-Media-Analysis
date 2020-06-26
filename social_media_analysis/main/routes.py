@@ -4,6 +4,7 @@ from social_media_analysis.twitter.forms import NameForm, BotForm,HashtagForm, T
 from social_media_analysis.youtube.forms import ChannelDetailForm,SentimentAnalysisForm,ViewPredictionForm,ViralVideoForm
 from social_media_analysis.posts.forms import PostForm
 from social_media_analysis.users.forms import RegistrationForm, LoginForm
+from social_media_analysis.facebook.forms import AdForm,FbBotForm
 
 main = Blueprint('main', __name__)
 
@@ -101,25 +102,60 @@ def twitter():
         return redirect(url_for('main.home'))
 @main.route("/facebook", methods=['GET', 'POST'])
 def facebook():
-    loginmodalshow='close'
-    loginform = LoginForm()
-    if(loginform.validate_on_submit()==False and loginform.login.data):
-        loginmodalshow='loginformmodal'
-    if loginform.validate_on_submit() and loginform.login.data:
-        remember=loginform.remember.data
-        email=loginform.email.data
-        password=loginform.password.data
-        return redirect(url_for('users.login', remember=remember, email=email, password=password))
-    modalshow='close'
-    registerform = RegistrationForm()
-    if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='registerformmodal'
-    if registerform.validate_on_submit() and registerform.signup.data:
-        username=registerform.username.data
-        email=registerform.email.data
-        password=registerform.password.data
-        return redirect(url_for('users.register', username=username, email=email, password=password))
-    return render_template('facebook.html', title='Facebook', registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+	loginmodalshow='close'
+	loginform = LoginForm()
+	if(loginform.validate_on_submit()==False and loginform.login.data):
+		loginmodalshow='loginformmodal'
+	if loginform.validate_on_submit() and loginform.login.data:
+		remember=loginform.remember.data
+		email=loginform.email.data
+		password=loginform.password.data
+		return redirect(url_for('users.login', remember=remember, email=email, password=password))
+	modalshow='close'
+	registerform = RegistrationForm()
+	if(registerform.validate_on_submit()==False and registerform.signup.data):
+		modalshow='registerformmodal'
+	if registerform.validate_on_submit() and registerform.signup.data:
+		username=registerform.username.data
+		email=registerform.email.data
+		password=registerform.password.data
+		return redirect(url_for('users.register', username=username, email=email, password=password))
+
+	#### handle facebook advertisements
+	adform = AdForm()
+	adpredict_model='close'
+	if(adform.validate_on_submit()==False and adform.submit.data):
+		adpredict_model='adpredictmodel'
+	if adform.validate_on_submit() and adform.submit.data:
+		gender = adform.gender.data
+		adText = adform.adText.data
+		weekday = adform.weekday.data
+		minAge = adform.minAge.data
+		maxAge = adform.maxAge.data
+		adSpends = adform.adSpends.data 
+		return redirect(url_for('facebook.fbAdClicksPredict',gender=gender,adText=adText,weekday=weekday,minAge=minAge,maxAge=maxAge,adSpends=adSpends))
+
+	### handle senetiments
+	# sentiform=SentimentForm()
+	# sentiment_model='close' 
+	# if(sentiform.validate_on_submit()==False and sentiform.submit.data):
+	# 	sentiment_model='sentimentmodel'
+	# if sentiform.validate_on_submit() and sentiform.submit.data:
+	# 	file_up = sentiform.upload
+	# 	return redirect(url_for('facebook.sentiment',file_up=file_up))
+
+	
+	### handle bot detection
+	botform=FbBotForm()
+	botdetection_model='close'
+	if(botform.validate_on_submit()==False and botform.submit.data):
+		botdetection_model='botdetectionmodel'
+	if botform.validate_on_submit() and botform.submit.data:
+		link = botform.link.data
+		return redirect(url_for('facebook.bot',link=link))
+
+
+	return render_template('facebook.html', adform=adform,botform=botform, title='Facebook', registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow,adpredict_model=adpredict_model)
 
 @main.route("/youtube", methods=['GET', 'POST'])
 def youtube():

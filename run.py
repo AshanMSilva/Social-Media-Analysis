@@ -1,6 +1,9 @@
 from social_media_analysis import create_app
-from social_media_analysis.config import Config
-app = create_app(config_class=Config)
 
+app = create_app()
+import os
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+ 
 if __name__ == '__main__':
     app.run(debug=True)
