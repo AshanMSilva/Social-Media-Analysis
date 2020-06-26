@@ -164,7 +164,7 @@ def user_comments(username):
         return redirect(url_for('main.home'))
 @users.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
-    try:
+    #try:
         loginmodalshow='close'
         loginform = LoginForm()
         if(loginform.validate_on_submit()==False and loginform.login.data):
@@ -192,9 +192,9 @@ def reset_request():
             flash('An email has been sent with instructions to reset your password.', 'info')
             return redirect(url_for('main.home'))
         return render_template('reset_request.html', title='Reset Password', form=form, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
-    except:
-        flash('Something went Wrong. Please check whether enterd details are correct','warning')
-        return redirect(url_for('main.home'))
+    #except:
+        #flash('Something went Wrong. Please check whether enterd details are correct','warning')
+        #return redirect(url_for('main.home'))
 
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
