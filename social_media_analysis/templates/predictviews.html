@@ -1,8 +1,64 @@
 {% extends "layout.html" %}
 {% block content %}
-      	<div class="col-md-4">
-        	<h4>This is view prediction.</h4>
-        	
-      	</div>
-      	   
+
+  <div class="container" class="user-details-header">
+  	<div class="row">
+      	<div class="col-md-2">
+  			<img src="{{ url_for('static', filename='images/youtube_PNG21.png') }}" alt="" class="img-thumbnail">
+  		</div>
+  		 <div class="col-md-10">
+  			 <h2 style="text-align:center">Views & Likes Prediction</h2>
+  			 </br>
+  			 <p>This is an approximate prediction for number of views and likes can be expected for a video uploaded from your channel.</p>
+  		</div>
+  		
+  	</div> 	
+  </div>
+  
+  <hr>
+     
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Predictions</h3>
+        
+         <p>These predicted values may not be accurate in some situations.</p>
+          
+        
+      </div>
+      <div class="col-md-8">
+            <ul class="list-group list-group-flush">
+			  <li class="list-group-item"><b>Number of views</b>             :  {{viewPred}}</li>
+			  <li class="list-group-item"><b>Number of likes</b>             :  {{likePred}}</li>
+			</ul>
+      </div>
+      
+     </div>
+     </div>
+     <hr>
+     
+    <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Metrics</h3>
+        
+         <p>Followings are the metrics considered for predicting number of views and likes.</p>
+          
+        
+      </div>
+      <div class="col-md-8">
+            <ul class="list-group list-group-flush">
+			  <li class="list-group-item"><b>Channel Statistics</b>           :  <ul><li>Number of subscribers</li> 
+                                                                        			 <li>Number of videos</li> 
+                                                                        			 <li>Total number of views</li>
+                                                                        			 <li>Joined date</li>
+                                                                    			 </ul></li>
+			  <li class="list-group-item"><b>Video Statistics</b>             :  <ul><li>Video category</li> 
+                                                                        			 <li>Duration</li> 
+                                                                    			 </ul></li>
+			</ul>
+      </div>
+      
+     </div>
+    </div>
 {% endblock content %}

@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<style>
+div.hidden {
+  display: none;
+}
+</style>
+
    <div class="container" class="user-details-header">
   	<div class="row">
   	<div class="col-md-2">
@@ -27,7 +34,7 @@
 			  <li class="list-group-item"><b>Video Title</b>                :  {{title}}</li>
 			  <li class="list-group-item"><b>Description</b>                :  {{des}}</li>
 			  <li class="list-group-item"><b>Video ID</b>                   :  {{name}}</li>
-			  <li class="list-group-item"><b>Uploaded on</b>                :  {{date}}</li>
+			  <li class="list-group-item"><b>Uploaded on</b>                :  {{Date}}</li>
 			  <li class="list-group-item"><b>Duration</b>                   :  {{duration}}</li>
 			  <li class="list-group-item"><b>Channel Id</b>                 :  {{channel}}</li>
 			</ul>
@@ -79,24 +86,74 @@
       <div class="col-md-4">
         <h3>Analysis of Comments</h3>
          <p>Only top level comments are considered for sentiment analysis here, because replies do not directly refer to the video.</p>
+         <br/>
+         <p>Top level are filtered to extract English comments before analysis.</p>
       </div>
       <div class="col-md-8">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><b>Total No. of Comments</b>               :  {{topcom + replyCount}}</li>
           <li class="list-group-item"><b>No. of Top Level Comments</b>           :  {{topcom}}</li>
           <li class="list-group-item"><b>No. of Replies</b>                      :  {{replyCount}}</li>
+          <li class="list-group-item"><b>No. of Analysed Comments</b>            :  {{analysedCom}}</li>
     
         </ul>
         
         <div id="pieChartComments" style="height: 300px; width: 100%;"></div>
         
+        <br/>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col text-center">
+              <button type="button" class="btn btn-info" value="Comments" id="btn1" >Comments</button>
+            </div>
+          </div>
+        </div>
+        
+        
+        <br/>
+        
+        <div class="hidden" id= "comments">
+         <p style="text-align:center;">Here are some of the comments of this video categorized according to their sentiment.</p>
+      
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><b>Positive Comments</b>                :  <ul style="list-style-type:disc">
+                                                                                  {% for comment in exPosCom %}
+                                                                                  <li>{{comment}}</li><br/>
+                                                                                  {% endfor %}</ul></li>
+          <li class="list-group-item"><b>Negative Comments</b>                :  <ul style="list-style-type:disc">
+                                                                                  {% for comment in exNegCom %}
+                                                                                  <li>{{comment}}</li><br/>
+                                                                                  {% endfor %}</ul></li>
+          <li class="list-group-item"><b>Neutral Comments</b>                 :  <ul style="list-style-type:disc">
+                                                                                  {% for comment in exNeuCom %}
+                                                                                  <li>{{comment}}</li><br/>
+                                                                                  {% endfor %}</ul></li>
+        </ul>
+     </div>
       </div>
      </div>
      
-     
-     
     
+       
 <script type="text/javascript">
+
+document.getElementById("btn1").addEventListener("click", function()
+{
+    var box = document.getElementById("comments");
+    console.log(box.style.display)
+    if(box.style.display=="block")
+    {
+        box.style.display="none"
+    }
+    else
+    {
+        box.style.display="block"
+    }
+})
+
+
+
 window.onload = function() {
 
 var options = {
@@ -110,13 +167,13 @@ var options = {
 	data: [{
 		type: "pie",
 		showInLegend: true,
-		toolTipContent: "<b>{name}</b>: {y} (#percent%)",
+		toolTipContent: "<b>{name}</b>: {y}",
 		indexLabel: "{name}",
 		indexLabelPlacement: "outside",
 		dataPoints: [
 			{ y: {{likes}}, name: "Likes",legendText: "#percent% of the viewers likes this video",color:"green" },
 			{ y: {{dislikes}}, name: "Dislikes",legendText: "#percent% of the viewers dislikes this video",color:"red" },
-			{ y: {{views-likes-dislikes}}, name: "Not rated",legendText: "#percent% of the viewers has not rated this video",color:"yellow"}
+			{ y: {{views-likes-dislikes}}, name: "Not rated",legendText: "#percent% of the viewers has not rated this video",color:"#00FFFF"}
 			
 		]
 	}]
@@ -136,13 +193,13 @@ var options1 = {
 	data: [{
 		type: "pie",
 		showInLegend: true,
-		toolTipContent: "<b>{name}</b>: {y} (#percent%)",
+		toolTipContent: "<b>{name}</b>: {y} ",
 		indexLabel: "{name}",
 		legendText: "Percentage of {name}: #percent%",
 		indexLabelPlacement: "outside",
 		dataPoints: [
-			{ y: {{poscom}}, name: "Positive Comments",color: "#00BFFF" },
-			{ y: {{negcom}}, name: "Negative Comments" , color: "#7CFC00"},
+			{ y: {{poscom}}, name: "Positive Comments",color: "#7CFC00" },
+			{ y: {{negcom}}, name: "Negative Comments" , color: "red"},
 			{ y: {{neucom}}, name: "Neutral Comments", color:"#191970"}
 			
 		]

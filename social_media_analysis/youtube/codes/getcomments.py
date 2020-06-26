@@ -9,44 +9,63 @@ key = "AIzaSyCbfK6-IwYr-jGjB595C8MkyC54J1jwdaA"
 
 
 
-def getComments(Vid,nextPage):
+def getComments(Vid):
+    
     
     comments = []
     replyCount = 0
+    hasnextpage = False
     
-    url = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=" + Vid + "&key=" + key + "&maxResults=100" + "&pageToken=" + nextPage 
+    url = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=" + Vid + "&key=" + key + "&maxResults=100"
     data = (urllib.request.urlopen(url)).read()
-    #global replyCount
     
     #print(url)
     numComment = len(json.loads(data)['items'])
-    try:
-        token = json.loads(data)["nextPageToken"]
-    except KeyError:
-        for comment in range(numComment):
-            comments.append(json.loads(data)['items'][comment]["snippet"]["topLevelComment"]["snippet"]["textOriginal"])
-            #print(json.loads(data)['items'][comment]["snippet"]["totalReplyCount"])
-            replyCount = replyCount + int(json.loads(data)['items'][comment]["snippet"]["totalReplyCount"])
-        #print(len(comments),replyCount)
-        return comments,replyCount
     for comment in range(numComment):
         comments.append(json.loads(data)['items'][comment]["snippet"]["topLevelComment"]["snippet"]["textOriginal"])
-        replyCount+=int(json.loads(data)['items'][comment]["snippet"]["totalReplyCount"])
-    getComments(Vid,token)
+        replyCount = replyCount + int(json.loads(data)['items'][comment]["snippet"]["totalReplyCount"])
+    
+    try:
+        token = json.loads(data)["nextPageToken"]
+        hasnextpage = True
+        
+    except KeyError:
+        return comments,replyCount
+
+    while hasnextpage:
+        url = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=" + Vid + "&key=" + key + "&maxResults=100" + "&pageToken=" + token 
+        data = (urllib.request.urlopen(url)).read()
+        numComment = len(json.loads(data)['items'])
+        for comment in range(numComment):
+            comments.append(json.loads(data)['items'][comment]["snippet"]["topLevelComment"]["snippet"]["textOriginal"])
+            replyCount = replyCount + int(json.loads(data)['items'][comment]["snippet"]["totalReplyCount"])
+
+        try:
+            token = json.loads(data)["nextPageToken"]
+            hasnextpage = True
+        
+        except KeyError:
+            return comments,replyCount
+
 
 def sentimentAnalysis(comment):
     
+    emojis = ["👏🏽","👌", "♥️","👍","😍","😀","🔥","💪","✌️","😘","❤","😊"]
+    for emoji in emojis:
+        if emoji in comment:
+            return 1
+        
     tb = TextBlob(comment)
     sent  = tb.sentiment.polarity
     if sent>0.1:
         return 1
-    if sent<0.1:
+    if sent<-0.1:
         return -1
-    else:
+    if -0.1<=sent<=0.1:
         return 0
-        
+  
 #Vid = input("enter id")
-#getComments(Vid,' ')
+#print(getComments(Vid))
 #print(len(comments),replyCount)
 #for comment in comments:
     #print(comment,sentimentAnalysis(comment))

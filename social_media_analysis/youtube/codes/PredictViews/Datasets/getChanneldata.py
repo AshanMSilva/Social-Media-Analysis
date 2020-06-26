@@ -5,6 +5,8 @@ from datetime import date
 import isodate
 
 key = "AIzaSyDPgpf4oaUa5dbzkvQlVd9eNiyF4zsThA8"
+#key = "AIzaSyCbfK6-IwYr-jGjB595C8MkyC54J1jwdaA"
+
 parts = ['statistics','snippet']
 
 def getChannelData(Cid):

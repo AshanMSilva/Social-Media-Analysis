@@ -4,6 +4,7 @@ import isodate
 
 
 key = "AIzaSyDPgpf4oaUa5dbzkvQlVd9eNiyF4zsThA8"
+#key = "AIzaSyCbfK6-IwYr-jGjB595C8MkyC54J1jwdaA"
 
 
 def getVideoDetails(Vid):
@@ -13,14 +14,14 @@ def getVideoDetails(Vid):
     try:
         data = (urllib.request.urlopen(url)).read()
     except urllib.request.HTTPError:
-        channel=categoryID=dur=views=likes=comments= "N/A"
-        return channel,categoryID,dur,views,likes,comments
+        channel=categoryID=dur=views=likes= "N/A"
+        return channel,categoryID,dur,views,likes
      
     try:
         channel = json.loads(data)['items'][0]["snippet"]["channelId"]
     except (IndexError,KeyError):
-        channel=categoryID=dur=views=likes=comments= "N/A"
-        return channel,categoryID,dur,views,likes,comments
+        channel=categoryID=dur=views=likes= "N/A"
+        return channel,categoryID,dur,views,likes
     categoryID = int(json.loads(data)['items'][0]["snippet"]["categoryId"])
     
  
@@ -29,19 +30,18 @@ def getVideoDetails(Vid):
     duration = isodate.parse_duration(duration)
     dur = duration.total_seconds()
     
-    
-    views = int(json.loads(data)['items'][0]["statistics"]["viewCount"])
-    
+    try:
+        views = int(json.loads(data)['items'][0]["statistics"]["viewCount"])
+    except KeyError:
+        views = "N/A"
+        
     try:
         likes = int(json.loads(data)['items'][0]["statistics"]["likeCount"])
     except KeyError:
         likes = "N/A"
-    try:
-        comments = int(json.loads(data)['items'][0]["statistics"]["commentCount"])
-    except KeyError:
-        comments="N/A"
     
-    return channel,categoryID,dur,views,likes,comments
+    
+    return channel,categoryID,dur,views,likes
 
 
 #print(getVideoDetails("-n2XQE0T3QU"))

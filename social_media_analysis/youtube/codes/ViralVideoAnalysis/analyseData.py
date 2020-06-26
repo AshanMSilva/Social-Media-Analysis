@@ -25,7 +25,7 @@ data = (pd.read_csv('data.csv'))
 
 #histogram
 duration = data.iloc[:,8].values
-commentsPerView = data.iloc[:,19].values
+#commentsPerView = data.iloc[:,19].values
 
 
 
@@ -136,33 +136,6 @@ for count in sub:
         
 subCount_out.append([sub1,sub2,sub3,sub4,sub5,sub6,"null","null","null","null","null"])
 
-com3=0
-com6=0
-com9=0
-com12=0
-com15=0
-com18=0
-com21=0
-
-com_out=[]
-
-for count in commentsPerView:
-    if count<3:
-        com3+=1
-    if 3 <= count< 6:
-        com6+=1
-    if 6 <= count< 9:
-        com9+=1
-    if 9 <= count< 12:
-        com12+=1
-    if 12 <= count< 15:
-        com15+=1
-    if 15 <= count< 18:
-        com18+=1
-    if 18 <= count< 21:
-        com21+=1
-
-com_out.append([com3,com6,com9,com12,com15,com18,com21,"null","null","null","null"])
 
 
 com20=0
@@ -202,25 +175,25 @@ comi=0
 com_out3=[]
 
 for count in daysToPublish:
-    if count<30:
+    if int(count)<30:
         com30+=1
-    if 30 <= count< 90:
+    if 30 <= int(count) < 90:
         com90+=1
-    if 90 <= count< 365:
+    if 90 <= int(count)< 365:
         com1+=1
-    if 365 <= count< 730:
+    if 365 <= int(count)< 730:
         com2+=1
-    if 730 <= count< 1825:
+    if 730 <= int(count)< 1825:
         com5+=1
-    if 1825 <= count< 3650:
+    if 1825 <= int(count)< 3650:
         com10+=1
-    if count> 3650:
+    if int(count)> 3650:
         comi+=1
 
 com_out3.append([com30,com90,com1,com2,com5,com10,comi,"null","null","null","null"])
 
 
-df = pd.DataFrame({'duration':dur_out[0],'commentsPerView':com_out[0],'daysToPublish':com_out3[0],'videoCount':com_out2[0],'sub':subCount_out[0],
+df = pd.DataFrame({'duration':dur_out[0],'daysToPublish':com_out3[0],'videoCount':com_out2[0],'sub':subCount_out[0],
                    'totalView':totView_out[0]}).to_csv('analysedData.csv')
  
 

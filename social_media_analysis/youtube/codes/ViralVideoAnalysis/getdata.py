@@ -2,6 +2,7 @@ import urllib.request
 import json
 import isodate
 
+#key = "AIzaSyCbfK6-IwYr-jGjB595C8MkyC54J1jwdaA"
 key = "AIzaSyDPgpf4oaUa5dbzkvQlVd9eNiyF4zsThA8"
 parts = ['statistics','snippet']
 
@@ -19,6 +20,7 @@ def getChannelData(Cid):
     sub = json.loads(data)['items'][0]["statistics"]["subscriberCount"]
     view = int(json.loads(data)['items'][0]["statistics"]["viewCount"])
     vid = int(json.loads(data)["items"][0]["statistics"]["videoCount"])
+
     try:
         location = json.loads(data)['items'][0]["snippet"]["country"]
     except KeyError:
@@ -45,6 +47,7 @@ def getVideoDetails(Vid):
     duration = json.loads(data)['items'][0]["contentDetails"]["duration"]
     duration = isodate.parse_duration(duration)
     
+    title = json.loads(data)['items'][0]["snippet"]["title"]
     channel = json.loads(data)['items'][0]["snippet"]["channelId"]
     views = int(json.loads(data)['items'][0]["statistics"]["viewCount"])
     
@@ -61,7 +64,7 @@ def getVideoDetails(Vid):
         comments = int(json.loads(data)['items'][0]["statistics"]["commentCount"])
     except KeyError:
         comments=0
-    return channel,date,categoryID,language,duration,views,likes,dislikes,comments
+    return channel,date,categoryID,language,duration,views,likes,dislikes,comments,title
 
 
 

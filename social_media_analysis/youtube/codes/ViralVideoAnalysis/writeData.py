@@ -1,6 +1,6 @@
 from getdata import getChannelData,getVideoDetails,getVideoCategory
 import pandas as pd
-import sys
+
 
 ids = (pd.read_csv('ids.csv'))
 ids = ids.iloc[:,1].values
@@ -19,14 +19,15 @@ viewCount=[]
 likeCount=[]
 dislikeCount=[]
 commentCount=[]
-c=0
+titles=[]
 
-for Vid in ids:
+
+for i in range(856,len(ids)):
     
-    channel,date,categoryID,language,dur,views,likes,dislikes,comments = getVideoDetails(Vid)
+    channel,date,categoryID,language,dur,views,likes,dislikes,comments,title = getVideoDetails(ids[i])
     
     category = getVideoCategory(categoryID)
-    print(date)
+    
     uploadedDate.append(date)
     categoryList.append(category)
     videoLanguage.append(language)
@@ -35,22 +36,24 @@ for Vid in ids:
     likeCount.append(likes)
     dislikeCount.append(dislikes)
     commentCount.append(comments)
+    titles.append(title)
     
+    print(channel)
     vid,view,sub,date,location = getChannelData(channel)
-    print(date)
+    
     subCount.append(sub)
     vidCount.append(vid)
     totalViewCount.append(view)
     channelDate.append(date)
     channelLocation.append(location)
     
-    c+=1
-    print(c)
+
+    print(i)
     
-    sys.exit()
-df = pd.DataFrame({'ChannelID':ids,'ViewCount':viewCount, 'likeCount':likeCount, 'dislikeCount':dislikeCount, 'uploadedDate':uploadedDate,
+    
+df = pd.DataFrame({'ChannelID':ids[856:],'ViewCount':viewCount, 'likeCount':likeCount, 'dislikeCount':dislikeCount, 'uploadedDate':uploadedDate,
                    'category':categoryList, 'videoLanguage':videoLanguage,'duration':duration,'commentCount':commentCount, 'subCount':subCount,
-                   'TotalViewCount':totalViewCount,'VideoCount':vidCount, 'channelDate':channelDate,'channelLocation':channelLocation}).to_csv('data.csv')
+                   'TotalViewCount':totalViewCount,'VideoCount':vidCount, 'channelDate':channelDate,'channelLocation':channelLocation,'title':titles}).to_csv('data.csv',mode='a',header=False)
     
     
     

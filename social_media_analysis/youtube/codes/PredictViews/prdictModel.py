@@ -7,14 +7,8 @@ Created on Fri Feb 14 10:16:02 2020
 
 
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-from sklearn.preprocessing import LabelEncoder
-import sys
-from sklearn.model_selection import train_test_split 
-from sklearn import datasets, linear_model, metrics
+from sklearn import linear_model
 import matplotlib.pyplot as plt
 
 
@@ -34,9 +28,7 @@ x = data.iloc[:,3:].values
 def normalize(x_train):
     for column in range(x_train.shape[1]):
         avg = sum(x_train[:,column])/x_train.shape[0]
-        #print (avg)
         datarange = (max(x_train[:,column]) - min(x_train[:,column]))
-        #print(datarange)
         for data in range(0,x_train.shape[0]):
             x_train[data,column] = (x_train[data,column] - avg)/datarange  
     return x_train
@@ -48,11 +40,14 @@ reg = linear_model.LinearRegression()
 reg.fit(X_train, y1_train)
 
 
-
+X_train, X_test, y2_train, y2_test = train_test_split(features, y2, test_size=0.3,random_state=1)
+reg2 = linear_model.LinearRegression()
+reg2.fit(X_train, y2_train)
 
 
 print('Coefficients: \n', reg.coef_) 
-  
+print('Coefficients: \n', reg2.coef_) 
+ 
 # variance score: 1 means perfect prediction 
 print('Variance score: {}'.format(reg.score(X_test, y1_test)))
 

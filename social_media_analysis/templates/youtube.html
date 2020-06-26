@@ -5,7 +5,8 @@
 		  	<div class="row">	
 			    <div class="col-12 col-md-8 col-lg-9">
 			    	<h1 class="display-4 font-weight-bold">YouTube Analytics</h1>
-		    		<p class="lead">This is an YouTube analytics application that gives you rich insights about any public YouTube profile. We gather near real-time data about topics, mentions, hashtags, followers, location and more!
+		    		<p class="lead">This is an YouTube analytics application that gives you rich insights about any YouTube channel and public video. 
+		    		We gather and analyse near real-time data about channels, videos, comments, statistics, location and more!
 					</p>
 			    </div>
 			    <div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
@@ -21,15 +22,17 @@
 				<div class="col-12 col-md-6">
 					<h4>Here's how it works</h4>
 					<p>
-						We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.
+						We gather information about requested channels or videos. We analyze their content, details and statistics so you can easily compare 
+						them with yours or many others.
 					</p>
 					<p>
-						We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!
+						We also show you things not shown on public channel pages and video descriptions, such as joined date,category,status and view ratio. 
+						With SM analysis it's very easy and incredibly fast to decide what to do, how to do and when to do on social media!
 					</p>
 				</div>
 				<div class="col-12 col-md-6">
 					<h4>Give it a spin!</h4>
-					<p>Just click following link below to explore YouTube..!</p>
+					<p>Just click following links below to explore YouTube..!</p>
 					<div class="list-group">
 					  <a href="#" class="list-group-item list-group-item-action"data-toggle="modal" data-target="#channeldetails">View Channel Details</a>
 					 <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#analysecomments">Analyse Comments</a> 
@@ -83,11 +86,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="predictviews">Predict Views & Likes</h5>
+          
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+       
         </div>
         <div class="model-body new-forum-modal-body">
+        <p>See how many views and likes you can expect for a video before uploading it.</p>
           <form method="POST" action="">
               {{ viewpredictionform.hidden_tag() }}
               <fieldset class="form-group">
@@ -168,9 +174,12 @@
 		                    {{ sentimentanalysisform.name(class="form-control", placeholder="ex - IVrGz8w0H8c") }}
 		                {% endif %}
 		            </div>
+		            <p><font size="-1" color="blue">**This might take upto 2 minutes depending on number of comments to be analysed.</font></p>
+		            
 		        <div class="form-group">
 		            {{ sentimentanalysisform.searchSent(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
+		        
 		    </form>
 		              	
         </div>
