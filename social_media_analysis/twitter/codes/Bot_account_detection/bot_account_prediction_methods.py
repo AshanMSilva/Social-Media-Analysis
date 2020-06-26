@@ -9,15 +9,10 @@ Created on Thu Mar 19 18:30:46 2020
 import pandas as pd
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.callbacks import TensorBoard
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
-from sklearn.impute import SimpleImputer
 from textblob import TextBlob
 import re
 import time
-import numpy as np
-import matplotlib.pyplot as plt
 import datetime
 import pickle
 
