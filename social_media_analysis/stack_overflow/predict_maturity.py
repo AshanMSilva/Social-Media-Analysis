@@ -6,7 +6,7 @@ import requests, traceback, json
 from pandas.io.json import json_normalize
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from stackpy import API, Site
 import pickle
 from datetime import datetime
