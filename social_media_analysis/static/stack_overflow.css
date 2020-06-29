@@ -1,0 +1,49 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 3.5rem;
+}
+
+.watermarked:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-size: 100px 100px;
+  background-position: 30px 30px;
+  background-repeat: no-repeat;
+  opacity: 0.5%;
+}
+.accordion .card .card-head{
+  background-color: #e6e6e6;
+  padding: 20px;
+}
+.accordion {
+  margin-top: 5px;
+}
+.accordion .card {
+  border: none;
+  margin-bottom: 15px;
+  margin-top: 0px;
+}
+.accordion .card h2 {
+  background: url(https://cdn0.iconfinder.com/data/icons/entypo/91/arrow56-512.png) no-repeat calc(100% - 10px) center;
+  background-size: 30px;
+  cursor: pointer;
+  font-size: 18px;
+}
+.accordion .card p{
+  float: left;
+}
+.accordion .card h2.collapsed {
+  background-image: url(https://cdn0.iconfinder.com/data/icons/arrows-android-l-lollipop-icon-pack/24/expand2-256.png);
+}
+.accordion .card-body {
+  padding-left: 20px;
+  padding-right: 20px;
+
+
+}
