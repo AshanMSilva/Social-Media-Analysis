@@ -1,4 +1,3 @@
-corpora
-sentiment
-taggers
-tokenizers
+stopwords
+wordnet
+punkt
