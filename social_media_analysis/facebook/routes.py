@@ -423,11 +423,11 @@ def bot():
     ################################
     profile_link=request.args["link"]
     detection=BotAccountDetection()
-    try:
+    #try:
         info=detection.get_info(profile_link) 
-    except:
-        flash('Link you entered is not valid or some issue with your connection  ', 'warning')
-        return redirect(url_for('main.facebook')) 
+    #except:
+        #flash('Link you entered is not valid or some issue with your connection  ', 'warning')
+        #return redirect(url_for('main.facebook')) 
     values=detection.calculate(info)
     if(values['neg']==100):
         flash('The profile link you entered is not valid!', 'warning')
