@@ -369,6 +369,8 @@
     </div>
   </div>
 </div>
+
+{% block scripts %}
 <script
   src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
   integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -398,6 +400,8 @@
 ></script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+
+{%endblock scripts%}
 <script>
 
   var dates = [];
@@ -1022,4 +1026,5 @@
     });
   });
 </script>
+
 {% endblock content %}
