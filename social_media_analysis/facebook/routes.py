@@ -39,7 +39,7 @@ from social_media_analysis.codes.FacebookCodes.bot_detection import BotAccountDe
 import operator 
 facebook = Blueprint('facebook', __name__) 
 
-@facebook.route('/sentiment', methods=['GET','POST'])
+@facebook.route('/sentiment')
 def sentiment():
         #common ligin and signin routes    
     loginmodalshow='close'
@@ -215,7 +215,7 @@ def sentiment():
 
     return render_template('facebook_sentiment.html',adform=adform, botform=botform, all_comments=all_comments, post_result=post_result,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
-@facebook.route('/fbLikePredict',methods=['POST'])
+@facebook.route('/fbLikePredict')
 def fbLikePredict():
         #common ligin and signin routes
     loginmodalshow='close'
@@ -289,7 +289,7 @@ def fblikes():
 
 
 
-@facebook.route('/fbAdClicksPredict',methods=['GET', 'POST'])
+@facebook.route('/fbAdClicksPredict')
 def fbAdClicksPredict():
         #common ligin and signin routes
     loginmodalshow='close'
@@ -399,7 +399,7 @@ def fbAdClicksPredict():
     return render_template('facebook_ad_display.html',adform=adform,botform=botform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, results={'clicks':clicks},best_results=best_results )
 
 
-@facebook.route('/bot',methods=['GET', 'POST'])
+@facebook.route('/bot')
 def bot():
         #common ligin and signin routes
     loginmodalshow='close'
@@ -421,7 +421,7 @@ def bot():
         password=registerform.password.data
         return redirect(url_for('users.register', username=username, email=email, password=password))
     ################################
-    profile_link=request.args["link"]
+    profile_link=request.args.get("link")
     detection=BotAccountDetection()
     #try:
     info=detection.get_info(profile_link) 
