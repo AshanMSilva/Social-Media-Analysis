@@ -422,6 +422,7 @@ def bot():
         return redirect(url_for('users.register', username=username, email=email, password=password))
     ################################
     profile_link=request.args.get("link")
+    print(profile_link)
     detection=BotAccountDetection()
     #try:
     info=detection.get_info(profile_link) 
