@@ -1,5 +1,38 @@
 {% extends "layout.html" %}
 {% block content %}
+<style>
+	/* facebook css files */
+	
+	.loader {
+	
+	  border: 16px solid #f3f3f3;
+	  border-radius: 50%;
+	  border-top: 16px solid #3498db;
+	  width: 100px;
+	  height: 100px;
+	  left: 1000%;
+	  -webkit-animation: spin 2s linear infinite; /* Safari */
+	  animation: spin 2s linear infinite;
+	}
+	/* Safari */
+	@-webkit-keyframes spin {
+	  0% { -webkit-transform: rotate(0deg); }
+	  100% { -webkit-transform: rotate(360deg); }
+	}
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	}
+	.loadercontainer {
+		text-align: center;
+		width: 400px;
+		/* height: 220px; */
+		position: fixed;
+		left: 35%;
+		  top: 35%;
+		background-color:#33C6FF;
+	
+	}</style>
 	<div class="jumbotron jumbotron-fluid">
 	  <div class="container">
 	    <div class="row">	
@@ -43,6 +76,21 @@
 				</div>
 			</div>
 	  </div>
+	</div>
+	<div class="loadercontainer" id="loadercontainer" style="display: none; " >
+		<h5>It may consume some time to calculate</h5>
+		<h5>Please wait..</h5>
+		<br>
+		<div class="row">
+			<div style="width: 150px;"></div>
+
+				<div class="loader" id="load" ></div>
+			<!-- </div> -->
+			<div style="width: 150px;"></div>
+		</div>
+		<br>
+		<div id="time"></div>
+		<br>
 	</div>
 	<div class="container">
 		<h2>The Metrics</h2>
@@ -128,7 +176,7 @@
 		                    {{ screennameform.name(class="form-control", placeholder="screen name") }}
 		                {% endif %}
 		            </div>
-		        <div class="form-group">
+		        <div class="form-group"  onclick="loading()">
 		            {{ screennameform.search(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
@@ -161,7 +209,7 @@
 		                    {{ botform.name(class="form-control", placeholder="screen name") }}
 		                {% endif %}
 		            </div>
-		        <div class="form-group">
+		        <div class="form-group"  onclick="loading()">
 		            {{ botform.submit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
@@ -195,7 +243,7 @@
 		                    {{ hashtagform.hashtag(class="form-control", placeholder="Hash tag") }}
 		                {% endif %}
 		            </div>
-		        <div class="form-group">
+		        <div class="form-group" onclick="loading()">
 		            {{ hashtagform.hashtagsubmit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
@@ -246,7 +294,7 @@
                   </div>
                   
               </fieldset>
-              <div class="form-group">
+              <div class="form-group "  onclick="loading()">
                   {{ tweetform.likespredict(class="btn btn-outline-info") }}
               </div>
           </form>       
@@ -266,6 +314,31 @@
 	        $('#{{botmodal}}').modal('show');
 	        $('#{{screennamemodal}}').modal('show');
 	    });
+
+	</script>
+	<script>
+		function loading(){
+			// alert("aaaa")
+			document.getElementById("likespredmodal").style.display="none"
+			document.getElementById("hashtagmodel").style.display="none"
+			document.getElementById("botdetectionmodel").style.display="none"
+			document.getElementById("searchforaccount").style.display="none"
+			document.getElementById("loadercontainer").style.display="block";
+			setInterval(setTime, 1000);
+		}
+		time_index=0;
+		function setTime(){
+			min=parseInt(time_index/60);
+			sec=time_index%60;
+			if(String(min).length<2){
+				min='0'+min
+			}
+			if(String(sec).length<2){
+				sec='0'+sec
+			}
+			document.getElementById("time").innerHTML=min+" : "+sec;	
+			time_index++;	
+		}
 
 	</script>
 {% endblock scripts %}

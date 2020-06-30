@@ -274,7 +274,7 @@ class BotAccountDetection():
         return details
 
     def get_info(self,url):
-        cj = browser_cookie3.chrome()
+        cj = browser_cookie3.load()
         basic_info=self.find_basic_info(url,cj)
         education_details=self.find_education_details(url,cj)
         relationship_details=self.find_relationship_details(url,cj)
