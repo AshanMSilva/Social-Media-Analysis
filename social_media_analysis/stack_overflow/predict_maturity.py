@@ -17,8 +17,8 @@ class PredictMaturity:
 
 
     def __init__(self, user_id):
-        self.user_id = user_id   
-        
+        self.user_id = user_id
+
     def get_user_maturity(self):
         try:
             self.all_questions = self.get_all_questions(self.user_id)
@@ -59,7 +59,7 @@ class PredictMaturity:
         # all_data = all_data.sort_values(by='creation_date',ascending=True)
         # print(all_data["creation_date"])
         return all_data
-    
+
     def convert_data_to_predictable(self,df_nor):
         #Create a pandas data frame from normalized json data and sort its values according to 'score', 'answer_count',and 'view_count'
         newdf=pd.DataFrame(df_nor)
@@ -67,23 +67,23 @@ class PredictMaturity:
         #remove null values and values in 'last_edit_date' column and replays it with 0 and 1
         change_last_edit=(newdf['last_edit_date'].notnull()).astype('int')
         newdf['last_edit_date']=change_last_edit
-    
+
         #turn 'is_answered' values in to binary 
         newdf['is_answered']=newdf['is_answered'].astype(int)
-        
+
         #Create new column 'is_closed' and check the whether the question is closed or not.
         newdf.loc[newdf['closed_reason'].isnull(), 'is_closed'] = 1
         newdf.loc[newdf['closed_reason'].notnull(), 'is_closed'] = 0
-    
+
         #Convert 'tag_count', 'score', 'answer_count', 'view_count' columns to values to digital values 
         newdf['tag_count'] = newdf['tags'].str.len()
         newdf['score']=newdf['score'].clip(lower=0)
         newdf.loc[newdf['score'] >= 100, 'score'] = 100
         newdf.loc[newdf['answer_count'] > 5, 'answer_count'] = 5
         newdf.loc[newdf['view_count'] > 100, 'view_count'] = 100
-    
+
         predict_data=newdf[['tag_count','is_answered','is_closed','view_count','answer_count','last_edit_date','score']]
-        
+
         return predict_data
 
     def get_predict_data(self,predict_data):
@@ -94,26 +94,28 @@ class PredictMaturity:
         return predict_data
 
     def get_percentage_list(self):
-        if(not self.all_questions.empty):
+        if( type(self.all_questions)!=list and not self.all_questions.empty):
             data = self.all_questions[["creation_date","percentage"]]
             data_points = []
             data=data.sort_values(by="creation_date",ascending=True)
             data = data.reset_index(drop=True)
-            for i in range(len(data)) : 
+            for i in range(len(data)) :
                 date = data.loc[i, "creation_date"]
                 number = round(data.loc[i, "percentage"],1)
                 record = {
-                            "x" : date,
-                            "y" : number
-                        }
+                    "x" : date,
+                    "y" : number
+                }
                 data_points.append(record)
-            data_points=json.dumps(data_points) 
+            data_points=json.dumps(data_points)
             return data_points
         else:
-            return []
+            data=[]
+            data=json.dumps([])
+            return data
 
     def get_user_technologies(self):
-        if(not self.all_questions.empty):
+        if(type(self.all_questions)!=list and not self.all_questions.empty):
             required_data = self.all_questions["tags"]
             languages = ["JavaScript","HTML","CSS","SQL","Python","Java","C#","PHP","C++","TypeScript","C","Ruby","Go","Assembly","Swift","Kotlin","R","VBA","Objective-C","Scala","Rust","Dart","Elixir","Clojure","F#","Erlang"]
             web_frameworks = ["jQuery","Reactjs","Angular","ASP.NET","Express","Spring","Vuejs","Django","Flask","Laravel","Ruby","Ruby-on-Rails","Drupal","Meteor","Ember.js"]
@@ -128,14 +130,14 @@ class PredictMaturity:
             other_frameworks_low = [i.lower() for i in other_frameworks]
             databases_low = [i.lower() for i in databases]
             platforms_low = [i.lower() for i in platforms]
-            
+
             lower_case_data.extend(languages_low)
             lower_case_data.extend(web_frameworks_low)
             lower_case_data.extend(other_frameworks_low)
             lower_case_data.extend(databases_low)
             lower_case_data.extend(platforms_low)
             lower_case_data.extend(["python-3.x","python-2.7"])
-            
+
             user_tecs = []
             temp_tags = []
             for tags in required_data:
@@ -159,7 +161,7 @@ class PredictMaturity:
                             if temp not in user_tecs:
                                 user_tecs.append(temp)
                 temp_tags.append(tempTag)
-            
+
             data = {}
             data["languages"] = []
             data["web_frameworks"] = []
@@ -178,46 +180,46 @@ class PredictMaturity:
                 if tech in languages_low:
                     name = languages[languages_low.index(tech)]
                     record = {
-                                "name" : name,
-                                "percentage" : percentage
-                        
-                            }
-                    data["languages"].append(record)  
+                        "name" : name,
+                        "percentage" : percentage
+
+                    }
+                    data["languages"].append(record)
                 elif tech in web_frameworks_low:
                     name = web_frameworks[web_frameworks_low.index(tech)]
                     record = {
-                                "name" : name,
-                                "percentage" : percentage
-                        
-                            }
-                    data["web_frameworks"].append(record) 
-                    
+                        "name" : name,
+                        "percentage" : percentage
+
+                    }
+                    data["web_frameworks"].append(record)
+
                 elif tech in other_frameworks_low:
                     name = other_frameworks[other_frameworks_low.index(tech)]
                     record = {
-                                "name" : name,
-                                "percentage" : percentage
-                        
-                            }
-                    data["other_frameworks"].append(record) 
-                    
+                        "name" : name,
+                        "percentage" : percentage
+
+                    }
+                    data["other_frameworks"].append(record)
+
                 elif tech in databases_low:
                     name = databases[databases_low.index(tech)]
                     record = {
-                                "name" : name,
-                                "percentage" : percentage
-                        
-                            }
-                    data["databases"].append(record) 
-                    
+                        "name" : name,
+                        "percentage" : percentage
+
+                    }
+                    data["databases"].append(record)
+
                 elif tech in platforms_low:
                     name = platforms[platforms_low.index(tech)]
                     record = {
-                                "name" : name,
-                                "percentage" : percentage
-                        
-                            }
-                    data["platforms"].append(record) 
+                        "name" : name,
+                        "percentage" : percentage
+
+                    }
+                    data["platforms"].append(record)
             if not data["languages"] :
                 data["languages"] = 0
             if not data["web_frameworks"] :
@@ -228,12 +230,14 @@ class PredictMaturity:
                 data["databases"] = 0
             if not data["platforms"] :
                 data["platforms"] = 0
-            
-                
+
+
             data=json.dumps(data)
             return data
         else:
-            return []
+            data=[]
+            data=json.dumps([])
+            return data
 
 
 
