@@ -94,7 +94,7 @@ class PredictMaturity:
         return predict_data
 
     def get_percentage_list(self):
-        if( type(self.all_questions)!=list and not self.all_questions.empty):
+        if(not self.all_questions.empty):
             data = self.all_questions[["creation_date","percentage"]]
             data_points = []
             data=data.sort_values(by="creation_date",ascending=True)
@@ -110,12 +110,10 @@ class PredictMaturity:
             data_points=json.dumps(data_points) 
             return data_points
         else:
-            data=[]
-            data=json.dumps([])
-            return data
+            return []
 
     def get_user_technologies(self):
-        if(type(self.all_questions)!=list and not self.all_questions.empty):
+        if(not self.all_questions.empty):
             required_data = self.all_questions["tags"]
             languages = ["JavaScript","HTML","CSS","SQL","Python","Java","C#","PHP","C++","TypeScript","C","Ruby","Go","Assembly","Swift","Kotlin","R","VBA","Objective-C","Scala","Rust","Dart","Elixir","Clojure","F#","Erlang"]
             web_frameworks = ["jQuery","Reactjs","Angular","ASP.NET","Express","Spring","Vuejs","Django","Flask","Laravel","Ruby","Ruby-on-Rails","Drupal","Meteor","Ember.js"]
@@ -235,9 +233,7 @@ class PredictMaturity:
             data=json.dumps(data)
             return data
         else:
-            data=[]
-            data=json.dumps([])
-            return data
+            return []
 
 
 
