@@ -39,7 +39,7 @@ from social_media_analysis.codes.FacebookCodes.bot_detection import BotAccountDe
 import operator 
 facebook = Blueprint('facebook', __name__) 
 
-@facebook.route('/sentiment')
+@facebook.route('/sentiment', methods=['GET','POST'])
 def sentiment():
         #common ligin and signin routes    
     loginmodalshow='close'
