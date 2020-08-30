@@ -37,24 +37,61 @@
 	
 	}</style>
 
+<script>
+    window.onload = function () {
+		var day_options = {
+        animationEnabled: true,
+        title: {
+            text: "Select The Best Weekday for Your Advertisement",                
+            fontColor: "Peru"
+        },	
+        axisY: {
+            tickThickness: 0,
+            lineThickness: 0,
+            valueFormatString: " ",
+            gridThickness: 0                    
+        },
+        axisX: {
+            tickThickness: 0,
+            lineThickness: 0,
+            labelFontSize: 18,
+            labelFontColor: "Peru"				
+        },
+        data: [{
+            indexLabelFontSize: 26,
+            toolTipContent: "<span style=\"color:#D3FF33\">{indexLabel}:</span> <span style=\"color:#CD853F\"><strong>{y}</strong></span>",
+            indexLabelPlacement: "inside",
+            indexLabelFontColor: "white",
+            indexLabelFontWeight: 600,
+            indexLabelFontFamily: "Verdana",
+            color: "#D3FF33",
+            type: "bar",
+            dataPoints: [
+            { y: parseInt('{{day_result["sat"]}}'), label: '{{day_result["sat"]}}', indexLabel: "Saturday" },
+            { y: parseInt('{{day_result["fri"]}}'), label: '{{day_result["fri"]}}', indexLabel: "Friday" },
+            { y: parseInt('{{day_result["thu"]}}'), label: '{{day_result["thu"]}}', indexLabel: "Thursday" },
+            { y: parseInt('{{day_result["wed"]}}'), label: '{{day_result["wed"]}}', indexLabel: "Wednesday" },
+            { y: parseInt('{{day_result["tue"]}}'), label: '{{day_result["tue"]}}', indexLabel: "Tuesdayday" },
+            { y: parseInt('{{day_result["mon"]}}'), label: '{{day_result["mon"]}}', indexLabel: "Monday" },
+            { y: parseInt('{{day_result["sun"]}}'), label: '{{day_result["sun"]}}', indexLabel: "Sunday" },
+            ]
+        }]
+    };
+
+
+    //Better to construct options first and then pass it as a parameter
+
+    $("#day_chartContainer").CanvasJSChart(day_options);
+    }
+</script>
+
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-6">
 						<div>
-								<div>
-							<!-- <h1 >Impressions should be {{ results['impressions'] }}</h1> -->
-									<br>
-									<h1>Clicks should be {{ results['clicks'] }}</h1>
-								</div>
-								<div>
-										<h4>You can improve your clicks result by changing few parameters.</h4>
-								</div>
-						</div>
-						<div class>
-							<div>
-								<br><br>
+								<br>
 									<form method="GET" action="/get_gender_result">
-										<input type="hidden" name="clicks" value="{{ results['clicks']}}">
+										<input type="hidden" name="clicks" value="{{ clicks}}">
 										<input type="hidden" name="weekday" value="{{ ad_info['day']}}" readonly>
 										<input type="hidden" name="gender" value="{{ ad_info['gender']}}">
 										<input type="hidden" name="adText" value="{{ ad_info['text']}}">
@@ -67,7 +104,7 @@
 								<br>
 								<div>
 									<form method="GET" action="/get_day_result">
-										<input type="hidden" name="clicks" value="{{ results['clicks']}}">
+										<input type="hidden" name="clicks" value="{{ clicks}}">
 										<input type="hidden" name="weekday" value="{{ ad_info['day']}}" readonly>
 										<input type="hidden" name="gender" value="{{ ad_info['gender']}}">
 										<input type="hidden" name="adText" value="{{ ad_info['text']}}">
@@ -81,7 +118,7 @@
 								<br>
 								<div>
 									<form method="GET" action="/get_spend_result">
-										<input type="hidden" name="clicks" value="{{ results['clicks']}}">
+										<input type="hidden" name="clicks" value="{{ clicks}}">
 										<input type="hidden" name="weekday" value="{{ ad_info['day']}}" readonly>
 										<input type="hidden" name="gender" value="{{ ad_info['gender']}}">
 										<input type="hidden" name="adText" value="{{ ad_info['text']}}">
@@ -91,13 +128,14 @@
 
 											<button class="list-group-item list-group-item-action" onclick="loading()"type="submit" style="width: 50%;">Predict the Best Ad Spends</button>
 									</form>
-									<br><br><br><br><br><br>
-								</div>
-							</div>
-						</div>
+									<br><br>
+								</div>            <div>
+                <div id="day_chartContainer" style="height: 300px; width: 100%;"></div>
+                <br>
+            </div>
+        </div>
         <div class="col-md-1"></div>
         <div class="col-md-3">
-					<br>
           <h4>Give it a spin!</h4>
           <p>Just click following link below to explore the facebook..!</p>
           <div class="list-group">

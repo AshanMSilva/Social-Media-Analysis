@@ -75,7 +75,7 @@
 				  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#adpredictmodel" >Advertisements Analysis</a>
 				  <a href="#" class="list-group-item list-group-item-action"  data-toggle="modal" data-target="#sentimentmodel">Comments Analysis</a>
 				  <!-- <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#likecountmdel">Bot detection</a> -->
-				  <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a>
+				  <!-- <a href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#botdetectionmodel">Bot detection</a> -->
 				</div>
 			</div>
 		</div>
@@ -110,8 +110,9 @@
 			  </button>
 			</div>
 			<div class="model-body" style="margin-left: 20px;margin-right: 20px;">
-				<form method="POST" action="">
 
+				<form method="GET" action="/fbAdClicksPredict" >
+					
 					{{ adform.hidden_tag() }}
 					<fieldset class="form-group">
 						<div class="form-group">
@@ -128,18 +129,10 @@
 							{% endif %}
 						</div>
 						<div class="form-group">
-							{{ adform.adText.label(class="form-control-label") }}
-							{% if adform.adText.errors %}
-								{{ adform.adText(class="form-control form-control-lg is-invalid") }}
-								<div class="invalid-feedback">
-									{% for error in adform.adText.errors %}
-										<span>{{ error }}</span>
-									{% endfor %}
-								</div>
-							{% else %}
-								{{ adform.adText(class="form-control form-control-lg") }}
-							{% endif %}
+								<label for="adText"class="form-control-label">Ad description</label>
+								<input required type="text" name="adText" class="form-control form-control-lg">
 						</div>
+						
 						<div class="form-group">
 							{{ adform.weekday.label(class="form-control-label") }}
 							{% if adform.weekday.errors %}
@@ -153,51 +146,24 @@
 								{{ adform.weekday(class="form-control form-control-lg") }}
 							{% endif %}
 						</div>
+
 						<div class="form-group">
-							{{ adform.minAge.label(class="form-control-label") }}
-							{% if adform.minAge.errors %}
-								{{ adform.minAge(class="form-control form-control-lg is-invalid") }}
-								<div class="invalid-feedback">
-									{% for error in adform.minAge.errors %}
-										<span>{{ error }}</span>
-									{% endfor %}
-								</div>
-							{% else %}
-								{{ adform.minAge(class="form-control form-control-lg") }}
-							{% endif %}
+								<label for="minAge"class="form-control-label">Minimum Age</label>
+								<input required type="number" name="minAge" min="13" class="form-control form-control-lg">
 						</div>
 						<div class="form-group">
-							{{ adform.maxAge.label(class="form-control-label") }}
-							{% if adform.maxAge.errors %}
-								{{ adform.maxAge(class="form-control form-control-lg is-invalid") }}
-								<div class="invalid-feedback">
-									{% for error in adform.maxAge.errors %}
-										<span>{{ error }}</span>
-									{% endfor %}
-								</div>
-							{% else %}
-								{{ adform.maxAge(class="form-control form-control-lg") }}
-							{% endif %}
+								<label for="maxAge"class="form-control-label">Maximum Age</label>
+								<input required type="number" name="maxAge" max="100" class="form-control form-control-lg">
 						</div>
 						<div class="form-group">
-							{{ adform.adSpends.label(class="form-control-label") }}
-							{% if adform.adSpends.errors %}
-								{{ adform.adSpends(class="form-control form-control-lg is-invalid") }}
-								<div class="invalid-feedback">
-									{% for error in adform.adSpends.errors %}
-										<span>{{ error }}</span>
-									{% endfor %}
-								</div>
-							{% else %}
-								{{ adform.adSpends(class="form-control form-control-lg") }}
-							{% endif %}
+							<label for="adSpends"class="form-control-label">Ad Spends in USD</label>
+							<input required type="number" name="adSpends" step="0.1"min="0" class="form-control form-control-lg">
 						</div>
 					</fieldset>
-					<div class="form-group" onclick="loading()">
-						{{ adform.submit(class="btn btn-outline-info") }}
+					<div class="form-group" >
+						<button type="submit" class="btn btn-outline-info">Predict</button>
 					</div>
 				</form>
-				<button onclick="loading()"> click meee</button>
 			</div>
 		  </div>
 		</div>
@@ -220,7 +186,7 @@
 						<fieldset class="form-group">  
 							<div class="form-group">
 								<label for="upload" class="form-control-label">HTML File :</label> 
-								<input type="file" required name="upload"class="form-control form-control-lg" >
+								<input type="file" name="upload"class="form-control form-control-lg" >
 							</div>
 						</fieldset>
 						<h5>Upload the HTML script file, that contains all the comments of this post.  </h5>

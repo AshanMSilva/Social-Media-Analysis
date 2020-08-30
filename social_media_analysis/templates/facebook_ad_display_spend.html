@@ -36,25 +36,70 @@
 		background-color:#33C6FF;
 	
 	}</style>
+<script>
+    var all= {{ spend_result | tojson }} ;
+    var spend_results=all;
+    clicks_ch_data=[]
+    // impre_ch_data=[]
+    spend_results.forEach(add_data);
+    function add_data(item, index) {
+        clicks_ch_data.push({x:item[0],y:item[1]});
+        // impre_ch_data.push({x:item[0],y:item[2]});
+    }
+</script>
+<script>
+    window.onload = function () {
+
+
+    
+var spend_chart = new CanvasJS.Chart("spend_chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Clicks  with Ad spends"
+	},
+	toolTip: {
+		shared: true
+	},
+	axisX: {
+		title: "Ad spend",
+		// suffix : " RUB"
+	},
+	axisY: {
+		title: "Clicks",
+		titleFontColor: "#4F81BC",
+		// suffix : " m/s",
+		lineColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},
+	// axisY2: {
+	// 	title: "Impressions",
+	// 	titleFontColor: "#C0504E",
+	// 	// suffix : " m",
+	// 	lineColor: "#C0504E",
+	// 	tickColor: "#C0504E"
+	// },
+	data: [{
+		type: "spline",
+		name: "clicks",
+		xValueFormatString: "#### USD",
+		// yValueFormatString: "#,##0  ",
+        
+		dataPoints: clicks_ch_data
+	}
+	]
+});
+    spend_chart.render();
+
+    }
+    </script>
 
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-6">
 						<div>
-								<div>
-							<!-- <h1 >Impressions should be {{ results['impressions'] }}</h1> -->
-									<br>
-									<h1>Clicks should be {{ results['clicks'] }}</h1>
-								</div>
-								<div>
-										<h4>You can improve your clicks result by changing few parameters.</h4>
-								</div>
-						</div>
-						<div class>
-							<div>
-								<br><br>
+								<br>
 									<form method="GET" action="/get_gender_result">
-										<input type="hidden" name="clicks" value="{{ results['clicks']}}">
+										<input type="hidden" name="clicks" value="{{ clicks}}">
 										<input type="hidden" name="weekday" value="{{ ad_info['day']}}" readonly>
 										<input type="hidden" name="gender" value="{{ ad_info['gender']}}">
 										<input type="hidden" name="adText" value="{{ ad_info['text']}}">
@@ -67,7 +112,7 @@
 								<br>
 								<div>
 									<form method="GET" action="/get_day_result">
-										<input type="hidden" name="clicks" value="{{ results['clicks']}}">
+										<input type="hidden" name="clicks" value="{{ clicks}}">
 										<input type="hidden" name="weekday" value="{{ ad_info['day']}}" readonly>
 										<input type="hidden" name="gender" value="{{ ad_info['gender']}}">
 										<input type="hidden" name="adText" value="{{ ad_info['text']}}">
@@ -81,7 +126,7 @@
 								<br>
 								<div>
 									<form method="GET" action="/get_spend_result">
-										<input type="hidden" name="clicks" value="{{ results['clicks']}}">
+										<input type="hidden" name="clicks" value="{{ clicks}}">
 										<input type="hidden" name="weekday" value="{{ ad_info['day']}}" readonly>
 										<input type="hidden" name="gender" value="{{ ad_info['gender']}}">
 										<input type="hidden" name="adText" value="{{ ad_info['text']}}">
@@ -91,13 +136,16 @@
 
 											<button class="list-group-item list-group-item-action" onclick="loading()"type="submit" style="width: 50%;">Predict the Best Ad Spends</button>
 									</form>
-									<br><br><br><br><br><br>
+									<br><br>
 								</div>
-							</div>
-						</div>
+
+			<div>
+                <div id="spend_chartContainer" style="height: 300px; width: 100%;"></div>
+                <br>
+            </div>
+        </div>
         <div class="col-md-1"></div>
         <div class="col-md-3">
-					<br>
           <h4>Give it a spin!</h4>
           <p>Just click following link below to explore the facebook..!</p>
           <div class="list-group">

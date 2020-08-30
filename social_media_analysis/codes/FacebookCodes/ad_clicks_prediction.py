@@ -16,7 +16,7 @@ import operator
 
 class AdPrediction():
     def predict(self,input_data):
-        filename = 'social_media_analysis/codes/FacebookCodes/fbAdsModelNew.sav'
+        filename = 'social_media_analysis\codes\FacebookCodes\\fbAdsModelNew.sav'
         loaded_model = pickle.load(open(filename, 'rb'))
         # f.seek(0)\
         result = loaded_model.predict(input_data)
@@ -85,65 +85,105 @@ class BestSolutions():
 
         return [int(male_result),int(female_result),int(all_result)]
 
-    def getBestSpend(self,input_data,clicks_model):
+    def getBestSpend(self,input_data,clicks_model,prev_clicks):
         spend_results=[]
-        true_rub=input_data['AdSpends'][0]  #rub
-        true_usd=true_rub/16.93
-        first_usd=int(true_usd)+1
-        clicks_list=[]
-        money_list=[]
-        for i in range(first_usd*10,first_usd*10+155,5):
-            money=i/10  #usd
-            money_list.append(money)
+        true_usd=input_data['AdSpends'][0]  #usd
+        first_usd=int(true_usd+1)
+        final_clicks_list=[]
+        final_money_list=[]
+
+        cal_money_list=[true_usd]
+        cal_cliks_list=[prev_clicks]
+
+        spend_results.append([true_usd,prev_clicks])  #######
+        for i in range(1,4):  #predict main values
+            money=first_usd+10*i/4
             input_data['AdSpends']=int(money*16.93)  #usd to rub
             ad_prediction_temp=AdPrediction()
             impressions=ad_prediction_temp.impressions_from_money(money)
             input_data['AdImpressions']=impressions
-
             final_features=pd.DataFrame.from_dict(input_data)
             clicks=int(clicks_model.predict(final_features)[0])
-            clicks_list.append(clicks)
-            # clicks=int((clicks_model.predict(final_features)[0]**2)**0.5)
-            # spend_results.append([money,clicks])
-        clicks_list_new=self.adspend_check(clicks_list)
-        for i in range(len(money_list)):
-            spend_results.append([money_list[i],clicks_list_new[i]])
+            cal_money_list.append(int(money))
+            cal_cliks_list.append(clicks)   
+
+
+        for i in range(1,4):  #check main values
+            if(cal_cliks_list[i]<cal_cliks_list[i-1]):
+                cal_cliks_list[i]=cal_cliks_list[i-1]
+
+        for i in range(first_usd*10,first_usd*10+80,5):  #calculate middle values
+            money=i/10  #usd
+            if(money in cal_money_list):
+                final_clicks_list.append(cal_cliks_list[cal_money_list.index(money)])
+                final_money_list.append(money)
+                spend_results.append([money,cal_cliks_list[cal_money_list.index(money)]])
+                continue
+            for t in range(1,4):
+                if(money<cal_money_list[t]):
+                    y1=cal_cliks_list[t-1]
+                    sq=money**2
+                    tgap=cal_money_list[t]**2-cal_cliks_list[t]
+                    
+                    clicks=sq-tgap
+                    if(clicks<y1):
+                        clicks=y1
+                    spend_results.append([money,int(clicks)])
+                    final_clicks_list.append(int(clicks))
+                    break
         return spend_results
 
-    def getBestWeekDay(self,input_data,model):
+    def getBestWeekDay(self,input_data,model,prev_day,prev_clicks):
         week_day_results={}
-        check_list=[]
+        calculated_list={}
         days=['sun','mon','tue','wed','thu','fri','sat']
+        days_3=['mon','wed','fri']
+        days_4=['sun','tue','thu','sat']
+        days_need=[]
+        days
+        if(prev_day in days_4):
+            days_4.remove(prev_day)
+            days_need=days_4
+        if(prev_day in days_3):
+            days_3.remove(prev_day)
+            days_3.append('sun')
+            days_need=days_3
+
         #set all days as zero
         for day in days:
             input_data[day]=0
-        for day in days:
-            input_data[day]=1
+        for day in days_need:
+            input_data[day]=1 
             final_features=pd.DataFrame.from_dict(input_data)
-            # week_day_results[day]=int((model.predict(final_features)[0]**2)**0.5)
-
+                 
             temp_res=int(model.predict(final_features)[0])
-            check_list.append(temp_res)
-            # week_day_results[day]=int(model.predict(final_features)[0])
+            calculated_list[day]=temp_res
             input_data[day]=0
-        checked_list=self.weekday_check(check_list)
-        for i in range(7):
-            week_day_results[days[i]]=int(checked_list[i])
-        return week_day_results
+        calculated_list[prev_day]=prev_clicks
+        final_list=self.weekday_set(calculated_list,prev_day)
+        return final_list
 
-    def weekday_check(self,prev):
-        true_av=sum(prev)/len(prev)
-        for i in range(len(prev)):
-            if prev[i]>true_av*2 :
-                prev[i]=true_av
-                true_av=sum(prev)/len(prev)
-        return prev
+    def weekday_set(self,known_days,prev_day):
+        days=['sun','mon','tue','wed','thu','fri','sat']
+        days_3=['mon','wed','fri']
+        days_4=['sun','tue','thu','sat']
+        if(prev_day in days_4):
+            known_days
+            known_days['mon']=int((int(known_days['sun'])+int(known_days['tue']))/2)
+            known_days['wed']=int((int(known_days['tue'])+int(known_days['thu']))/2)
+            known_days['fri']=int((int(known_days['thu'])+int(known_days['sat']))/2)
+            return known_days
+        elif(prev_day in days_3):
+            known_days
+            known_days['tue']=int((int(known_days['mon'])+int(known_days['wed']))/2)
+            known_days['thu']=int((int(known_days['wed'])+int(known_days['fri']))/2)
+            known_days['sat']=int((int(known_days['fri'])+int(known_days['sun']))/2)
+            return known_days
+
 
     def adspend_check(self,prev):
         stt=prev[0]+100
         for i in range(1,len(prev)):
-
-
             if(stt<prev[i]):
                 # print(prev[i])
                 next_correct_index=i-1

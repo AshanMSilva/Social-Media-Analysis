@@ -69,42 +69,49 @@ def sentiment():
     
     # if(request.files['upload']):
     f=request.files['upload']
-
-    data = f.read()
-    soup = BeautifulSoup(data, 'html.parser')
+    try:
+        data = f.read()
+        soup = BeautifulSoup(data, 'html.parser')
+    except:
+        flash("Please upload the File!",'warning')
+        return redirect(url_for("main.facebook"))
     comments=[]
     try:
-        main_content = soup.find('ul', {'class': '_7a9a'})
-        try:
-            list_of_comments = main_content.findAll('li')
-        except:
-            main_content= soup.find('ul', {'class': '_7791'})
-            try:
-                list_of_comments = main_content.findAll('li')
-            except:
-                main_content = soup.find('ul', {'class': '_77bp'})
-                list_of_comments = main_content.findAll('li')
-        for container_large in list_of_comments:
-            try:
-                img_link= container_large.img.get('src')
-                comment_container=container_large.find('div', {'class': '_72vr'})
+    # if(True):
+        main_content = soup.findAll('div', {'class': 'cwj9ozl2 tvmbv18p'})
+        post=main_content[0]
+        comments_section = post.findAll('ul')[1]
+        commentss=comments_section.findAll('li')
+        commentss=commentss[:]
+        for comment in commentss:
+            # if(True):  
+            try: 
+                try:
+                    name=comment.find('span',{'class':'oi732d6d ik7dh3pa d2edcug0 qv66sw1b c1et5uql a8c37x1j hop8lmos enqfppq2 e9vueds3 j5wam9gi lrazzd5p oo9gr5id'}).text
+                except:
+                    name=comment.find('span',{'class':'oi732d6d ik7dh3pa d2edcug0 hpfvmrgz qv66sw1b c1et5uql a8c37x1j hop8lmos enqfppq2 e9vueds3 j5wam9gi lrazzd5p oo9gr5id'}).text
+                    
+                link=comment.find('a',{'class':'oajrlxb2 g5ia77u1 qu0x051f esr5mh6w e9989ue4 r7d6kgcz rq0escxv nhd2j8a9 nc684nl6 p7hjln8o kvgmc6g5 cxmmr5t8 oygrvhab hcukyx3x jb3vyjys rz4wbd8a qt6c0cv9 a8nywdso i1ao9s8h esuyzwwr f1sip0of lzcic4wl gmql0nx0 gpro0wi8'}).get('href')
                 
-                profile_link=comment_container.a.get('href')
-                container_small = container_large.find('span', {'class': '_3l3x'}) #imoji spnas & text in here
-                imoji_spans=container_small.findAll('span', {'class': '_5mfr'})
-                imojies=[]  
+                try:
+                    comment_text=comment.find('span',{'class':'oi732d6d ik7dh3pa d2edcug0 qv66sw1b c1et5uql a8c37x1j muag1w35 enqfppq2 jq4qci2q a3bd9o3v knj5qynh oo9gr5id'}).text 
+                except:
+                    comment_text=comment.find('span',{'class':'oi732d6d ik7dh3pa d2edcug0 hpfvmrgz qv66sw1b c1et5uql a8c37x1j muag1w35 enqfppq2 jq4qci2q a3bd9o3v knj5qynh oo9gr5id'}).text
+                    
+                imoji_spans=comment.findAll('span', {'class': 'q9uorilb tbxw36s4 knj5qynh kvgmc6g5 ditlmg2l oygrvhab nvdbi5me fgm26odu gl3lb2sf hhz5lgdu'})
+                
+                imojies=[]                               
                 for imoji_span in imoji_spans: 
-                    span_style=imoji_span.find('span')['style']
-                    style=cssutils.parseStyle(span_style)
-                    imoji_url=style['background-image']
-                    imojies.append((imoji_url.split('/'))[-1].split('.')[0])
-                profile_name_container=comment_container.find('a', {'class': '_6qw4'})
-                profile_name=profile_name_container.text
-                lnk="C:/Users/Dane/Desktop"+img_link[1:]
-                comments.append([container_small.text,profile_name,profile_link,lnk,imojies])
+                    imoji_src=imoji_span.find('img')['src']
+                    image=imoji_span.find('img')['alt']
+                    comment_text=comment_text+image
+                    imojies.append((imoji_src.split('/'))[-1].split('.')[0])
+                comments.append([comment_text,name,link,0,imojies])
             except:
-                s='x'
+            # else:
+                x='nothing'
     except:
+    # else:
         flash('Invalid File! Try again','warning')
         return redirect(url_for("main.facebook"))
     check=[]
@@ -119,8 +126,11 @@ def sentiment():
     if(len(comments)==0):
         flash("Your file doesn't contain any comments",'warning')
         return redirect(url_for("main.facebook"))
+    maxx=20
     for i in range(len(comments)):
         if(True):
+            if(i>=maxx):
+                break
             comment=comments[i]
             text=comment[0]
             word=text
@@ -183,7 +193,7 @@ def sentiment():
             #doing nothing
     pos_p=pos*100/(neg+pos+neu)
     neu_p=neu*100/(neg+pos+neu)
-    neg_p=neg*100/(neg+pos+neu)
+    neg_p=neg*100/(neg+pos+neu) 
     post_result={"Negative":neg_p,"Positive":pos_p,"Neutral":neu_p}
     post_result["final"]=max(post_result.items(), key=operator.itemgetter(1))[0]
     all_comments=[pos_list,neu_list,neg_list]   
@@ -213,83 +223,12 @@ def sentiment():
         return redirect(url_for('facebook.bot',link=link))
 
 
-    return render_template('facebook_sentiment.html',adform=adform, botform=botform, all_comments=all_comments, post_result=post_result,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
-
-@facebook.route('/fbLikePredict')
-def fbLikePredict():
-        #common ligin and signin routes
-    loginmodalshow='close'
-    loginform = LoginForm()
-    if(loginform.validate_on_submit()==False and loginform.login.data):
-        loginmodalshow='loginformmodal'
-    if loginform.validate_on_submit() and loginform.login.data:
-        remember=loginform.remember.data
-        email=loginform.email.data
-        password=loginform.password.data
-        return redirect(url_for('users.login', remember=remember, email=email, password=password))
-    modalshow='close'
-    registerform = RegistrationForm()
-    if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='registerformmodal' 
-    if registerform.validate_on_submit() and registerform.signup.data:
-        username=registerform.username.data
-        email=registerform.email.data
-        password=registerform.password.data
-        return redirect(url_for('users.register', username=username, email=email, password=password))
-    ################################
-   
-    birthday=request.form["birthday"]
-    gender=request.form["gender"]
-    friendcount =request.form["friendcount"]
-    birthday = datetime.strptime(birthday, '%Y-%m-%d').date()
-    year = birthday.year
-    month = birthday.month
-    day = birthday.day
-    if(gender=='Male'):
-        gender=1
-    if(gender=='Female'):
-        gender=0
-    year=int(year)
-    day=int(day)
-    month= int(month)
-    gender=int(gender)
-    friendcount=int(friendcount)
-    final={'dob_day':[day] ,'dob_year':[year] ,'dob_month':[month] ,'gender':[gender] ,'friend_count':[friendcount] }
-    final_features=pd.DataFrame.from_dict(final)
-    prediction=LikePrediction()
-    outputt=prediction.predict(final_features)
-    # prediction = fbLikeModel.predict(final_features)
-    output=int(outputt[0])
-    return render_template('facebook_like_predict.html', prediction_text='Likes should be {}'.format(output,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow))
-
-@facebook.route('/fblikes')
-def fblikes():
-            #common ligin and signin routes
-    loginmodalshow='close'
-    loginform = LoginForm()
-    if(loginform.validate_on_submit()==False and loginform.login.data):
-        loginmodalshow='loginformmodal'
-    if loginform.validate_on_submit() and loginform.login.data:
-        remember=loginform.remember.data
-        email=loginform.email.data
-        password=loginform.password.data
-        return redirect(url_for('users.login', remember=remember, email=email, password=password))
-    modalshow='close'
-    registerform = RegistrationForm()
-    if(registerform.validate_on_submit()==False and registerform.signup.data):
-        modalshow='registerformmodal' 
-    if registerform.validate_on_submit() and registerform.signup.data:
-        username=registerform.username.data
-        email=registerform.email.data
-        password=registerform.password.data
-        return redirect(url_for('users.register', username=username, email=email, password=password))
-    ################################
-   
-    return render_template('facebook_like_predict.html',registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
+    return render_template('facebook_sentiment.html',comments=comments, adform=adform, botform=botform, all_comments=all_comments, post_result=post_result,registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow)
 
 
 
-@facebook.route('/fbAdClicksPredict')
+
+@facebook.route('/fbAdClicksPredict',methods=['GET', 'POST'])
 def fbAdClicksPredict():
         #common ligin and signin routes
     loginmodalshow='close'
@@ -320,8 +259,11 @@ def fbAdClicksPredict():
     txt =request.args.get('adText')
     startAge = int(request.args.get('minAge'))
     endAge =int(request.args.get('maxAge'))
+    if(startAge>=endAge):
+        flash('Age group is invalid!', 'warning')
+        return redirect(url_for('main.facebook'))
     adSpends =float(request.args.get('adSpends'))  #usd
-
+    ad_info={'day':day,'gender':gender,'text':txt,'minAge':startAge,'maxAge':endAge,'spends':adSpends}
     all=0
     male=0
     female=0
@@ -366,9 +308,11 @@ def fbAdClicksPredict():
     clicks=int(outputt[0])
     # clicks=adSpends
 
-    bestSolutions=BestSolutions()
+    bestSolutions=BestSolutions() 
 
-    best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(final,prediction),bestSolutions.getBestWeekDay(final_temp,prediction)]
+    # best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(final,prediction),bestSolutions.getBestWeekDay(final_temp,prediction)]
+    # best_results=[bestSolutions.getBestGender(final,prediction),bestSolutions.getBestSpend(final,prediction),{'sun':3,'mon':3,'tue':4,'wed':5,'thu':1,'fri':6,'sat':9}]
+    # best_results=[[1,2,3],[[1,100],[2,200],[3,200],[4,200],[5,200]],{'sun':3,'mon':3,'tue':4,'wed':5,'thu':1,'fri':6,'sat':9}]
     
 
     #### ad form ###
@@ -396,10 +340,308 @@ def fbAdClicksPredict():
 
 
 
-    return render_template('facebook_ad_display.html',adform=adform,botform=botform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, results={'clicks':clicks},best_results=best_results )
+    return render_template('facebook_ad_display.html',adform=adform,ad_info=ad_info,botform=botform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, results={'clicks':clicks} )
+
+@facebook.route('/get_gender_result',methods=['GET', 'POST'])
+def get_gender_result():
+        #common ligin and signin routes
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='registerformmodal' 
+    if( registerform.validate_on_submit() and registerform.signup.data):
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
+    ################################
+   
+    prediction=AdPrediction()
+    best_prediction=BestSolutions()
+
+    prev_clicks=int(request.args.get('clicks'))
+    day=request.args.get('weekday')
+    gender=request.args.get('gender')
+    txt =request.args.get('adText')
+    startAge = int(request.args.get('minAge'))
+    endAge =int(request.args.get('maxAge'))
+    adSpends =float(request.args.get('adSpends'))  #usd
+    ad_info={'day':day,'gender':gender,'text':txt,'minAge':startAge,'maxAge':endAge,'spends':adSpends}
+    
+    all=0
+    male=0
+    female=0
+    if(gender=='M'):
+        male=1
+    if(gender=='F'):
+        female=1
+    if(gender=='A'):
+        all=1
+    mon=0
+    tue=0
+    wed=0
+    thu=0
+    fri=0
+    sat=0
+    sun=0
+    if(day=='mon'):
+        mon=1
+    elif(day=='tue'):
+        tue=1
+    elif(day=='wed'):
+        wed=1
+    elif(day=='thu'):
+        thu=1
+    elif(day=='fri'):
+        fri=1
+    elif(day=='sat'):
+        sat=1
+    elif(day=='sun'):
+        sun=1
+    
+    impressions=prediction.impressions_from_money(adSpends)
+
+    adSpends=prediction.usd_to_rub(adSpends) #convert to rub
+    final={'mon':[mon] ,'tue':[tue] ,'wed':[wed] ,'thu':[thu] ,'fri':[fri] ,'sat':[sat] ,'sun':[sun] ,'male':[male] ,'female':[female] ,'all':[all] ,'AdTextRes':[prediction.get_ad_text_result(txt)] ,'startAge':[startAge] ,'endAge':[endAge],'AdImpressions':[impressions],'AdSpends':[adSpends] }
+
+    bestSolutions=BestSolutions()
+    gender_result=bestSolutions.getBestGender(final,prediction)
 
 
-@facebook.route('/bot')
+    #### ad form ###
+    adform = AdForm()
+    adpredict_model='close'
+    if(adform.validate_on_submit()==False and adform.submit.data):
+        adpredict_model='adpredictmodel'    
+    if adform.validate_on_submit() and adform.submit.data:
+        gender = adform.gender.data
+        adText = adform.adText.data
+        weekday = adform.weekday.data
+        minAge = adform.minAge.data
+        maxAge = adform.maxAge.data
+        adSpends = adform.adSpends.data
+        return redirect(url_for('facebook.fbAdClicksPredict',gender=gender,adText=adText,weekday=weekday,minAge=minAge,maxAge=maxAge,adSpends=adSpends))
+
+	### handle bot detection
+    botform=FbBotForm()
+    botdetection_model='close'
+    if(botform.validate_on_submit()==False and botform.submit.data):
+        botdetection_model='botdetectionmodel'
+    if botform.validate_on_submit() and botform.submit.data:
+        link = botform.link.data
+        return redirect(url_for('facebook.bot',link=link))
+    
+    return render_template('facebook_ad_display_gender.html',adform=adform,ad_info=ad_info,botform=botform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, gender_result=gender_result,clicks=prev_clicks)
+    
+@facebook.route('/get_day_result',methods=['GET', 'POST'])
+def get_day_result():
+        #common ligin and signin routes
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='registerformmodal' 
+    if( registerform.validate_on_submit() and registerform.signup.data):
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
+    ################################
+    
+    prediction=AdPrediction()
+    best_prediction=BestSolutions()
+    prev_clicks=int(request.args.get('clicks'))
+    day=request.args.get('weekday')
+    gender=request.args.get('gender')
+    txt =request.args.get('adText')
+    startAge = int(request.args.get('minAge'))
+    endAge =int(request.args.get('maxAge'))
+    adSpends =float(request.args.get('adSpends'))  #usd
+    
+    ad_info={'day':day,'gender':gender,'text':txt,'minAge':startAge,'maxAge':endAge,'spends':adSpends}
+    
+    all=0
+    male=0
+    female=0
+    if(gender=='M'):
+        male=1
+    if(gender=='F'):
+        female=1
+    if(gender=='A'):
+        all=1
+    mon=0
+    tue=0
+    wed=0
+    thu=0
+    fri=0
+    sat=0
+    sun=0
+    if(day=='mon'):
+        mon=1
+    elif(day=='tue'):
+        tue=1
+    elif(day=='wed'):
+        wed=1
+    elif(day=='thu'):
+        thu=1
+    elif(day=='fri'):
+        fri=1
+    elif(day=='sat'):
+        sat=1
+    elif(day=='sun'):
+        sun=1
+    
+    impressions=prediction.impressions_from_money(adSpends)
+
+    adSpends=prediction.usd_to_rub(adSpends) #convert to rub
+    final={'mon':[mon] ,'tue':[tue] ,'wed':[wed] ,'thu':[thu] ,'fri':[fri] ,'sat':[sat] ,'sun':[sun] ,'male':[male] ,'female':[female] ,'all':[all] ,'AdTextRes':[prediction.get_ad_text_result(txt)] ,'startAge':[startAge] ,'endAge':[endAge],'AdImpressions':[impressions],'AdSpends':[adSpends] }
+
+    bestSolutions=BestSolutions() 
+    # day_result=bestSolutions.getBestWeekDay(final_temp,prediction)
+    day_result=bestSolutions.getBestWeekDay(final,prediction,day,prev_clicks)
+
+
+    #### ad form ###
+    adform = AdForm()
+    adpredict_model='close'
+    if(adform.validate_on_submit()==False and adform.submit.data):
+        adpredict_model='adpredictmodel'    
+    if adform.validate_on_submit() and adform.submit.data:
+        gender = adform.gender.data
+        adText = adform.adText.data
+        weekday = adform.weekday.data
+        minAge = adform.minAge.data
+        maxAge = adform.maxAge.data
+        adSpends = adform.adSpends.data
+        return redirect(url_for('facebook.fbAdClicksPredict',gender=gender,adText=adText,weekday=weekday,minAge=minAge,maxAge=maxAge,adSpends=adSpends))
+
+	### handle bot detection
+    botform=FbBotForm()
+    botdetection_model='close'
+    if(botform.validate_on_submit()==False and botform.submit.data):
+        botdetection_model='botdetectionmodel'
+    if botform.validate_on_submit() and botform.submit.data:
+        link = botform.link.data
+        return redirect(url_for('facebook.bot',link=link))
+
+    return render_template('facebook_ad_display_day.html',adform=adform,ad_info=ad_info,botform=botform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, day_result=day_result,clicks=prev_clicks)
+
+@facebook.route('/get_spend_result',methods=['GET', 'POST'])
+def get_spend_result():
+        #common ligin and signin routes
+    loginmodalshow='close'
+    loginform = LoginForm()
+    if(loginform.validate_on_submit()==False and loginform.login.data):
+        loginmodalshow='loginformmodal'
+    if loginform.validate_on_submit() and loginform.login.data:
+        remember=loginform.remember.data
+        email=loginform.email.data
+        password=loginform.password.data
+        return redirect(url_for('users.login', remember=remember, email=email, password=password))
+    modalshow='close'
+    registerform = RegistrationForm()
+    if(registerform.validate_on_submit()==False and registerform.signup.data):
+        modalshow='registerformmodal' 
+    if( registerform.validate_on_submit() and registerform.signup.data):
+        username=registerform.username.data
+        email=registerform.email.data
+        password=registerform.password.data
+        return redirect(url_for('users.register', username=username, email=email, password=password))
+    ################################
+   
+    prediction=AdPrediction()
+    best_prediction=BestSolutions()
+    prev_clicks=int(request.args.get('clicks'))
+    day=request.args.get('weekday')
+    gender=request.args.get('gender')
+    txt =request.args.get('adText')
+    startAge = int(request.args.get('minAge'))
+    endAge =int(request.args.get('maxAge'))
+    adSpends =float(request.args.get('adSpends'))  #usd
+    ad_info={'day':day,'gender':gender,'text':txt,'minAge':startAge,'maxAge':endAge,'spends':adSpends}
+    
+    all=0
+    male=0
+    female=0
+    if(gender=='M'):
+        male=1
+    if(gender=='F'):
+        female=1
+    if(gender=='A'):
+        all=1
+    mon=0
+    tue=0
+    wed=0
+    thu=0
+    fri=0
+    sat=0
+    sun=0
+    if(day=='mon'):
+        mon=1
+    elif(day=='tue'):
+        tue=1
+    elif(day=='wed'):
+        wed=1
+    elif(day=='thu'):
+        thu=1
+    elif(day=='fri'):
+        fri=1
+    elif(day=='sat'):
+        sat=1
+    elif(day=='sun'):
+        sun=1
+    
+    impressions=prediction.impressions_from_money(adSpends)
+
+    final={'mon':[mon] ,'tue':[tue] ,'wed':[wed] ,'thu':[thu] ,'fri':[fri] ,'sat':[sat] ,'sun':[sun] ,'male':[male] ,'female':[female] ,'all':[all] ,'AdTextRes':[prediction.get_ad_text_result(txt)] ,'startAge':[startAge] ,'endAge':[endAge],'AdImpressions':[impressions],'AdSpends':[adSpends] }
+
+    bestSolutions=BestSolutions() 
+    spend_result=bestSolutions.getBestSpend(final,prediction,prev_clicks)
+
+
+    #### ad form ###
+    adform = AdForm()
+    adpredict_model='close'
+    if(adform.validate_on_submit()==False and adform.submit.data):
+        adpredict_model='adpredictmodel'    
+    if adform.validate_on_submit() and adform.submit.data:
+        gender = adform.gender.data
+        adText = adform.adText.data
+        weekday = adform.weekday.data
+        minAge = adform.minAge.data
+        maxAge = adform.maxAge.data
+        adSpends = adform.adSpends.data
+        return redirect(url_for('facebook.fbAdClicksPredict',gender=gender,adText=adText,weekday=weekday,minAge=minAge,maxAge=maxAge,adSpends=adSpends))
+
+	### handle bot detection
+    botform=FbBotForm()
+    botdetection_model='close'
+    if(botform.validate_on_submit()==False and botform.submit.data):
+        botdetection_model='botdetectionmodel'
+    if botform.validate_on_submit() and botform.submit.data:
+        link = botform.link.data
+        return redirect(url_for('facebook.bot',link=link))
+
+    return render_template('facebook_ad_display_spend.html',adform=adform,ad_info=ad_info,botform=botform, registerform=registerform, modalshow=modalshow, loginform=loginform, loginmodalshow=loginmodalshow, spend_result=spend_result,clicks=prev_clicks)
+
+@facebook.route('/bot',methods=['GET', 'POST'])
 def bot():
         #common ligin and signin routes
     loginmodalshow='close'
@@ -421,14 +663,13 @@ def bot():
         password=registerform.password.data
         return redirect(url_for('users.register', username=username, email=email, password=password))
     ################################
-    profile_link=request.args.get("link")
-    print(profile_link)
+    profile_link=request.args["link"]
     detection=BotAccountDetection()
-    #try:
+    # try:
     info=detection.get_info(profile_link) 
-    #except:
-        #flash('Link you entered is not valid or some issue with your connection  ', 'warning')
-        #return redirect(url_for('main.facebook')) 
+    # except:
+    #     flash('Link you entered is not valid or some issue with your connection  ', 'warning')
+    #     return redirect(url_for('main.facebook')) 
     values=detection.calculate(info)
     if(values['neg']==100):
         flash('The profile link you entered is not valid!', 'warning')
