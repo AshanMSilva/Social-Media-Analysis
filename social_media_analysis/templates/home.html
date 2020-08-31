@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div id="carouselExampleIndicators" class="carousel slide mycarousal" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide mycarousal" data-ride="carousel" style="margin-top: 50px;">
 	  <ol class="carousel-indicators">
 	    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 	    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -28,58 +28,71 @@
 	</div>
 	<div class="jumbotron jumbotron-fluid">
 		<div class="container">
-			<h3>Social Medias We Analyze</h3>
+			<h2>Analytics by Network</h2>
 			<hr>
 			<div class="row">
-				<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
-			    	<img class="twitter-img" src="{{ url_for('static', filename='images/download.png') }}">
+				<div class="col-12 col-md-5 col-lg-5 d-none d-sm-none d-md-block">
+			    	<img class="main-img" src="{{ url_for('static', filename='images/twitter.jpg') }}">
 			    </div>
-				<div class="col-12 col-md-8 col-lg-9">
-			    	<p class="lead">Twitter is an American microblogging and social networking service on which users post and interact with messages known as "tweets". Registered users can post, like, and retweet tweets, but unregistered users can only read them. Users access Twitter through its website interface, through Short Message Service (SMS) or its mobile-device application software ("app").</p>
+				<div class="col-12 col-md-7 col-lg-7">
+					<h4><i class="fa fa-twitter fa-1x" aria-hidden="true" style="padding: 10px;"	></i>Twitter</h4>
+			    	<p class="lead">We gather the requested user's profile and latest tweets. We analyze the tweet's contents and tell you about topics usage in form of "tag clouds" so that you can easily understand which words were the most popular.</p>
+
+						<p class="lead">We also show you things not shown on public Twitter pages, such as join date, timezone and followers ratio. With Foller.me it's very easy and incredibly fast to make up your mind on whether to follow somebody or not!</p>
 
 			    </div>
 			</div>
 			<hr>
 			<div class="row">
-			    <div class="col-12 col-md-8 col-lg-9">
+			    <div class="col-12 col-md-7 col-lg-7">
+					<h4><i class="fa fa-facebook-official fa-1x" aria-hidden="true" style="padding: 10px;"	></i>Facebook</h4>
 	    		<p class="lead">
-	    			Facebook is an American online social media and social networking service based in Menlo Park, California and a flagship service of the namesake company Facebook, Inc. It was founded by Mark Zuckerberg, along with fellow Harvard College students and roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz and Chris Hughes.
+	    			We analyze the given advertisement details and provide tips to increase the clicks count.<br>
+
+					We analyze the comments of your post and show each of them as positive, negative or neutral.<br>
+
+					We analyse the information of your friend's Facebook account and detect the profile as fake or not.
 				</p>
 		  		</div>
-		  		<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
-			    	<img class="twitter-img" src="{{ url_for('static', filename='images/facebook_logo.png') }}">
+		  		<div class="col-12 col-md-5 col-lg-5 d-none d-sm-none d-md-block">
+			    	<img class="main-img" style="float: right;" src="{{ url_for('static', filename='images/facebook.jpg') }}">
 			    </div>
 			</div>
 			<hr>
 			<div class="row">
-				<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
-			    	<img class="twitter-img" src="{{ url_for('static', filename='images/youtube-logo.jpg') }}">
+				<div class="col-12 col-md-5 col-lg-5 d-none d-sm-none d-md-block">
+			    	<img class="main-img" src="{{ url_for('static', filename='images/youtube_desk.jpg') }}">
 			    </div>
-			    <div class="col-12 col-md-8 col-lg-9">
-	    		<p class="lead">
-	    			YouTube allows users to upload, view, rate, share, add to playlists, report, comment on videos, and subscribe to other users. It offers a wide variety of user-generated and corporate media videos. Available content includes video clips, TV show clips, music videos, short and documentary films, audio recordings, movie trailers, live streams, and other content such as video blogging, short original videos, and educational videos.
-				</p>
+			    <div class="col-12 col-md-7 col-lg-7">
+					<h4><i class="fa fa-youtube fa-1x" aria-hidden="true" style="padding: 10px;"	></i>YouTube</h4>
+					<p class="lead">
+						We gather information about requested channels or videos. We analyze their content, details and statistics so you can easily compare them with yours or many others.<br>
+
+						We also show you things not shown on public channel pages and video descriptions, such as joined date,category,status and view ratio. With SM analysis it's very easy and incredibly fast to decide what to do, how to do and when to do on social media!
+					</p>
 		  		</div>
 		  		
 			</div>
 			<hr>
 			<div class="row">
-			    <div class="col-12 col-md-8 col-lg-9">
-	    		<p class="lead">
-	    			Stack Overflow is a question and answer site for professional and enthusiast programmers. It is a privately held website, the flagship site of the Stack Exchange Network, created in 2008 by Jeff Atwood and Joel Spolsky. It features questions and answers on a wide range of topics in computer programming. It was created to be a more open alternative to earlier question and answer sites such as Experts-Exchange.
-				</p>
+			    <div class="col-12 col-md-7 col-lg-7">
+					<h4><i class="fa fa-stack-overflow fa-1x" aria-hidden="true" style="padding: 10px;"	></i>Stack Overflow</h4>
+					<p class="lead">
+						Stack Overflow is a question and answer site for professional and enthusiast programmers.<br> 
+						This is an StackOverflow analytics application that gives you rich insights about any public StackOverflow profile. We generates your Stack Profile Questions details and give a full analyze about your Maturity of posting a question, then calculate overall maturity and Technology usage on Stack overflow you used to post.!
+					</p>
 		  		</div>
-		  		<div class="col-12 col-md-4 col-lg-3 d-none d-sm-none d-md-block">
-			    	<img class="twitter-img" src="{{ url_for('static', filename='images/stackoverflow.png') }}">
+		  		<div class="col-12 col-md-5 col-lg-5 d-none d-sm-none d-md-block">
+			    	<img class="main-img" style="float: right;" src="{{ url_for('static', filename='images/stack.png') }}">
 			    </div>
 		  		
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<!-- <div class="container">
 		<h3>Things We Do</h3>
 		<hr>	
-	</div>
+	</div> -->
 {% endblock content %}
 
 

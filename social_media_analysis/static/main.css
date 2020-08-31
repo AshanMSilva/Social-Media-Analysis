@@ -1,11 +1,11 @@
 body {
   background: #fafafa;
-  color: #333333;
+  color: #0f0f0f;
   margin-top: 3.5rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: #444444;
+h1, h2, h3, h4, h6 {
+  color: #131313;
 }
 
 .bg-steel {
@@ -21,7 +21,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header .navbar-nav .nav-link.active {
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .content-section {
@@ -53,6 +54,10 @@ a.article-title:hover {
 .twitter-img{
   height: 200px;
   width: 200px;
+}
+.main-img{
+  height: 350px;
+  width: 350px;
 }
 .home-img{
   height: 100px;
@@ -93,10 +98,10 @@ a.article-title:hover {
   font-size: 1.2rem;
 }
 .jumbotron {
-  margin-top: 0px;
+  background-color: white;
 }
 .mycarousal{
-  height: 400px;
+  height: 650px;
 }
 .myfooter{
   background-color: #5f788a;
