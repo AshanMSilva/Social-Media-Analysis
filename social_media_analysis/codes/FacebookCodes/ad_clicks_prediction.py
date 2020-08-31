@@ -16,7 +16,7 @@ import operator
 
 class AdPrediction():
     def predict(self,input_data):
-        filename = 'fbAdsModelNew.sav'
+        filename = 'social_media_analysis/codes/FacebookCodes/fbAdsModelNew.sav'
         loaded_model = pickle.load(open(filename, 'rb'))
         # f.seek(0)\
         result = loaded_model.predict(input_data)
