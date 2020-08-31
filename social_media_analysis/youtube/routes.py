@@ -146,21 +146,21 @@ def predictViews(name):
         password=registerform.password.data
         return redirect(url_for('users.register', username=username, email=email, password=password))
     
-    varV0 = 0
-    varV1 = 1
-    varV2 = 2
-    varV3 = 3
-    varV4 = 4
-    varV5 = 5
-    varV6 = 6
+
+    varV1 = 0.00156376762
+    varV2 = 2.08209400
+    varV3 = 0.0134076844
+    varV4 = 0.0000533043632
+    varV5 = -0.0107301493
+    varV6 = -0.00151770880
     
-    varL0 = 0
-    varL1 = 1
-    varL2 = 2
-    varL3 = 3
-    varL4 = 4
-    varL5 = 5
-    varL6 = 6
+    
+    varL1 = 0.000491893046
+    varL2 = 0.082029009
+    varL3 = 0.00648799428
+    varL4 = 0.0000146301918
+    varL5 = -0.00216844026
+    varL6 = -0.00053356926
     
     try:
         Cid,vid,view,sub,name,description,Date,privacy,featured,colour,bannerurl,location,customurl,language = getChannelData(name)
@@ -173,8 +173,8 @@ def predictViews(name):
     today = date.today()
     days = abs(Date-today).days
 
-    viewPred = varV0 + varV1*int(vid) + varV2*int(sub) + varV3*int(days) + varV4*int(view) + varV5*int(cat) + varV6*int(length)
-    likePred = varL0 + varL1*int(vid) + varL2*int(sub) + varL3*int(days) + varL4*int(view) + varL5*int(cat) + varL6*int(length)
+    viewPred = int(varV1*int(vid) + varV2*int(sub) + varV3*int(days) + varV4*int(view) + varV5*int(cat) + varV6*int(length))
+    likePred = int(varL1*int(vid) + varL2*int(sub) + varL3*int(days) + varL4*int(view) + varL5*int(cat) + varL6*int(length))
     
     return render_template('predictviews.html', viewPred=viewPred,likePred=likePred,loginmodalshow= loginmodalshow, loginform = loginform, modalshow =modalshow,
                                                 registerform=registerform)
@@ -186,7 +186,7 @@ def predictViews(name):
 
 def viralVideos():
     
-    #try:
+    try:
         loginmodalshow='close'
         loginform = LoginForm()
         if(loginform.validate_on_submit()==False and loginform.login.data):
@@ -248,6 +248,6 @@ def viralVideos():
                                languagePair=languagePair,locationPair=locationPair,categoryPair=categoryPair,likePerc=likePerc,dislikePerc=dislikePerc,
                                likeDisRatio=likeDisRatio,dur=dur,sub=sub,vid=vid,days=days,views=views)
     
-    #except:
-     #   flash('Something went wrong. Please try again.','warning')
-      #  return redirect(url_for('main.youtube'))
+    except:
+        flash('Something went wrong. Please try again.','warning')
+        return redirect(url_for('main.youtube'))
