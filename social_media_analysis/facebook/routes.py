@@ -127,10 +127,12 @@ def sentiment():
         flash("Your file doesn't contain any comments",'warning')
         return redirect(url_for("main.facebook"))
     maxx=20
+    got=0
     for i in range(len(comments)):
-        if(True):
-            if(i>=maxx):
+        if(len(comments[i][0])>0):
+            if(got>=maxx):
                 break
+            got+=1
             comment=comments[i]
             text=comment[0]
             word=text
