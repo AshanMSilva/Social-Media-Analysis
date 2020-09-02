@@ -2,7 +2,7 @@ import urllib.request
 import json
 
 #key = "AIzaSyDPgpf4oaUa5dbzkvQlVd9eNiyF4zsThA8"
-key = "AIzaSyCbfK6-IwYr-jGjB595C8MkyC54J1jwdaA"
+key = "AIzaSyDlN73Iv4q9MA1DSVco_o3Gl0L4504K44U"
 parts = ['statistics','snippet','brandingSettings','status']
 
 def getChannelData(Cid):

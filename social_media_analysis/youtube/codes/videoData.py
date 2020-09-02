@@ -4,7 +4,7 @@ import isodate
 
 
 #key = "AIzaSyDPgpf4oaUa5dbzkvQlVd9eNiyF4zsThA8"
-key = "AIzaSyCbfK6-IwYr-jGjB595C8MkyC54J1jwdaA"
+key = "AIzaSyACzriXumGWI2sNdTHFd7nthcgaiW2s7R0"
 
 def getVideoDetails(Vid):
     
