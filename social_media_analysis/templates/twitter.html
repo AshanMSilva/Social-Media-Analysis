@@ -176,7 +176,7 @@
 		                    {{ screennameform.name(class="form-control", placeholder="screen name") }}
 		                {% endif %}
 		            </div>
-		        <div class="form-group"  onclick="loading()">
+		        <div class="form-group"  onsubmit="loading()">
 		            {{ screennameform.search(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
@@ -209,7 +209,7 @@
 		                    {{ botform.name(class="form-control", placeholder="screen name") }}
 		                {% endif %}
 		            </div>
-		        <div class="form-group"  onclick="loading()">
+		        <div class="form-group"  onsubmit="loading()">
 		            {{ botform.submit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
@@ -243,7 +243,7 @@
 		                    {{ hashtagform.hashtag(class="form-control", placeholder="Hash tag") }}
 		                {% endif %}
 		            </div>
-		        <div class="form-group" onclick="loading()">
+		        <div class="form-group" onsubmit="loading()">
 		            {{ hashtagform.hashtagsubmit(class="btn btn-outline-info submit", type="submit") }}
 		        </div>
 		    </form>        	
@@ -294,7 +294,7 @@
                   </div>
                   
               </fieldset>
-              <div class="form-group "  onclick="loading()">
+              <div class="form-group "  onsubmit="loading()">
                   {{ tweetform.likespredict(class="btn btn-outline-info") }}
               </div>
           </form>       

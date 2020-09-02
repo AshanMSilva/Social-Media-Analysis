@@ -157,7 +157,7 @@
 							<input required type="number" name="adSpends" step="0.1"min="0" class="form-control form-control-lg">
 						</div>
 					</fieldset>
-					<div class="form-group" >
+					<div class="form-group" onsubmit="loading()">
 						<button type="submit" class="btn btn-outline-info">Predict</button>
 					</div>
 				</form>
@@ -183,7 +183,7 @@
 						<fieldset class="form-group">  
 							<div class="form-group">
 								<label for="upload" class="form-control-label">HTML File :</label> 
-								<input type="file" name="upload"class="form-control form-control-lg" >
+								<input type="file" name="upload"class="form-control form-control-lg" required>
 							</div>
 						</fieldset>
 						<h5>Upload the HTML script file, that contains all the comments of this post.  </h5>
@@ -193,7 +193,7 @@
 							View all comments. <br>
 							Save the page.</p>
 						<br>
-						<div class="form-group" onclick="loading()">
+						<div class="form-group" onsubmit="loading()">
 							<button type="submit" class="btn btn-outline-info">Analyse</button> 
 						</div>
 
@@ -238,7 +238,7 @@
 					<h5>Before using this feature, you have to login with your Facebook account.</h5>
 					<p>Click <a href="https://www.facebook.com" target="_blank">here</a> to login with your Facebook account</p>
 					<br>
-					<div class="form-group" onclick="loading()">
+					<div class="form-group" onsubmit="loading()">
 						{{ botform.submit(class="btn btn-outline-info") }}
 					</div>
 				</form>
