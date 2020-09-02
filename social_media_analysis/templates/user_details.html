@@ -118,8 +118,15 @@ window.onload = function () {
 //Better to construct options first and then pass it as a parameter
 var options = {
   animationEnabled: true,
-  title: {             
-  },
+  title: { 
+		text: 'No of tweets per hour'            
+	  },
+	  axisY:{
+		  title:"No of tweets"
+	  },
+	  axisX:{
+		  title:"Hour"
+	  },
   data: [              
   {
     // Change type to "doughnut", "line", "splineArea", etc.
@@ -157,8 +164,15 @@ var options = {
 
 var optionstwo = {
   animationEnabled: true,
-  title: {             
-  },
+  title: { 
+		text: 'No of likes per tweet'            
+	  },
+	  axisY:{
+		  title:"No of likes"
+	  },
+	  axisX:{
+		  title:"Tweet ID"
+	  },
   data: [              
   {
     // Change type to "doughnut", "line", "splineArea", etc.
@@ -172,8 +186,15 @@ var optionstwo = {
 
 var optionsthree = {
   animationEnabled: true,
-  title: {             
-  },
+  title: { 
+		text: 'No of retweets per Tweet'            
+	  },
+	  axisY:{
+		  title:"No of retweets"
+	  },
+	  axisX:{
+		  title:"Tweet ID"
+	  },
   data: [              
    {
     // Change type to "doughnut", "line", "splineArea", etc.
