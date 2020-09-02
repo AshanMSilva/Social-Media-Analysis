@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<div style="height: 50px;"></div>
   <div class="container">
     <h1 class="mb-3">Posts by {{ user.username }} ({{ posts.total }})</h1>
     {% for post in posts.items %}

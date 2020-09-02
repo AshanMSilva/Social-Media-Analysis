@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<div style="height: 50px;"></div>
 <div class="container"> 
   <article class="media content-section">
     <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + comment.comment_author.image_file) }}">
