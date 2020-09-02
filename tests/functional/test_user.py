@@ -103,13 +103,7 @@ def test_twitter_hashtag(test_client):
                                 follow_redirects=True)
     assert response.status_code == 200
 
-def test_facebook_bot(test_client):
-
-    response=test_client.post('/facebook/bot', data=dict(submit='submit',link='https://www.facebook.com/sisara.kahatapitiya.9'),follow_redirects=True)
-
-    assert response.status_code == 200
-
 def test_facebook_ad(test_client):
-    response=test_client.post('/facebook/fbAdClicksPredict',data=dict(gender='M',adText='New employees',weekday='sun',minAge=18,maxAge=65,adSpends=12),follow_redirects=True)
+    response=test_client.post('/facebook',data=dict(gender='M',adText='New employees',weekday='sun',minAge=18,maxAge=65,adSpends=12,submit='submit'),follow_redirects=True)
 
     assert response.status_code == 200
