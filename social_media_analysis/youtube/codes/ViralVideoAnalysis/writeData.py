@@ -21,8 +21,8 @@ dislikeCount=[]
 commentCount=[]
 titles=[]
 
-
-for i in range(856,len(ids)):
+#len(ids)
+for i in range(245,400):
     
     channel,date,categoryID,language,dur,views,likes,dislikes,comments,title = getVideoDetails(ids[i])
     
@@ -51,7 +51,7 @@ for i in range(856,len(ids)):
     print(i)
     
     
-df = pd.DataFrame({'ChannelID':ids[856:],'ViewCount':viewCount, 'likeCount':likeCount, 'dislikeCount':dislikeCount, 'uploadedDate':uploadedDate,
+df = pd.DataFrame({'ChannelID':ids[245:400],'ViewCount':viewCount, 'likeCount':likeCount, 'dislikeCount':dislikeCount, 'uploadedDate':uploadedDate,
                    'category':categoryList, 'videoLanguage':videoLanguage,'duration':duration,'commentCount':commentCount, 'subCount':subCount,
                    'TotalViewCount':totalViewCount,'VideoCount':vidCount, 'channelDate':channelDate,'channelLocation':channelLocation,'title':titles}).to_csv('data.csv',mode='a',header=False)
     

@@ -79,6 +79,7 @@ for dur in duration:
         dur10+=1        
 
 dur_out.append([dur0_1,dur1_2,dur2_3,dur3_4,dur4_5,dur5_6,dur6_7,dur7_8,dur8_9,dur9_10,dur10])
+print(dur_out)
 
 totView1=0
 totView2=0
