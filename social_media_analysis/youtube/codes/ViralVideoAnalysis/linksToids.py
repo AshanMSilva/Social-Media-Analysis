@@ -11,3 +11,4 @@ for link in links:
 
 
 df = pd.DataFrame({'ChannelID':ids}).to_csv('ids.csv')
+print("done")
